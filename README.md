@@ -83,7 +83,7 @@ When it comes to arranging meetings, it is often a headache to decide on the *wh
 ### 4.1. Stack
 
 * To be decided 
-* Leon is voting for MERN, I'm looking for others
+* **Leon** is voting for `MERN`, I'm looking for others
 * One thing for sure is that `TailwindCSS` will the main tool for styling
 
 ### 4.2. Style guide 
