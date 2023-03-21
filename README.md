@@ -13,78 +13,103 @@ Which is how this project was born, where we seek to make a webapp that streamli
 
 ## :ocean: 2. Waves 
 
-### NOTE: I'm busy, a more comprehensive version will come soon.
-
 ### 2.1. Product Introduction 
 
 When it comes to arranging meetings, it is often a headache to decide on the *when* and *where*. Which is what this product is aiming to solve.
 
-### 2.2. Features 
+### 2.2. Proposed design
 
-* Core
-    * Login & Registration
-        * Personalized Account
-        * Profile Pic
-        * Username
-        * User introduction
-        * Personal Calendar
+Coming soon&trade;
 
-    * Meeting arrangement system
-        * Sending meeting invites
-        * Accept / Decline meeting invites
+### 2.3. Terminology
 
-* Extended
-    * Friend system
-    * Blocking
-    * Meeting groups
-    * Recurring meetings
-    * List recent searches (user)
-    * Automated email upon acceting the meeting
-    * Email verification (Auth)
-    * Customized visibility (public / private)
+```
+Wave    => Meeting
+Tide    => Meeting invite
+```
+## 3. Feature & Reqirements 
 
-### 2.3. General Flow 
+### 3.1. Login & Registration
 
-#### 2.3.1. Arraning a one to many meeting
-![one to many](./readme_asset/program_flow/one_to_many.png)
+    * Login should require:
+        - Email 
+        - Passowrd
 
-#### 2.3.2. Arranging a one to one meeting
-![one to one](./readme_asset/program_flow/one_to_one.png)
+    * Registration should require:
+        - Name
+        - User handle 
+        - Email 
+        - Password
 
-## :paintbrush: 3. Design 
+    * During registration, upon unfocus, application should check:
+        - If the email is taken
+        - If the user handle is taken
 
-### NOTE: Only covers very little 
+    * Only allow users to register when the pass the above checks
 
-### 3.1. General website structure
-![general structure](./readme_asset/design_sketch/general_structure.png)
+### 3.2. Navigation bar
+    * A search bar should be implemented for searching future Waves and pending Tides
+    
+    * A button to send Tide
 
-----
+    * Notifications
 
-### TODO
+    * Drop down menu should contain:
+        - Profile Image
+        - Name
+        - Email
+        - Custom status
+        - Settings button
+        - Theme button
+        - Logout button
 
-### 3.2. Login page
+### 3.3. Profile Page
 
-### 3.3. Registration page
+    * Profile should display the following items
+        - Profile Image
+        - Name
+        - User handle
+        - Custom status
+        - Availability (Calander)
+    
+    * A button should be provided for users to edit their profile
+    
+    * Users should be able to choose the date range displayed on the calander (Refer to design)
 
-### 3.4. Profile page
+    * Hovering on a timeslot on the calander should display details of the user's availability. (Refer to design)
 
-### 3.5. Component - Search users
+### 3.4. Meeting Arrangement Page / Modal
 
-### 3.6. Popup prompt - Search & select users
+    * Required inputs:
+        - Meeting title
+        - Meeting description
+        - Meeting date & time
+        - Users
+        - And optionally location
 
-### 3.7. Popup prompt - Select time
+    * User should be able to add multiple people for the Wave
 
-### 3.8. Popup prompt - Select room
+    * The calander input for chooseing date & time should 
+      contain information on the group's availability
 
-----
+    * It is not neseccary to choose a time where everyone's free
+
+### 3.5. Dashboard
+
+```
+I thought Victor's design is quite suited for our dashbard, told him to polish it up a bit.
+
+A dashbard isn't needed for now, though it certainly wouldn't hurt having one.
+```
 
 ## :memo: 4. Technical Specifications
 
 ### 4.1. Stack
 
-* To be decided 
-* **Leon** is voting for `MERN`, I'm looking for others
-* One thing for sure is that `TailwindCSS` will the main tool for styling
+* Language  : `TypeScript`
+* Front-end : `React, TailwindCSS, FramerMotion`
+* Back-end  : `Express, Prisma, JWT`
+* Database  : `MongoDB`
 
 ### 4.2. Style guide 
 
@@ -94,4 +119,127 @@ When it comes to arranging meetings, it is often a headache to decide on the *wh
 
 ### 4.3. API
 
-* Later, no time for now
+#### 4.3.1. `/auth/login`
+
+* **`POST`** - Called when user requrests login
+
+```json
+/*
+Headers:
+    Content: application/json
+*/
+
+// Inputs:
+{
+    "email": "email@email.com",
+    "passowrd": "password"
+}
+
+// Outputs:
+{
+    "userId": "12345",
+    "userToken": "thisIsATokenGeneratedUsingJWT"
+}
+
+// Errors:
+{
+    "error": "Invald email or password"
+}
+```
+
+#### 4.3.2. `/auth/register`
+
+* **`POST`** - Called when user requests registration
+
+```json
+/* 
+Headers:
+    Content: application/json
+*/
+
+// Inputs:
+{
+    "name": "Henry Wan",
+    "email": "email@email.com",
+    "userHandle": "m4ch374",
+    "password": "password"
+}
+
+// Outputs:
+{
+    "userId": "12345",
+    "userToken": "thisIsATokenGeneratedUsingJWT"
+}
+
+// Errors:
+{
+    // One of the error messages
+
+    // Prevent bypassing checks bc ppl could directly call the api
+    "error": [
+        "User handle already taken",
+        "Email already taken",
+        "Invalid email",
+        "Invalid password",
+        "Invalid user handle"
+    ]
+}
+```
+
+#### 4.3.3. `/auth/register/check_email`
+
+* **`POST`** - Called when we want to know if the email is taken
+
+```json
+/*
+Headers:
+    Content: application/json
+*/
+
+// Inputs:
+{
+    "email": "email@email.com"
+}
+
+// Outputs:
+{
+    "taken": "true"
+}
+
+// Errors: 
+{
+    "error": "Invalid email format"
+}
+```
+
+#### 4.3.4. `/auth/register/check_handle`
+
+* **`POST`** - Called when we want to know if the handle is taken
+
+```json
+/* 
+Headers:
+    Content: application/json
+*/
+
+// Inputs:
+{
+    "userHandle": "m4ch374"
+}
+
+// Outputs:
+{
+    "taken": "true"
+}
+
+// Errors:
+{
+    "error": "Invalid handle"
+}
+```
+
+#### 4.3.5. `/user`
+
+```
+* Update once I've setup the database schema
+```
