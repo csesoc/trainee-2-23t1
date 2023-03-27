@@ -1,5 +1,8 @@
 import { trpc } from "../trpc_provider";
 import { z } from "zod"
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient()
 
 const loginEndpoint = trpc.procedure.input(
     z.object({
@@ -7,8 +10,14 @@ const loginEndpoint = trpc.procedure.input(
       userid: z.number().int(),
     })
   )
-  .mutation(({ input }) => {
-    return `Hello ${input.username} with id ${input.userid}`
+  .mutation(async ({ input }) => {
+    const usr = await prisma.user.create({
+      data: {
+        name: input.username
+      }
+    })
+
+    return `Hello ${usr.name} with id ${usr.id}`
   })
 
 const authRouter = trpc.router({
