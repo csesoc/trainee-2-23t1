@@ -13,7 +13,9 @@ const loginEndpoint = trpc.procedure.input(
   .mutation(async ({ input }) => {
     const usr = await prisma.user.create({
       data: {
-        name: input.username
+        name: input.username,
+        email: "email@email.com",
+        password: "password"
       }
     })
 
