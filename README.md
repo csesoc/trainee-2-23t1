@@ -19,7 +19,7 @@ When it comes to arranging meetings, it is often a headache to decide on the *wh
 
 ### 2.2. Proposed design
 
-Coming soon&trade;
+Figma design link: <a href="https://www.figma.com/file/JU5Cdu40ZiNiWNeo1jI98d/CSESoc-Waves-Prototype?node-id=0%3A1&t=nJURGzarZ4qTklS2-1" target="_blank">CLick to go to design prototye</a>
 
 ### 2.3. Terminology
 
