@@ -20,7 +20,13 @@ const loginEndpoint = trpc_provider_1.trpc.procedure.input(zod_1.z.object({
     .mutation(({ input }) => __awaiter(void 0, void 0, void 0, function* () {
     const usr = yield prisma.user.create({
         data: {
+<<<<<<< HEAD
             name: input.username
+=======
+            name: input.username,
+            email: "email@email.com",
+            password: "password"
+>>>>>>> origin
         }
     });
     return `Hello ${usr.name} with id ${usr.id}`;
