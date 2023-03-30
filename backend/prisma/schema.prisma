@@ -11,36 +11,67 @@ datasource db {
 }
 
 model User {
-  id           String    @id @default(auto()) @map("_id") @db.ObjectId
-  name         String
-  email        String
-  password     String // shouldnt be in plain text, we're using hashing
-  status       String    @default("")
-  profileImg   Bytes?
-  calender     Calender?
-  createdWaves Wave[]    @relation("creator")
-  hasWaves     Wave[]    @relation("users", fields: [hasWaveIds], references: [id])
-  hasWaveIds   String[]  @db.ObjectId
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  email      String
+  password   String // shouldnt be in plain text, we're using hashing
+  status     String    @default("")
+  aboutMe    String    @default("")
+  profileImg Bytes?
+  calender   Calender?
+
+  // Waves invited but not accepted
+  invitedWaves   Wave[]   @relation("invited", fields: [invitedWavesId], references: [id])
+  invitedWavesId String[] @db.ObjectId
+
+  // Waves created
+  createdWaves Wave[] @relation("created")
+
+  // Waves participating
+  participateWave    Wave[]   @relation("participate", fields: [participateWaveIds], references: [id])
+  participateWaveIds String[] @db.ObjectId
 }
 
 model Calender {
-  id           String     @id @default(auto()) @map("_id") @db.ObjectId
-  availability Timeslot[]
-  hasUser      User       @relation(fields: [userId], references: [id])
-  userId       String     @unique @db.ObjectId
+  id             String     @id @default(auto()) @map("_id") @db.ObjectId
+  availabilities Timeslot[]
+  hasUser        User       @relation(fields: [userId], references: [id])
+  userId         String     @unique @db.ObjectId
 }
 
 type Timeslot {
-  startTime DateTime
-  endTime   DateTime
-  details   String   @default("")
+  startTime    DateTime
+  endTime      DateTime
+  availability Availability
+  details      String       @default("")
+}
+
+enum Availability {
+  UNAVAILABLE
+  PERHAPS
 }
 
 model Wave {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  id           String     @id @default(auto()) @map("_id") @db.ObjectId
+  proposedTime DateTime
+  location     String?
+  repeatType   RepeatType @default(NONE)
+  notifyUser   Boolean    @default(false)
+
+  invitedUsers   User[]   @relation("invited", fields: [invitedUsersId], references: [id])
+  invitedUsersId String[] @db.ObjectId
+
+  hasUsers   User[]   @relation("participate", fields: [hasUsersId], references: [id])
+  hasUsersId String[] @db.ObjectId
+
   createdAt   DateTime @default(now())
-  createdBy   User     @relation("creator", fields: [createdById], references: [id])
+  createdBy   User     @relation("created", fields: [createdById], references: [id])
   createdById String   @db.ObjectId
-  hasUsers    User[]   @relation("users", fields: [hasUsersId], references: [id])
-  hasUsersId  String[] @db.ObjectId
+}
+
+enum RepeatType {
+  NONE
+  DAILY
+  WEEKLY
+  MONTHLY
 }

@@ -15,7 +15,6 @@ const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const loginEndpoint = trpc_provider_1.trpc.procedure.input(zod_1.z.object({
     username: zod_1.z.string(),
-    userid: zod_1.z.number().int(),
 }))
     .mutation(({ input }) => __awaiter(void 0, void 0, void 0, function* () {
     const usr = yield prisma.user.create({

@@ -1,7 +1,7 @@
-import React, { useRef } from "react";
+import React from "react";
 import reactLogo from "../assets/react.svg";
+import viteLogo from "../../public/vite.svg"
 import { useState, useEffect } from "react";
-import "../App.css";
 import { trpc } from "../utils/trpc";
 
 const Placeholder: React.FC = () => {
@@ -16,37 +16,47 @@ const Placeholder: React.FC = () => {
     console.log(hello.data);
   }
 
-  useEffect(() => {
-    testLogin.mutate(
-      { username: "henry", userid: 1 },
-      {
-        onSuccess: (data) => {
-          console.log(data);
-        },
-      }
-    );
-  }, []);
+  // useEffect(() => {
+  //   testLogin.mutate(
+  //     { username: "henry" },
+  //     {
+  //       onSuccess: (data) => {
+  //         console.log(data);
+  //       },
+  //     }
+  //   );
+  // }, []);
 
   return (
-    <div className="App">
-      <div>
+    <div className="flex flex-col justify-center place-items-center min-h-screen gap-8">
+      <div className="flex gap-10">
         <a href="https://vitejs.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
+          <img src={viteLogo} 
+            className="h-[150px] aspect-square animate-spin-slow hover:hover-backdrop" alt="React logo" />
         </a>
         <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
+          <img src={reactLogo} className="h-[150px] aspect-square animate-spin-slow hover:hover-backdrop" alt="React logo" />
         </a>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+      <h1 className="text-6xl font-bold">Vite + React</h1>
+      <div className="flex flex-col place-items-center">
+        <button 
+          className="
+            bg-[#2f2f2f] 
+            w-[100px] 
+            p-1 
+            rounded-md 
+            hover:bg-[#2c2c2c]
+            active:bg-[#222]
+          " 
+          onClick={() => setCount((count) => count + 1)}>
+            count is {count}
         </button>
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
       </div>
-      <p className="read-the-docs">
+      <p className="text-[#888]">
         Click on the Vite and React logos to learn more
       </p>
     </div>

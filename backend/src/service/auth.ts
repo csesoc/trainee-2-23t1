@@ -7,7 +7,6 @@ const prisma = new PrismaClient()
 const loginEndpoint = trpc.procedure.input(
     z.object({
       username: z.string(),
-      userid: z.number().int(),
     })
   )
   .mutation(async ({ input }) => {
