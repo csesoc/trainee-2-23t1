@@ -93,26 +93,11 @@ DATABASE_URL="${your_atlas_url}"
 
     * Only allow users to register when the pass the above checks
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> e575cf9 (Docs: updated docs)
+
 ### 4.2. Navigation bar
     * A search bar should be implemented for searching future Waves and pending Tides
     
     * A button to send Tide
-=======
-* To be decided 
-* **Leon** is voting for `MERN`, I'm looking for others
-* One thing for sure is that `TailwindCSS` will the main tool for styling
->>>>>>> 481f866 (Msic: small styling)
-=======
-* Language  : `TypeScript`
-* Front-end : `React, TailwindCSS, FramerMotion`
-* Back-end  : `Express, Prisma, JWT`
-* Database  : `MongoDB`
->>>>>>> 33efa79 (Docs: updated docs)
 
     * Notifications
 
@@ -180,8 +165,6 @@ A dashbard isn't needed for now, though it certainly wouldn't hurt having one.
 
 ### 5.3. Backend 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 Note that we will not be using the normal `REST API` approach, but instead, we will be using a library called `tRPC`.
 
 The reason why we chose to do it is because of the fact that 
