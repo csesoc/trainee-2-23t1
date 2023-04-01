@@ -95,6 +95,9 @@ DATABASE_URL="${your_atlas_url}"
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> e575cf9 (Docs: updated docs)
 ### 4.2. Navigation bar
     * A search bar should be implemented for searching future Waves and pending Tides
     
@@ -178,6 +181,7 @@ A dashbard isn't needed for now, though it certainly wouldn't hurt having one.
 ### 5.3. Backend 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Note that we will not be using the normal `REST API` approach, but instead, we will be using a library called `tRPC`.
 
 The reason why we chose to do it is because of the fact that 
@@ -242,127 +246,65 @@ mutation(): anything that is not GET
 // they call it mutation bc the data in the db mutates
 =======
 #### 4.3.1. `/auth/login`
+=======
+Note that we will not be using the normal `REST API` approach, but instead, we will be using a library called `tRPC`.
+>>>>>>> e575cf9 (Docs: updated docs)
 
-* **`POST`** - Called when user requrests login
+The reason why we chose to do it is because of the fact that 
+1. It is extremely hard to consider everything and prototype an API structure within a short amount of time
+2. Less code, type safety, the line between backend and frontend is blured (which is a good thing if we want to push code fast)
 
-```json
-/*
-Headers:
-    Content: application/json
-*/
+#### Short runthrough of `tRPC`
 
-// Inputs:
-{
-    "email": "email@email.com",
-    "passowrd": "password"
-}
+**Terminology:**
+```
+// Note that Service and Router is a terminology in the context of our repo
+// i.e. Only Procedure is a terminology used by the official tRPC docs
 
-// Outputs:
-{
-    "userId": "12345",
-    "userToken": "thisIsATokenGeneratedUsingJWT"
-}
+* Procedure == API Endpoints
+* Service   == Collection of procedures
+    - e.g. Lets say we have:
+            * /auth/register
+            * /auth/login
+            * /auth is a service
 
-// Errors:
-{
-    "error": "Invald email or password"
+* Router == The root "/"
+```
+
+**Using `tRPC`:**
+
+Backend:
+```ts
+// ./backend/src/service/hello.ts
+import { trpc } from "../trpc_provider"
+
+const helloRouter = trpc.router({
+  helloWorld: trpc.procedure.query(() => {
+    return "Hello World"
+  })
+})
+
+export default helloRouter
+```
+
+Frontend:
+```tsx
+const SomeComponent:React.FC = () => {
+    const hello = trpc.hello.helloWorld.useQuery();
+
+    return (
+        <div>
+            {hello.isLoading ? "Loading" : hello.data}
+        </div>
+    )
 }
 ```
 
-#### 4.3.2. `/auth/register`
-
-* **`POST`** - Called when user requests registration
-
-```json
-/* 
-Headers:
-    Content: application/json
-*/
-
-// Inputs:
-{
-    "name": "Henry Wan",
-    "email": "email@email.com",
-    "userHandle": "m4ch374",
-    "password": "password"
-}
-
-// Outputs:
-{
-    "userId": "12345",
-    "userToken": "thisIsATokenGeneratedUsingJWT"
-}
-
-// Errors:
-{
-    // One of the error messages
-
-    // Prevent bypassing checks bc ppl could directly call the api
-    "error": [
-        "User handle already taken",
-        "Email already taken",
-        "Invalid email",
-        "Invalid password",
-        "Invalid user handle"
-    ]
-}
-```
-
-#### 4.3.3. `/auth/register/check_email`
-
-* **`POST`** - Called when we want to know if the email is taken
-
-```json
-/*
-Headers:
-    Content: application/json
-*/
-
-// Inputs:
-{
-    "email": "email@email.com"
-}
-
-// Outputs:
-{
-    "taken": "true"
-}
-
-// Errors: 
-{
-    "error": "Invalid email format"
-}
-```
-
-#### 4.3.4. `/auth/register/check_handle`
-
-* **`POST`** - Called when we want to know if the handle is taken
-
-```json
-/* 
-Headers:
-    Content: application/json
-*/
-
-// Inputs:
-{
-    "userHandle": "m4ch374"
-}
-
-// Outputs:
-{
-    "taken": "true"
-}
-
-// Errors:
-{
-    "error": "Invalid handle"
-}
-```
-
-#### 4.3.5. `/user`
+**`query()` vs `mutation()`**
 
 ```
-* Update once I've setup the database schema
->>>>>>> 33efa79 (Docs: updated docs)
+query(): GET
+mutation(): anything that is not GET
+
+// they call it mutation bc the data in the db mutates
 ```
