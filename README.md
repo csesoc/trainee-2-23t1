@@ -94,6 +94,7 @@ DATABASE_URL="${your_atlas_url}"
     * Only allow users to register when the pass the above checks
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 ### 4.2. Navigation bar
     * A search bar should be implemented for searching future Waves and pending Tides
     
@@ -103,6 +104,12 @@ DATABASE_URL="${your_atlas_url}"
 * **Leon** is voting for `MERN`, I'm looking for others
 * One thing for sure is that `TailwindCSS` will the main tool for styling
 >>>>>>> 481f866 (Msic: small styling)
+=======
+* Language  : `TypeScript`
+* Front-end : `React, TailwindCSS, FramerMotion`
+* Back-end  : `Express, Prisma, JWT`
+* Database  : `MongoDB`
+>>>>>>> 33efa79 (Docs: updated docs)
 
     * Notifications
 
@@ -170,6 +177,7 @@ A dashbard isn't needed for now, though it certainly wouldn't hurt having one.
 
 ### 5.3. Backend 
 
+<<<<<<< HEAD
 Note that we will not be using the normal `REST API` approach, but instead, we will be using a library called `tRPC`.
 
 The reason why we chose to do it is because of the fact that 
@@ -232,4 +240,129 @@ query(): GET
 mutation(): anything that is not GET
 
 // they call it mutation bc the data in the db mutates
+=======
+#### 4.3.1. `/auth/login`
+
+* **`POST`** - Called when user requrests login
+
+```json
+/*
+Headers:
+    Content: application/json
+*/
+
+// Inputs:
+{
+    "email": "email@email.com",
+    "passowrd": "password"
+}
+
+// Outputs:
+{
+    "userId": "12345",
+    "userToken": "thisIsATokenGeneratedUsingJWT"
+}
+
+// Errors:
+{
+    "error": "Invald email or password"
+}
+```
+
+#### 4.3.2. `/auth/register`
+
+* **`POST`** - Called when user requests registration
+
+```json
+/* 
+Headers:
+    Content: application/json
+*/
+
+// Inputs:
+{
+    "name": "Henry Wan",
+    "email": "email@email.com",
+    "userHandle": "m4ch374",
+    "password": "password"
+}
+
+// Outputs:
+{
+    "userId": "12345",
+    "userToken": "thisIsATokenGeneratedUsingJWT"
+}
+
+// Errors:
+{
+    // One of the error messages
+
+    // Prevent bypassing checks bc ppl could directly call the api
+    "error": [
+        "User handle already taken",
+        "Email already taken",
+        "Invalid email",
+        "Invalid password",
+        "Invalid user handle"
+    ]
+}
+```
+
+#### 4.3.3. `/auth/register/check_email`
+
+* **`POST`** - Called when we want to know if the email is taken
+
+```json
+/*
+Headers:
+    Content: application/json
+*/
+
+// Inputs:
+{
+    "email": "email@email.com"
+}
+
+// Outputs:
+{
+    "taken": "true"
+}
+
+// Errors: 
+{
+    "error": "Invalid email format"
+}
+```
+
+#### 4.3.4. `/auth/register/check_handle`
+
+* **`POST`** - Called when we want to know if the handle is taken
+
+```json
+/* 
+Headers:
+    Content: application/json
+*/
+
+// Inputs:
+{
+    "userHandle": "m4ch374"
+}
+
+// Outputs:
+{
+    "taken": "true"
+}
+
+// Errors:
+{
+    "error": "Invalid handle"
+}
+```
+
+#### 4.3.5. `/user`
+
+```
+* Update once I've setup the database schema
+>>>>>>> 33efa79 (Docs: updated docs)
 ```
