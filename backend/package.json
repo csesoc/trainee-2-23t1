@@ -9,14 +9,7 @@
     "dev": "npx tsc -w & nodemon dist/server.js"
   },
   "dependencies": {
-<<<<<<< HEAD
-<<<<<<< HEAD
     "@prisma/client": "^4.12.0",
-=======
->>>>>>> 0aa108b (Dev: setup infra)
-=======
-    "@prisma/client": "^4.11.0",
->>>>>>> cc4defb (Dev: setup with db)
     "@trpc/server": "^10.18.0",
     "@types/cors": "^2.8.13",
     "@types/express": "^4.17.17",
@@ -27,16 +20,7 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
-<<<<<<< HEAD
-<<<<<<< HEAD
     "nodemon": "^2.0.22",
     "prisma": "^4.12.0"
-=======
-    "nodemon": "^2.0.22"
->>>>>>> 0aa108b (Dev: setup infra)
-=======
-    "nodemon": "^2.0.22",
-    "prisma": "^4.11.0"
->>>>>>> cc4defb (Dev: setup with db)
   }
 }
