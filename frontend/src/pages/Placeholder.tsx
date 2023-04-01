@@ -3,8 +3,13 @@ import reactLogo from "../assets/react.svg";
 import viteLogo from "../../public/vite.svg"
 import { useState } from "react";
 import { trpc } from "../utils/trpc";
+import { Navigate } from "react-router-dom";
 
 const Placeholder: React.FC = () => {
+  if (!localStorage.getItem("token")) {
+    return <Navigate to="/login" />
+  }
+
   const [count, setCount] = useState(0);
 
   const hello = trpc.hello.helloWorld.useQuery(undefined, {
