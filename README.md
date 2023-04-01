@@ -93,10 +93,16 @@ DATABASE_URL="${your_atlas_url}"
 
     * Only allow users to register when the pass the above checks
 
+<<<<<<< HEAD
 ### 4.2. Navigation bar
     * A search bar should be implemented for searching future Waves and pending Tides
     
     * A button to send Tide
+=======
+* To be decided 
+* **Leon** is voting for `MERN`, I'm looking for others
+* One thing for sure is that `TailwindCSS` will the main tool for styling
+>>>>>>> 481f866 (Msic: small styling)
 
     * Notifications
 
