@@ -15,12 +15,12 @@ const createContext = ({req, res}: CreateExpressContextOptions) => {
   }
   const token = req.headers.authorization.split(" ")[1];
 
-  if (typeof token === 'undefined' || token.trim() === "") {
+  try {
+    const payload:any = jwt.verify(token, JwtSecret) // lazy
+    return { userId: payload.userId }
+  } catch {
     return {userId: null}
   }
-
-  const payload:any = jwt.verify(token, JwtSecret) // lazy
-  return { userId: payload.userId }
 }
 
 app.use(cors({ origin: "http://localhost:5173" }))
