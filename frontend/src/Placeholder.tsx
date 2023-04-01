@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import { useState, useEffect } from "react";
@@ -9,9 +9,11 @@ const Placeholder:React.FC = () => {
   const [count, setCount] = useState(0)
   const testLogin = trpc.auth.login.useMutation()
 
-  const hello = trpc.hello.helloWorld.useQuery()
+  const hello = trpc.hello.helloWorld.useQuery(undefined, {
+    staleTime: Infinity
+  })
 
-  if (hello.isSuccess) {
+  if (!hello.isLoading) {
     console.log(hello.data)
   }
 
