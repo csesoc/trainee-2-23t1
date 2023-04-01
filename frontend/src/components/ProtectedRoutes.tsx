@@ -1,6 +1,7 @@
 import React from "react";
 import { Navigate, Outlet, Route } from "react-router-dom";
 import Placeholder from "../pages/Placeholder";
+import Navbar from "./Navbar";
 
 const ProtectedRoutes: React.FC = () => {
   if (!localStorage.getItem("token")) {
@@ -8,7 +9,10 @@ const ProtectedRoutes: React.FC = () => {
   }
 
   return (
-    <Outlet />
+    <div>
+      <Navbar />
+      <Outlet />
+    </div>
   )
 }
 

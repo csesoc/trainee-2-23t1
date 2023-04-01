@@ -31,11 +31,17 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
         <Routes>
+
+          {/* Auth */}
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+
+          {/* Main content */}
           <Route path="/" element={<ProtectedRoutes />}>
             <Route path="/" element={<Placeholder />} />
+            <Route path="/placeholder" element={<Placeholder />} />
           </Route>
+          
         </Routes>
         </BrowserRouter>
         <ReactQueryDevtools />
