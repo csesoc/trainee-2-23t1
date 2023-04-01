@@ -56,6 +56,7 @@ model Wave {
   proposedTime DateTime
   location     String?
   repeatType   RepeatType @default(NONE)
+  <<<<<<< HEAD
   notifyUser   Boolean    @default(false)
 
   invitedUsers   User[]   @relation("invited", fields: [invitedUsersId], references: [id])
@@ -67,6 +68,14 @@ model Wave {
   createdAt   DateTime @default(now())
   createdBy   User     @relation("created", fields: [createdById], references: [id])
   createdById String   @db.ObjectId
+  =======
+  hasUsers    User[]   @relation("users", fields: [hasUsersId], references: [id])
+  hasUsersId  String[] @db.ObjectId
+  createdAt   DateTime @default(now())
+  createdBy   User     @relation("creator", fields: [createdById], references: [id])
+  createdById String   @db.ObjectId
+  notifyUser  Boolean  @default(false)
+  >>>>>>> 0132b6b (Dev: db update)
 }
 
 enum RepeatType {
