@@ -7,7 +7,12 @@ import { trpc } from "../utils/trpc";
 const Placeholder: React.FC = () => {
   const [count, setCount] = useState(0);
 
-  const hello = trpc.hello.helloWorld.useQuery()
+  const hello = trpc.hello.helloWorld.useQuery(undefined, {
+    onError: (error) => {
+      alert(error)
+      console.log(error.message)
+    }
+  })
 
   if (hello.isFetched) {
     console.log(hello.data)
