@@ -2,9 +2,9 @@ import { useState } from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { trpc } from './utils/trpc'
 import { httpBatchLink } from '@trpc/client'
-import Placeholder from './pages/Placeholder'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
+import WavesRouter from './components/Router'
 
 function App() {
   const [queryClient] = useState(() => new QueryClient())
@@ -13,6 +13,11 @@ function App() {
       links: [
         httpBatchLink({
           url: 'http://localhost:8000/trpc',
+          headers() {
+            return {
+              Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+          },
         }),
       ],
     }),
@@ -22,9 +27,7 @@ function App() {
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Placeholder />} />
-          </Routes>
+          <WavesRouter />
         </BrowserRouter>
         <ReactQueryDevtools />
       </QueryClientProvider>

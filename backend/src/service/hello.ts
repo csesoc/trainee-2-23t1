@@ -1,8 +1,8 @@
-import { trpc } from "../trpc_provider"
+import { protectedProcedure, trpc } from "../utils/provider"
 
 const helloRouter = trpc.router({
-  helloWorld: trpc.procedure.query(() => {
-    return "Hello World"
+  helloWorld: protectedProcedure.query(({ ctx }) => {
+    return `Hello World, id is ${ctx.userId}`
   })
 })
 
