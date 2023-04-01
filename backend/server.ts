@@ -4,7 +4,7 @@ import * as trpcAdapter from "@trpc/server/adapters/express"
 import appRouter from "./src/utils/router"
 import { CreateExpressContextOptions } from "@trpc/server/adapters/express"
 import { inferAsyncReturnType } from "@trpc/server"
-import jwt, { JwtPayload } from "jsonwebtoken"
+import jwt from "jsonwebtoken"
 import { JwtSecret } from "./config"
 
 const app: Express = express()
@@ -14,6 +14,11 @@ const createContext = ({req, res}: CreateExpressContextOptions) => {
     return {userId: null}
   }
   const token = req.headers.authorization.split(" ")[1];
+
+  if (typeof token === 'undefined' || token.trim() === "") {
+    return {userId: null}
+  }
+
   const payload:any = jwt.verify(token, JwtSecret) // lazy
   return { userId: payload.userId }
 }

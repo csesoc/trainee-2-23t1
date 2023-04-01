@@ -39,6 +39,9 @@ const createContext = ({ req, res }) => {
         return { userId: null };
     }
     const token = req.headers.authorization.split(" ")[1];
+    if (typeof token === 'undefined' || token.trim() === "") {
+        return { userId: null };
+    }
     const payload = jsonwebtoken_1.default.verify(token, config_1.JwtSecret); // lazy
     return { userId: payload.userId };
 };
