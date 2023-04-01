@@ -29,11 +29,23 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const trpcAdapter = __importStar(require("@trpc/server/adapters/express"));
-const router_1 = __importDefault(require("./router"));
+const router_1 = __importDefault(require("./src/utils/router"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const config_1 = require("./config");
 const app = (0, express_1.default)();
+const createContext = ({ req, res }) => {
+    var _a;
+    if (!((_a = req.headers) === null || _a === void 0 ? void 0 : _a.authorization)) {
+        return { userId: null };
+    }
+    const token = req.headers.authorization.split(" ")[1];
+    const payload = jsonwebtoken_1.default.verify(token, config_1.JwtSecret); // lazy
+    return { userId: payload.userId };
+};
 app.use((0, cors_1.default)({ origin: "http://localhost:5173" }));
 app.use('/trpc', trpcAdapter.createExpressMiddleware({
-    router: router_1.default
+    router: router_1.default,
+    createContext
 }));
 app.listen(8000, () => {
     console.log(`* Server is listening on port 8000`);

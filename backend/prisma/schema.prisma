@@ -13,7 +13,8 @@ datasource db {
 model User {
   id         String    @id @default(auto()) @map("_id") @db.ObjectId
   name       String
-  email      String
+  handle     String    @unique
+  email      String    @unique
   password   String // shouldnt be in plain text, we're using hashing
   status     String    @default("")
   aboutMe    String    @default("")
@@ -39,16 +40,11 @@ model Calender {
   userId         String     @unique @db.ObjectId
 }
 
+// Having timeslot entries means the timeslot is unavailable
 type Timeslot {
-  startTime    DateTime
-  endTime      DateTime
-  availability Availability
-  details      String       @default("")
-}
-
-enum Availability {
-  UNAVAILABLE
-  PERHAPS
+  startTime DateTime
+  endTime   DateTime
+  details   String   @default("")
 }
 
 model Wave {
