@@ -1,28 +1,71 @@
-import { trpc } from "../trpc_provider";
+import { trpc } from "../utils/provider";
 import { z } from "zod"
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "../utils/provider";
+import { TRPCError } from "@trpc/server";
+import jwt from 'jsonwebtoken'
+import { JwtSecret } from "../../config";
 
-const prisma = new PrismaClient()
+const signToken = (usrId: string) => jwt.sign({userId: usrId}, JwtSecret, {algorithm: "HS256"})
 
 const loginEndpoint = trpc.procedure.input(
-    z.object({
-      username: z.string(),
-    })
-  )
-  .mutation(async ({ input }) => {
-    const usr = await prisma.user.create({
-      data: {
-        name: input.username,
-        email: "email@email.com",
-        password: "password"
-      }
-    })
-
-    return `Hello ${usr.name} with id ${usr.id}`
+  z.object({
+    email: z.string(),
+    password: z.string(),
   })
+).output(
+  z.object({
+    token: z.string(),
+  })
+).mutation(async ({ input }) => {
+  const usr = await prisma.user.findFirst({
+    where: {
+      email: input.email,
+      password: input.password
+    }
+  })
+
+  if (typeof usr === 'undefined' || usr == null) {
+    throw new TRPCError({
+      code: 'NOT_FOUND',
+      message: "Email or password not found",
+    })
+  } else {
+    return {token: signToken(usr.id)}
+  }
+})
+
+const registerEndpoint = trpc.procedure.input(
+  z.object({
+    name: z.string(),
+    email: z.string(),
+    password: z.string(),
+    handle: z.string()
+  })
+).output(
+  z.object({
+    token: z.string(),
+  })
+).mutation(async ({ input }) => {
+  const usr = await prisma.user.create({
+    data: {
+      name: input.name,
+      email: input.email,
+      password: input.password,
+      handle: input.handle,
+    }
+  }).catch(() => {
+    throw new TRPCError({
+      code: 'INTERNAL_SERVER_ERROR',
+      message: "Something went wrong in the server",
+    })
+  })
+
+  return {token: signToken(usr.id)}
+})
 
 const authRouter = trpc.router({
   login: loginEndpoint,
+  register: registerEndpoint,
 })
 
 export default authRouter

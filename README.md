@@ -93,6 +93,7 @@ DATABASE_URL="${your_atlas_url}"
 
     * Only allow users to register when the pass the above checks
 
+
 ### 4.2. Navigation bar
     * A search bar should be implemented for searching future Waves and pending Tides
     
@@ -192,9 +193,6 @@ The reason why we chose to do it is because of the fact that
 Backend:
 ```ts
 // ./backend/src/service/hello.ts
-
-// Hello router is then added to router.ts (refer to backend code)
-
 import { trpc } from "../trpc_provider"
 
 const helloRouter = trpc.router({

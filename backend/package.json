@@ -6,16 +6,19 @@
   "scripts": {
     "build": "npx tsc",
     "start": "node dist/server.js",
-    "dev": "npx tsc -w & nodemon dist/server.js"
+    "dev": "npx tsc -w & nodemon dist/server.js",
+    "clear": "rm -rf dist/*"
   },
   "dependencies": {
     "@prisma/client": "^4.12.0",
     "@trpc/server": "^10.18.0",
     "@types/cors": "^2.8.13",
     "@types/express": "^4.17.17",
+    "@types/jsonwebtoken": "^9.0.1",
     "@types/node": "^18.15.10",
     "cors": "^2.8.5",
     "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
     "typescript": "^5.0.2",
     "zod": "^3.21.4"
   },

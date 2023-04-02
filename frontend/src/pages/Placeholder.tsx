@@ -1,34 +1,30 @@
 import React from "react";
 import reactLogo from "../assets/react.svg";
 import viteLogo from "../../public/vite.svg"
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { trpc } from "../utils/trpc";
+import { Navigate } from "react-router-dom";
 
 const Placeholder: React.FC = () => {
-  const [count, setCount] = useState(0);
-  const testLogin = trpc.auth.login.useMutation();
-
-  const hello = trpc.hello.helloWorld.useQuery(undefined, {
-    staleTime: Infinity,
-  });
-
-  if (!hello.isLoading) {
-    console.log(hello.data);
+  if (!localStorage.getItem("token")) {
+    return <Navigate to="/login" />
   }
 
-  // useEffect(() => {
-  //   testLogin.mutate(
-  //     { username: "henry" },
-  //     {
-  //       onSuccess: (data) => {
-  //         console.log(data);
-  //       },
-  //     }
-  //   );
-  // }, []);
+  const [count, setCount] = useState(0);
+
+  const hello = trpc.hello.helloWorld.useQuery(undefined, {
+    onError: (error) => {
+      alert(error)
+      console.log(error.message)
+    }
+  })
+
+  if (hello.isFetched) {
+    console.log(hello.data)
+  }
 
   return (
-    <div className="flex flex-col justify-center place-items-center min-h-screen gap-8">
+    <div className="flex flex-col justify-center place-items-center min-h-screen gap-8 bg-[#242424]">
       <div className="flex gap-10">
         <a href="https://vitejs.dev" target="_blank">
           <img src={viteLogo} 

@@ -9,24 +9,25 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const trpc_provider_1 = require("../trpc_provider");
-const zod_1 = require("zod");
+exports.protectedProcedure = exports.prisma = exports.trpc = void 0;
+// Prevents circular imports
+const server_1 = require("@trpc/server");
 const client_1 = require("@prisma/client");
+const trpc = server_1.initTRPC.context().create();
+exports.trpc = trpc;
 const prisma = new client_1.PrismaClient();
-const loginEndpoint = trpc_provider_1.trpc.procedure.input(zod_1.z.object({
-    username: zod_1.z.string(),
-}))
-    .mutation(({ input }) => __awaiter(void 0, void 0, void 0, function* () {
-    const usr = yield prisma.user.create({
-        data: {
-            name: input.username,
-            email: "email@email.com",
-            password: "password"
+exports.prisma = prisma;
+const protectedProcedure = trpc.procedure.use(trpc.middleware(({ ctx, next }) => __awaiter(void 0, void 0, void 0, function* () {
+    if (ctx.userId == null || typeof ctx.userId === 'undefined') {
+        throw new server_1.TRPCError({
+            code: 'FORBIDDEN',
+            message: 'No token found',
+        });
+    }
+    return next({
+        ctx: {
+            userId: ctx.userId,
         }
     });
-    return `Hello ${usr.name} with id ${usr.id}`;
-}));
-const authRouter = trpc_provider_1.trpc.router({
-    login: loginEndpoint,
-});
-exports.default = authRouter;
+})));
+exports.protectedProcedure = protectedProcedure;
