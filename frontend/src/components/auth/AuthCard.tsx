@@ -4,7 +4,7 @@ import { trpc } from "../../utils/trpc";
 import EyeIcon from "./EyeIcon";
 import EyeSlashIcon from "./EyeSlashIcon";
 
-const AuthCard: React.FC<{isLogin: boolean}> = ({ isLogin }) => {
+const AuthCard: React.FC<{isLogin: boolean, className?: string}> = ({ isLogin, className="" }) => {
   const navigate = useNavigate()
 
   const [showPword, setShowPword] = useState(false)
@@ -34,7 +34,7 @@ const AuthCard: React.FC<{isLogin: boolean}> = ({ isLogin }) => {
   }, [])
 
   return (
-    <div className="text-black p-5 flex flex-col place-items-center justify-center h-screen">
+    <div className={`text-black bg-white p-5 flex flex-col place-items-center justify-center h-screen ${className}`}>
       <div className="flex flex-col gap-10 w-[50%]">
         <h1 className="text-5xl">👋 🌊</h1>
         <h1 className="text-5xl mb-16">{isLogin ? "Login" : "Sign up to Waves"}</h1>
