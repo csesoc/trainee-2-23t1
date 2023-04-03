@@ -38,8 +38,7 @@ const registerEndpoint = trpc.procedure.input(
   z.object({
     name: z.string(),
     email: z.string(),
-    password: z.string(),
-    handle: z.string()
+    password: z.string()
   })
 ).output(
   z.object({
@@ -51,7 +50,6 @@ const registerEndpoint = trpc.procedure.input(
       name: input.name,
       email: input.email,
       password: input.password,
-      handle: input.handle,
     }
   }).catch(() => {
     throw new TRPCError({

@@ -44,8 +44,7 @@ const loginEndpoint = provider_1.trpc.procedure.input(zod_1.z.object({
 const registerEndpoint = provider_1.trpc.procedure.input(zod_1.z.object({
     name: zod_1.z.string(),
     email: zod_1.z.string(),
-    password: zod_1.z.string(),
-    handle: zod_1.z.string()
+    password: zod_1.z.string()
 })).output(zod_1.z.object({
     token: zod_1.z.string(),
 })).mutation(({ input }) => __awaiter(void 0, void 0, void 0, function* () {
@@ -54,7 +53,6 @@ const registerEndpoint = provider_1.trpc.procedure.input(zod_1.z.object({
             name: input.name,
             email: input.email,
             password: input.password,
-            handle: input.handle,
         }
     }).catch(() => {
         throw new server_1.TRPCError({
