@@ -19,17 +19,31 @@ const server_1 = require("@trpc/server");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const config_1 = require("../../config");
 const signToken = (usrId) => jsonwebtoken_1.default.sign({ userId: usrId }, config_1.JwtSecret, { algorithm: "HS256" });
+const checkInput = (input) => {
+    if (Object.values(input).filter(s => s === '').length != 0) {
+        throw new server_1.TRPCError({
+            code: "BAD_REQUEST",
+            message: "Input fields cannot be empty",
+        });
+    }
+};
 const loginEndpoint = provider_1.trpc.procedure.input(zod_1.z.object({
     email: zod_1.z.string(),
     password: zod_1.z.string(),
 })).output(zod_1.z.object({
     token: zod_1.z.string(),
 })).mutation(({ input }) => __awaiter(void 0, void 0, void 0, function* () {
+    checkInput(input);
     const usr = yield provider_2.prisma.user.findFirst({
         where: {
             email: input.email,
             password: input.password
         }
+    }).catch(() => {
+        throw new server_1.TRPCError({
+            code: 'INTERNAL_SERVER_ERROR',
+            message: "Something went wrong in the server",
+        });
     });
     if (typeof usr === 'undefined' || usr == null) {
         throw new server_1.TRPCError({
@@ -44,17 +58,27 @@ const loginEndpoint = provider_1.trpc.procedure.input(zod_1.z.object({
 const registerEndpoint = provider_1.trpc.procedure.input(zod_1.z.object({
     name: zod_1.z.string(),
     email: zod_1.z.string(),
-    password: zod_1.z.string(),
-    handle: zod_1.z.string()
+    password: zod_1.z.string()
 })).output(zod_1.z.object({
     token: zod_1.z.string(),
 })).mutation(({ input }) => __awaiter(void 0, void 0, void 0, function* () {
+    checkInput(input);
+    const hasEmail = yield provider_2.prisma.user.findUnique({
+        where: {
+            email: input.email,
+        }
+    });
+    if (hasEmail) {
+        throw new server_1.TRPCError({
+            code: "CONFLICT",
+            message: 'Email already used',
+        });
+    }
     const usr = yield provider_2.prisma.user.create({
         data: {
             name: input.name,
             email: input.email,
             password: input.password,
-            handle: input.handle,
         }
     }).catch(() => {
         throw new server_1.TRPCError({
