@@ -8,6 +8,7 @@ import Placeholder from './pages/Placeholder'
 import LoginPage from './pages/auth/LoginPage'
 import RegisterPage from './pages/auth/RegisterPage'
 import ProtectedRoutes from './components/ProtectedRoutes'
+import CalendarTest from './pages/CalenderTest'
 
 function App() {
   const [queryClient] = useState(() => new QueryClient())
@@ -31,6 +32,8 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
         <Routes>
+
+          <Route path="/calendar" element={<CalendarTest />} />
 
           {/* Auth */}
           <Route path="/login" element={<LoginPage />} />
