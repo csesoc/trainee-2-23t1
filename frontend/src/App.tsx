@@ -11,6 +11,7 @@ import ProtectedRoutes from './components/ProtectedRoutes'
 import CalendarTest from './pages/CalendarTest'
 import MainPage from './pages/MainPage'
 import SearchPage from './pages/SearchPage'
+import DashBoardPage from './pages/board/DashBoardPage'
 
 function App() {
   const navigate = useNavigate()
@@ -94,6 +95,8 @@ function App() {
             <Route path="/search/:query" element={<SearchPage darkMode={darkMode} handleToggleDark={handleToggleDark} />} />
           </Route>
           
+          {/* DashBoard */}
+          <Route path="/dashboard" element={<DashBoardPage />} />
         </Routes>
         <ReactQueryDevtools />
       </QueryClientProvider>
