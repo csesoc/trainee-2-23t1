@@ -12,6 +12,7 @@ import CalendarTest from './pages/CalendarTest'
 import MainPage from './pages/MainPage'
 import SearchPage from './pages/SearchPage'
 import DashBoardPage from './pages/board/DashBoardPage'
+import UserProfilePage from './pages/user/UserProfilePage'
 
 function App() {
   const navigate = useNavigate()
@@ -97,6 +98,9 @@ function App() {
           
           {/* DashBoard */}
           <Route path="/dashboard" element={<DashBoardPage />} />
+          
+          {/* User Profile */}
+          <Route path="/profile" element={<UserProfilePage />} />
         </Routes>
         <ReactQueryDevtools />
       </QueryClientProvider>

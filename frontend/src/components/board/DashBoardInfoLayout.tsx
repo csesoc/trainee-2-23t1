@@ -5,9 +5,13 @@ import DashBoardAbout from "./DashBoardAbout";
 const DashBoardInfoLayout: React.FC = () => {
   return (
     <>
-      <div className="bg-gray-100	h-screen w-screen flex flex-col">
-        <DashBoardInfoCard />
-        <DashBoardAbout />
+      <div className="bg-gray-300/20 flex items-center justify-center h-screen">
+        <div className="h-[930px] w-[1890px] flex flex-row">
+          <div className="flex flex-col">
+            <DashBoardInfoCard />
+            <DashBoardAbout />
+          </div>
+        </div>
       </div>
     </>
   );

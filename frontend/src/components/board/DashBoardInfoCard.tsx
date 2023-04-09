@@ -6,44 +6,54 @@ const DashBoardInfoCard: React.FC = () => {
   console.log(windowHeight + " " + windowWidth);
   return (
     <>
-      <div className="bg-white rounded-3xl shadow-lg flex flex-col items-center text-black
-                      xl:ml-[130px] xl:mt-[150  px] xl:w-[254px] xl:h-[369px]
-                      2xl:ml-[260px] 2xl:mt-[300px] 2xl:w-[508px] 2xl:h-[738px]">
+      <div
+        className="bg-white rounded-3xl shadow-lg flex flex-col items-center text-black
+                      lg:ml-[230px] lg:mt-[179px] lg:w-[354px] lg:h-[469px]
+                      md:ml-[97.5px] md:mt-[112.5px] md:w-[190.5px] md:h-[277.5px]"
+      >
         <img
           className="rounded-full 
-                     xl:mt-[30px] xl:h-[120px]
-                     2xl:mt-[60px] 2xl:h-[240px]"
+                     lg:mt-[40px] lg:h-[140px]
+                     md:mt-[22.5px] md:h-[90px]"
           src="../../../public/profile.jpeg"
           alt="profile"
         />
         <p
           className="not-italic font-semibold leading-9
-                     xl:mt-[18px] xl:text-[30px]
-                     2xl:mt-[36px] 2xl:text-[60px]"
+                     lg:mt-[22px] lg:text-[40px]
+                     md:mt-[13.5px] md:text-[22.5px]"
         >
           Mark Tran
         </p>
         <p
-          className="not-italic font-normal leading-[18px] opacity-70 
-                      xl:mt-[18px] xl:text-[15px] 
-                      2xl:mt-[36px] 2xl:text-[30px] 2xl:pb-[28px]"
+          className="not-italic font-normal leading-[22px] opacity-70 
+                      lg:mt-[22px] lg:text-[20px]
+                      md:mt-[13.5px] md:text-[11.25px]"
         >
           marktran873@gmail.com
         </p>
-        <hr className="my-4 border-1 border-black w-[80%] opacity-30" />
+        <hr
+          className="border-1 border-black w-[80%] opacity-30
+                      lg:my-6
+                      md:my-2"
+        />
         <p
           className="not-italic font-normal leading-[19px] tracking-[-0.02em]
-                     xl:text-base
-                     2xl:mt-[28px] 2xl:text-[32px] 2xl:pb-[28px]"
+                     lg:text-[22px]
+                     md:text-sm"
         >
           💀 Conducting rizzearch
         </p>
-        <hr className="my-4 border-1 border-black w-[80%] opacity-30" />
+        <hr
+          className="border-1 border-black w-[80%] opacity-30
+                       lg:my-6
+                       md:my-2"
+        />
         <div className="flex flex-row items-center justify-between">
           <p
-            className="pr-[10px] not-italic font-normal leading-[19px] tracking-[-0.02em]
-                       xl:text-base
-                       2xl:mt-[28px] 2xl:text-[32px]"
+            className="not-italic font-normal leading-[19px] tracking-[-0.02em]
+                       lg:text-[22px] lg:pr-[10px]
+                       md:text-sm md:pr-[7.5px]"
           >
             Advanced Settings
           </p>
@@ -53,8 +63,8 @@ const DashBoardInfoCard: React.FC = () => {
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="xl:w-[20px] xl:h-[20px]
-                       2xl:mt-[28px] 2xl:w-[40px] 2xl:h-[40px]"
+            className="lg:w-[22px] lg:h-[22px]
+                       md:w-[15px] md:h-[15px]"
           >
             <path
               strokeLinecap="round"
