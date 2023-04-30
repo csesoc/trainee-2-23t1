@@ -1,8 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Switch from "./Switch";
+import { DarkMode } from "../interfaces";
 
 
-const ProfileDropdown: React.FC = () => {
+const ProfileDropdown: React.FC<DarkMode> = (props) => {
   // The dropdown menu has z-index 1 (top layer)
   
   return (
@@ -40,18 +42,13 @@ const ProfileDropdown: React.FC = () => {
         </div></Link>
 
         {/* Dark Mode */}
-        <div className="flex flex-row transition items-center hover:bg-gray-200/90 w-auto px-6 py-3 mb-2 cursor-pointer">
+        <span className="flex flex-row transition items-center hover:bg-gray-200/90 w-auto px-6 py-3 mb-2 cursor-pointer">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 mr-3">
             <path strokeLinecap="round" strokeLinejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
           </svg>
           <h2>Dark Mode</h2>
-          {/* (insert toggle dark mode button here) */}
-          <div
-            className="ml-6 z-30 bg-gray-700 w-9 h-5 rounded-2xl flex items-center"
-          >
-            <div className="absolute w-5 h-5 rounded-full bg-gray-400"></div>
-          </div>
-        </div>
+          <Switch darkMode={props.darkMode} handleToggleDark={props.handleToggleDark}/>
+        </span>
       </div>
     </div>
     </div>
