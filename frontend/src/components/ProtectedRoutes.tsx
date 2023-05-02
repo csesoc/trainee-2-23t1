@@ -12,8 +12,8 @@ const ProtectedRoutes: React.FC = () => {
   const [darkMode, setDarkmode] = useState(false);
 
   const handleToggleDark = () => {
-    console.log("toggled!")
     setDarkmode(prevState => !prevState);
+    console.log(`toggled -> ${darkMode}`)
   }
 
   return (

@@ -8,6 +8,7 @@ import Placeholder from './pages/Placeholder'
 import LoginPage from './pages/auth/LoginPage'
 import RegisterPage from './pages/auth/RegisterPage'
 import ProtectedRoutes from './components/ProtectedRoutes'
+import MainPage from './pages/MainPage'
 
 function App() {
   const [queryClient] = useState(() => new QueryClient())
@@ -38,7 +39,7 @@ function App() {
 
           {/* Main content */}
           <Route path="/" element={<ProtectedRoutes />}>
-            <Route path="/" element={<Placeholder />} />
+            <Route path="/home" element={<MainPage />} />
             <Route path="/placeholder" element={<Placeholder />} />
           </Route>
           
