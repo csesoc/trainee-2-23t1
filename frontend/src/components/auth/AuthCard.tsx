@@ -31,7 +31,6 @@ const AuthCard: React.FC<{isLogin: boolean, className?: string}> = ({ isLogin, c
       },
       onError: (error: any) => {
         setErrMsg(error.message)
-        console.log(error)
       },
       onSettled: () => {
         setIsSubmitting(false)

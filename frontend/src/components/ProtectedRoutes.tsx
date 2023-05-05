@@ -1,6 +1,5 @@
 import React from "react";
-import { Navigate, Outlet, Route } from "react-router-dom";
-import Placeholder from "../pages/Placeholder";
+import { Navigate, Outlet } from "react-router-dom";
 import Navbar from "./Navbar";
 
 const ProtectedRoutes: React.FC = () => {
