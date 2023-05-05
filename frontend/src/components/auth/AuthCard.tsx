@@ -1,8 +1,8 @@
 import React, { EventHandler, FormEvent, useCallback, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { trpc } from "../../utils/trpc";
-import EyeIcon from "./EyeIcon";
-import EyeSlashIcon from "./EyeSlashIcon";
+import EyeIcon from "../../assets/Icons/EyeIcon";
+import EyeSlashIcon from "../../assets/Icons/EyeSlashIcon";
 import SpinnerLoader from "../../assets/Icons/SpinnerLoader";
 
 const AuthCard: React.FC<{isLogin: boolean, className?: string}> = ({ isLogin, className="" }) => {
