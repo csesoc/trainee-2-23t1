@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from 'react';
 import { endOfWeek, format, startOfWeek } from 'date-fns'
 
+
 /* 
   calendar: [hour][day] = k
     k: 0 -> unknown
@@ -9,25 +10,37 @@ import { endOfWeek, format, startOfWeek } from 'date-fns'
        2 -> avaliable
 */
 
-const Calendar: React.FC = () => {
+export interface CalendarDay {
+  hours: [unavaliable: number,avaliable: number][]
+}
+
+export interface CalendarData {
+  days: CalendarDay[]
+}
+
+const Calendar = (props: {data: CalendarData}) => {
   const [date, setDate] = useState(new Date())
 
-  const exampleData: number[][] = []
-  for (let i = 0; i < 24; i++) {
-    const days = [];
-    for (let j = 0; j < 7; j++) {
-      const k = Math.floor(Math.random() * 3)
-      days[j] = k;
-    }
-    exampleData[i] = days;
-  }
-
-  const days = ["HOUR", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"]
+  const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
   const hours = ["12am","1am","2am","3am","4am","5am","6am","7am","8am","9am","10am","11am","12pm","1pm","2pm","3pm","4pm","5pm","6pm","7pm","8pm","9pm","10pm","11pm"]
   
-  const getColour = (k: number) => {
-    const styles = ["bg-orange-300","bg-stone-100", "bg-green-200"]
-    return styles[k]
+  const getColour = (unavaliable:number, avaliable: number) => {
+    const total = unavaliable + avaliable;
+    if (unavaliable === 0 && avaliable === 0) {
+      return "bg-stone-100"
+    }
+    if (avaliable === total) {
+      return "bg-green-400"
+    }
+    if (unavaliable === total) {
+      return "bg-red-400"
+    }
+
+    if (avaliable > unavaliable) {
+      return "bg-green-200"
+    }
+
+    return "bg-orange-200"
   }
 
   const listDays = days.map(day => 
@@ -36,9 +49,10 @@ const Calendar: React.FC = () => {
     </th>
     )
 
-  const calendarCells = exampleData.map((hour, i) => {
-    const calendar = hour.map((day, j) => {
-     return (<td className={`border border-slate-400 text-sm text-gray-800 w-40 ${getColour(exampleData[i][j])}`}></td>) 
+  const calendarCells = hours.map((hour, i) => {
+    const calendar = days.map((day, j) => {
+      const [unavaliable, avaliable] = props.data.days[j].hours[i]
+     return (<td className={`border border-slate-400 text-sm text-gray-800 w-40 ${getColour(unavaliable, avaliable)}`}></td>) 
     })
     return (
     <tr>
@@ -81,6 +95,9 @@ const Calendar: React.FC = () => {
             <table className="min-w-full table-fixed">
               <thead className="bg-gray-50">
                 <tr className="border border-slate-400">
+                <th scope="col" className="border border-slate-400 text-xs font-bold text-center text-gray-500 uppercase">
+                  HOUR
+                </th>
                   {listDays}  
                 </tr>
               </thead>
