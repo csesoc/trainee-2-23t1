@@ -12,14 +12,9 @@ const Placeholder: React.FC = () => {
 
   const [count, setCount] = useState(0);
 
-  const hello = trpc.hello.helloWorld.useQuery(undefined, {
-    onError: (error) => {
-      alert(error)
-      console.log(error.message)
-    }
-  })
+  const hello = trpc.hello.helloWorld.useQuery()
 
-  if (hello.isFetched) {
+  if (hello.isSuccess) {
     console.log(hello.data)
   }
 

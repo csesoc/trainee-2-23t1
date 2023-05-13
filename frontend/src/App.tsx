@@ -1,16 +1,17 @@
 import { useState } from 'react'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { trpc } from './utils/trpc'
-import { httpBatchLink } from '@trpc/client'
+import { TRPCClientError, httpBatchLink } from '@trpc/client'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { Route, Routes, useNavigate } from 'react-router-dom'
 import Placeholder from './pages/Placeholder'
 import LoginPage from './pages/auth/LoginPage'
 import RegisterPage from './pages/auth/RegisterPage'
 import ProtectedRoutes from './components/ProtectedRoutes'
 
 function App() {
-  const [queryClient] = useState(() => new QueryClient())
+  const navigate = useNavigate()
+
   const [trpcClient] = useState(() =>
     trpc.createClient({
       links: [
@@ -24,12 +25,45 @@ function App() {
         }),
       ],
     }),
-  );
+  )
+
+  const errorHandler = (e: unknown) => {
+    if (e instanceof TRPCClientError) {
+      if (e.message === 'No token found') {
+        navigate('/login')
+      }
+    }
+  }
+
+  const [queryClient] = useState(() => new QueryClient({
+    queryCache: new QueryCache({
+      onError: errorHandler
+    }),
+    mutationCache: new MutationCache({
+      onError: errorHandler
+    }),
+    defaultOptions: {
+      queries: {
+        retry: (retryCount, error: any) => {
+          if (error && error instanceof TRPCClientError) {
+            if (error.message === 'No token found') {
+              return false
+            }
+          }
+
+          if (retryCount < 4) {
+            return true
+          }
+
+          return false
+        }
+      }
+    }
+  }))
 
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
         <Routes>
 
           {/* Auth */}
@@ -43,7 +77,6 @@ function App() {
           </Route>
           
         </Routes>
-        </BrowserRouter>
         <ReactQueryDevtools />
       </QueryClientProvider>
     </trpc.Provider>
