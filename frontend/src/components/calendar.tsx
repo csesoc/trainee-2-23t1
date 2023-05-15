@@ -16,6 +16,7 @@ export interface CalendarDay {
 
 export interface CalendarData {
   days: CalendarDay[]
+  highlight?: [][]
 }
 
 const Calendar = (props: {data: CalendarData}) => {
@@ -48,6 +49,39 @@ const Calendar = (props: {data: CalendarData}) => {
       {day}
     </th>
     )
+
+  const cx = () => {
+    let r = [];
+    for (let i = -1; i < 24; i++) {
+      for (let j = -1; j < 7; j++) {
+         r.push(c(j,i))
+      }
+    }
+    return r
+  }
+
+  const c = (x: number, y: number) => {
+    if (x < 0) {
+      return (
+        <div className="border border-slate-400 text-sm h-8 font-bold text-center text-gray-500 uppercase">
+          {hours[y]}
+      </div>
+      )
+    }
+    if (y < 0) {
+      return (
+        <div className="border border-slate-400 text-sm h-8 font-bold text-center text-gray-500 uppercase">
+          {days[x]}
+        </div>
+      )
+    }
+    const [unavaliable, avaliable] = props.data.days[x].hours[y]
+    return (
+      <div className={`border border-slate-400 h-8 text-gray-800 ${getColour(unavaliable, avaliable)}`}>
+        {avaliable}/{unavaliable + avaliable}
+      </div>
+    )
+  }
 
   const calendarCells = hours.map((hour, i) => {
     const calendar = days.map((day, j) => {
@@ -92,19 +126,9 @@ const Calendar = (props: {data: CalendarData}) => {
                 </svg>
               </a>
             </div>
-            <table className="min-w-full table-fixed">
-              <thead className="bg-gray-50">
-                <tr className="border border-slate-400">
-                <th scope="col" className="border border-slate-400 text-xs font-bold text-center text-gray-500 uppercase">
-                  HOUR
-                </th>
-                  {listDays}  
-                </tr>
-              </thead>
-              <tbody>
-                {calendarCells}
-              </tbody>
-            </table>
+            <div className="grid grid-cols-8">
+              {cx()}
+            </div>
           </div>
         </div>
       </div>
