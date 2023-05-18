@@ -8,9 +8,16 @@ import Placeholder from './pages/Placeholder'
 import LoginPage from './pages/auth/LoginPage'
 import RegisterPage from './pages/auth/RegisterPage'
 import ProtectedRoutes from './components/ProtectedRoutes'
+import MainPage from './pages/MainPage'
 
 function App() {
   const navigate = useNavigate()
+
+  const [darkMode, setDarkmode] = useState(false);
+
+  const handleToggleDark = () => {
+    setDarkmode(prevState => !prevState);
+  }
 
   const [trpcClient] = useState(() =>
     trpc.createClient({
@@ -72,7 +79,7 @@ function App() {
 
           {/* Main content */}
           <Route path="/" element={<ProtectedRoutes />}>
-            <Route path="/" element={<Placeholder />} />
+            <Route path="/home" element={<MainPage darkMode={darkMode} handleToggleDark={handleToggleDark}/>} />
             <Route path="/placeholder" element={<Placeholder />} />
           </Route>
           
