@@ -1,5 +1,4 @@
-import { eventNames } from "process";
-import React, { SyntheticEvent, useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import ProfileDropdown from "./ProfileDropdown";
 import { DarkMode } from "../interfaces";
@@ -13,7 +12,6 @@ const Navbar: React.FC<DarkMode> = (props) => {
   const [notificationSee, setNotificationSee] = useState(false);
 
   const handleProfClick = () => {
-    console.log("(insert expanded prof settings")
     setDropdown(prevState => !prevState)
   }
 
@@ -22,8 +20,8 @@ const Navbar: React.FC<DarkMode> = (props) => {
   }
 
   return (
-    <div>
-      <div className="top-0 px-4 py-1 flex flex-wrap bg-navbar text-white">
+    <div className={props.darkMode ? "dark" : "light"}>
+      <div className="top-0 px-4 py-1 flex flex-wrap bg-navbar dark:bg-gray-800 text-white">
         
         {/* 1st group: cse waves logo, waves branding and search bar */}
         <div className="flex flex-row flex-auto items-center p-2 justify-start">
@@ -43,7 +41,7 @@ const Navbar: React.FC<DarkMode> = (props) => {
               <input 
                 placeholder="🔎 Search Waves" 
                 type="text" 
-                className="outline-none text-white py-2 px-4 rounded-2xl bg-gray-900/50 focus:bg-gray-900 transition-all delay-200 transform ease-in-out"
+                className="outline-none text-white py-2 px-4 rounded-xl bg-gray-900/50 focus:bg-gray-900 transition-all delay-200 transform ease-in-out"
               ></input>
             </label>
           </form>
@@ -100,11 +98,12 @@ const Navbar: React.FC<DarkMode> = (props) => {
         </div>
       </div>
       <div>
-        {notificationSee && <NotificationCentre notificationSee={notificationSee} setNotificationSee={(bool: boolean) => setNotificationSee(bool)}/>}
+        {notificationSee && <NotificationCentre notificationSee={notificationSee} setNotificationSee={(bool: boolean) => setNotificationSee(bool)} darkMode={props.darkMode}/>}
       </div>
       <div>
         {dropdown && <ProfileDropdown darkMode={props.darkMode} handleToggleDark={props.handleToggleDark} dropdown={dropdown} setDropdown={(bool: boolean) => setDropdown(bool)}/>}
       </div>
+      <div className="dark:bg-black w-screen h-screen"></div>
     </div>
   )
 }

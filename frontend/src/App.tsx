@@ -13,6 +13,12 @@ import MainPage from './pages/MainPage'
 function App() {
   const navigate = useNavigate()
 
+  const [darkMode, setDarkmode] = useState(false);
+
+  const handleToggleDark = () => {
+    setDarkmode(prevState => !prevState);
+  }
+
   const [trpcClient] = useState(() =>
     trpc.createClient({
       links: [
@@ -73,7 +79,7 @@ function App() {
 
           {/* Main content */}
           <Route path="/" element={<ProtectedRoutes />}>
-            <Route path="/home" element={<MainPage />} />
+            <Route path="/home" element={<MainPage darkMode={darkMode} handleToggleDark={handleToggleDark}/>} />
             <Route path="/placeholder" element={<Placeholder />} />
           </Route>
           
