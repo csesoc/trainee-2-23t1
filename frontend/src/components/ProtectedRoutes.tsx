@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { Navigate, Outlet, Route } from "react-router-dom";
-import Placeholder from "../pages/Placeholder";
 import Navbar from "./Navbar/Navbar";
-import { DarkMode } from "./interfaces";
 
 const ProtectedRoutes: React.FC = () => {
   if (!localStorage.getItem("token")) {
