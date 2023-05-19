@@ -6,9 +6,16 @@ import CalenderTest from "./CalenderTest";
 const MainPage: React.FC<{darkMode: boolean, handleToggleDark: any}> = (props) => {
 
   return (
-    <div>
-      <Navbar darkMode={props.darkMode} handleToggleDark={props.handleToggleDark}/>
-      <CalenderTest/>
+    <div className={props.darkMode ? "dark" : "light"}>
+      <div className="dark:bg-black h-screen">
+        <Navbar darkMode={props.darkMode} handleToggleDark={props.handleToggleDark}/>
+        <div className="flex justify-around items-center w-screen">
+          <div className="bg-gray-500 w-56 h-56"></div>
+          <div className="w-[45%] mt-5">
+            <CalenderTest/>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
