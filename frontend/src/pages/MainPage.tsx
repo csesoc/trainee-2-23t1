@@ -1,6 +1,6 @@
 import React from "react";
 import Navbar from "../components/Navbar/Navbar";
-import CalenderTest from "./CalenderTest";
+import CalenderTest from "./CalendarTest";
 
 
 const MainPage: React.FC<{darkMode: boolean, handleToggleDark: any}> = (props) => {

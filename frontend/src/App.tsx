@@ -8,7 +8,7 @@ import Placeholder from './pages/Placeholder'
 import LoginPage from './pages/auth/LoginPage'
 import RegisterPage from './pages/auth/RegisterPage'
 import ProtectedRoutes from './components/ProtectedRoutes'
-import CalendarTest from './pages/CalenderTest'
+import CalendarTest from './pages/CalendarTest'
 import MainPage from './pages/MainPage'
 
 function App() {
