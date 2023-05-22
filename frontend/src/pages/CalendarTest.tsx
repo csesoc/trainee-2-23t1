@@ -1,9 +1,10 @@
-import React, { EventHandler, FormEvent, useCallback } from "react";
+import React, { EventHandler, FormEvent, useCallback, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { trpc } from "../utils/trpc";
 import Calendar from "../components/Calendar/Calendar";
 import { CalendarData } from "../components/Calendar/Calendar";
 import { CalendarDay } from "../components/Calendar/Calendar";
+import CalendarControl from "../components/Calendar/CalendarControl";
 
 const CalenderTest: React.FC = () => {
   let data: CalendarData = {days: []}
@@ -24,8 +25,10 @@ const CalenderTest: React.FC = () => {
       hour: 5,
     }
   }
+  const [date, setDate] = useState(new Date())
   return (
     <div className="w-6/6">
+      <CalendarControl date={date} setDate={setDate}/>
       <Calendar data={data}/>
     </div>
   )
