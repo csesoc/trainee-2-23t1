@@ -7,22 +7,19 @@ import { CalendarDay } from "../components/Calendar/Calendar";
 import CalendarControl from "../components/Calendar/CalendarControl";
 
 const CalenderTest: React.FC = () => {
-  let data: CalendarData = {days: []}
+  let data: CalendarData = {days: [], numUsers: 5}
   for (let i = 0; i < 7; i++) {
     const day: CalendarDay = {hours: []}
     for (let j = 0; j < 24; j++) {
-      day.hours[j] = [Math.floor(Math.random() * 5),Math.floor(Math.random() * 5)];
+      day.hours[j] = Math.floor(Math.random() * 5);
     }
     data.days[i] = day
   }
   data.highlight= {
-    start: {
-      day: 0,
-      hour: 2,
-    },
-    end: {
-      day: 0,
-      hour: 5,
+    day: 0,
+    hour: {
+      start: 2,
+      end: 5
     }
   }
   const [date, setDate] = useState(new Date())
