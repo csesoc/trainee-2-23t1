@@ -18,7 +18,8 @@ model User {
   status     String    @default("")
   aboutMe    String    @default("")
   profileImg Bytes?
-  calender   Calender?
+  calendar Calendar @relation(fields: [calendarId], references: [id])
+  calendarId String @unique @db.ObjectId
 
   // Waves invited but not accepted
   invitedWaves   Wave[]   @relation("invited", fields: [invitedWavesId], references: [id])
@@ -32,11 +33,10 @@ model User {
   participateWaveIds String[] @db.ObjectId
 }
 
-model Calender {
+model Calendar {
   id             String     @id @default(auto()) @map("_id") @db.ObjectId
   availabilities Timeslot[]
-  hasUser        User       @relation(fields: [userId], references: [id])
-  userId         String     @unique @db.ObjectId
+  user User?
 }
 
 // Having timeslot entries means the timeslot is unavailable

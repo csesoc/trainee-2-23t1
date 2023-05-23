@@ -1,6 +1,7 @@
 import { TRPCError } from "@trpc/server";
 import { prisma, trpc } from "../utils/provider";
 import { z } from "zod";
+import { getDay, getHours, isSameWeek } from 'date-fns'
 
 
 const timeslotObject = z.object({
@@ -16,26 +17,6 @@ const calendarObject = z.object({
   userId: z.string()
 })
 
-const createCalendar = trpc.procedure.input(
-  z.object({
-    userId: z.string()
-  })
-).output(
-  z.object({id: z.string()})
-).mutation(async ({ input }) => {
-  const calendar = await prisma.calender.create({
-    data: {userId: input.userId,}
-  }).catch(() => {
-    throw new TRPCError({
-      code: 'INTERNAL_SERVER_ERROR',
-      message: "Something went wrong in the server",
-    })
-  })
-
-  return {id: calendar.id}
-})
-
-
 const addTimeslot = trpc.procedure.input(
   z.object({
     calendarId: z.string(),
@@ -45,7 +26,7 @@ const addTimeslot = trpc.procedure.input(
   z.number()
 ).mutation(async ({ input }) => {
 
-  const calendar = await prisma.calender.findUniqueOrThrow({
+  const calendar = await prisma.calendar.findUniqueOrThrow({
     where: {
       id: input.calendarId,
     }
@@ -57,7 +38,7 @@ const addTimeslot = trpc.procedure.input(
   })
 
   if (calendar) {
-    const c = await prisma.calender.update({
+    const c = await prisma.calendar.update({
       where: {id: input.calendarId},
       data: {
         availabilities: {
@@ -73,17 +54,63 @@ const addTimeslot = trpc.procedure.input(
   return -1
 })
 
-// const getWaveCalendar = trpc.procedure.input(
-//   z.object({
-//       id: z.string()
-//   })
-// ).output(
-//   z.object
-// )
+const getWaveCalendar = trpc.procedure.input(
+  z.object({
+      id: z.string(),
+      startDate: z.date(),
+      endDate: z.date(),
+  })
+).output(
+  z.object({
+    days: z.array(z.array(z.number().max(24))).max(7),
+    numUsers: z.number()
+  })
+).query(async ({ input }) => {
+  const wave = await prisma.wave.findUniqueOrThrow({
+    where: {id: input.id}
+  }).catch(() => {
+    throw new TRPCError({
+      code: 'INTERNAL_SERVER_ERROR',
+      message: "Something went wrong in the server",
+    })
+  })
+
+  const hours = Array(24).fill(0)
+  const days = Array(7).fill(hours)
+
+  for (const userId of wave.hasUsersId) {
+    const user = await prisma.user.findUniqueOrThrow({
+      where: {id: userId},
+      include: {
+        calendar: true,
+      }
+    }).catch(() => {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: "Something went wrong in the server",
+      })
+    })
+
+    //Assumes that no two timeslots can overlap
+    user.calendar.availabilities.forEach(timeslot => {
+      // We only worry about timeslots in the same week as the currently displayed
+      // week
+      if (isSameWeek(input.startDate, timeslot.startTime)) {
+        const currHour = getHours(timeslot.startTime)
+        const endHour = getHours(timeslot.endTime)
+        const day = getDay(timeslot.startTime)
+        while (currHour < endHour) {
+          days[day][currHour] += 1
+        }
+      }
+    })
+  }
+  return {days: days, numUsers: wave.hasUsersId.length}
+})
 
 const calendarRouter = trpc.router({
-  createCalendar: createCalendar,
   addTimeslot: addTimeslot,
+  getWaveCalendar: getWaveCalendar
 })
 
 export default calendarRouter
