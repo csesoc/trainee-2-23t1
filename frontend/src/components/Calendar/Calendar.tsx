@@ -6,6 +6,7 @@ export interface CalendarDay {
 }
 
 export interface CalendarData {
+  //2D Array where each cell is the number of unavaliable users
   days: CalendarDay[]
   highlight?: {
     day: number,
@@ -13,6 +14,7 @@ export interface CalendarData {
       start: number,
       end: number,
     }
+    unavaliable: number
   },
   numUsers: number,
 }
@@ -68,7 +70,7 @@ const Calendar = (props: {data: CalendarData}) => {
       )
     }
 
-    const avaliable = props.data.days[x].hours[y]
+    const unavaliable = props.data.days[x].hours[y]
 
     let border = "";
     if (props.data.highlight !== undefined) {
@@ -88,7 +90,7 @@ const Calendar = (props: {data: CalendarData}) => {
               <div className="opacity-0 group-hover:opacity-100 transition duration-500 text-white">
                 <div className="pt-2">
                   <MeetingIcon/>
-                  <b>{avaliable}/{props.data.numUsers}</b>
+                  <b>{props.data.highlight.unavaliable}/{props.data.numUsers}</b>
                 </div>
               </div>
             </div>
@@ -98,9 +100,9 @@ const Calendar = (props: {data: CalendarData}) => {
     } 
     
     return (
-      <div id={`${x}-${y}`} className={`border border-neutral-500 ${border} h-8 text-neutral-700 group ${getColour(props.data.numUsers - avaliable, avaliable)}`}>
+      <div id={`${x}-${y}`} className={`border border-neutral-500 ${border} h-8 text-neutral-700 group ${getColour(unavaliable, props.data.numUsers-unavaliable)}`}>
         <div className="opacity-0 group-hover:opacity-100 transition duration-500">
-          <b>{avaliable}/{props.data.numUsers}</b>
+          <b>{props.data.numUsers-unavaliable}/{props.data.numUsers}</b>
         </div>
       </div>
     )

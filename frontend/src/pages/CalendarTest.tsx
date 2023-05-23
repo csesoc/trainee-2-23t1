@@ -11,11 +11,12 @@ const CalenderTest: React.FC = () => {
   for (let i = 0; i < 7; i++) {
     const day: CalendarDay = {hours: []}
     for (let j = 0; j < 24; j++) {
-      day.hours[j] = Math.floor(Math.random() * 5);
+      day.hours[j] = Math.floor(Math.random() * 6);
     }
     data.days[i] = day
   }
   data.highlight= {
+    unavaliable: 2,
     day: 0,
     hour: {
       start: 2,
