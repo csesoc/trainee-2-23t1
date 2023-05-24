@@ -153,7 +153,7 @@ const Navbar: React.FC<{
           />
         }
       </div>
-      <div className="dark:bg-black w-screen h-screen"></div>
+      {/* <div className="dark:bg-black w-screen h-screen"></div> */}
     </div>
   )
 }
