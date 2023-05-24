@@ -13,9 +13,31 @@ const checkInput = (input: Object) => {
   }
 }
 
-// const tokenVerify = protectedProcedure.query(({ ctx }) => {
-//   return `${ctx.userId}`
-// })
+const getUserProfile = trpc.procedure.input(
+  z.object({
+    token: z.string()
+  })
+).query(async ({ input, ctx }) => {
+  checkInput(input);
+  const userId = ctx.userId;
+
+  const usr = await prisma.user.findUnique({
+    where: {
+      id: userId as string
+    }
+  }).catch(() => {
+    throw new TRPCError({
+      code: 'INTERNAL_SERVER_ERROR',
+      message: "User does not exist - something went wrong.",
+    })
+  })
+
+  return {
+    name: usr.name,
+    email: usr.email,
+    status: usr.status,
+  }
+})
 
 const updateStatusEndpoint = trpc.procedure.input(
   z.object({
@@ -45,6 +67,7 @@ const updateStatusEndpoint = trpc.procedure.input(
 
 
 const userRouter = trpc.router({
+  getUserProfile: getUserProfile,
   statusChange: updateStatusEndpoint,
 })
 
