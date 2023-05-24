@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "mongodb"
-  url      = env("DATABASE_URL")
+  url      = env("mongodb+srv://marktran873:y5YBHkSCfKhjeF2p@cluster0.zkb5twp.mongodb.net/")
 }
 
 model User {
@@ -15,7 +15,7 @@ model User {
   name       String
   email      String    @unique
   password   String // shouldnt be in plain text, we're using hashing
-  status     String    @default("")
+  status     String    @default("👋 New to Waves!")
   aboutMe    String    @default("")
   profileImg Bytes?
   calender   Calender?
