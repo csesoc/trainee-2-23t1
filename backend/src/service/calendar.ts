@@ -1,12 +1,30 @@
 import { TRPCError } from "@trpc/server";
 import { prisma, trpc } from "../utils/provider";
 import { z } from "zod";
-import { getDay, getHours, isSameWeek } from 'date-fns'
+import { getDay, getHours, isSameDay, isSameWeek } from 'date-fns'
 
+interface Timeslot {
+  startTime: Date,
+  endTime: Date,
+  details?: string
+}
+
+const timeslotCollision = (t: Timeslot, avaliabilities: Timeslot[]) => {
+  let found = false
+  avaliabilities.forEach(timeslot => {
+    if (t.startTime >= timeslot.startTime && t.startTime <= timeslot.endTime) {
+      found = true
+    }
+    if (t.endTime >= timeslot.startTime && t.endTime <= timeslot.endTime) {
+      found = true
+    }
+  });
+  return found
+}
 
 const timeslotObject = z.object({
-  startTime: z.date(),
-  endTime: z.date(),
+  startTime: z.coerce.date(),
+  endTime: z.coerce.date(),
   details: z.string()
 })
 
@@ -17,7 +35,7 @@ const calendarObject = z.object({
   userId: z.string()
 })
 
-const addTimeslot = trpc.procedure.input(
+const addTimeslotEndpoint = trpc.procedure.input(
   z.object({
     calendarId: z.string(),
     timeslot: timeslotObject
@@ -38,6 +56,18 @@ const addTimeslot = trpc.procedure.input(
   })
 
   if (calendar) {
+    if (!isSameDay(input.timeslot.startTime, input.timeslot.endTime)) {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "Timeslot must be on the same day"
+      })
+    }
+    if (timeslotCollision(input.timeslot, calendar.availabilities)) {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "Timeslot overlaps with existing event"
+      })
+    }
     const c = await prisma.calendar.update({
       where: {id: input.calendarId},
       data: {
@@ -109,7 +139,7 @@ const getWaveCalendar = trpc.procedure.input(
 })
 
 const calendarRouter = trpc.router({
-  addTimeslot: addTimeslot,
+  addTimeslot: addTimeslotEndpoint,
   getWaveCalendar: getWaveCalendar
 })
 
