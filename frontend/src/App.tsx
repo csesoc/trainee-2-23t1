@@ -8,6 +8,7 @@ import Placeholder from './pages/Placeholder'
 import LoginPage from './pages/auth/LoginPage'
 import RegisterPage from './pages/auth/RegisterPage'
 import ProtectedRoutes from './components/ProtectedRoutes'
+import CalendarTest from './pages/CalendarTest'
 import MainPage from './pages/MainPage'
 
 function App() {
@@ -72,6 +73,8 @@ function App() {
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
         <Routes>
+
+          <Route path="/calendar" element={<CalendarTest />} />
 
           {/* Auth */}
           <Route path="/login" element={<LoginPage />} />

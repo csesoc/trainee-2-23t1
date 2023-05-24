@@ -103,7 +103,7 @@ const Navbar: React.FC<DarkMode> = (props) => {
       <div>
         {dropdown && <ProfileDropdown darkMode={props.darkMode} handleToggleDark={props.handleToggleDark} dropdown={dropdown} setDropdown={(bool: boolean) => setDropdown(bool)}/>}
       </div>
-      <div className="dark:bg-black w-screen h-screen"></div>
+      {/* <div className="dark:bg-black w-screen h-screen"></div> */}
     </div>
   )
 }
