@@ -1,10 +1,9 @@
 import React from "react";
 
 
-const Notification: React.FC<{darkMode: boolean}> = (props) => {
+const Notification: React.FC = (props) => {
 
   return (
-    <div className={props.darkMode ? "dark" : "light"}>
     <div className="flex flex-row pr-10 pl-5 py-2 cursor-pointer hover:bg-gray-100/50 dark:hover:bg-gray-800/50">
       <img
         src="../../../public/anya.jpeg"
@@ -24,7 +23,6 @@ const Notification: React.FC<{darkMode: boolean}> = (props) => {
           </svg>
         </div>
       </div>
-    </div>
     </div>
   )
 }

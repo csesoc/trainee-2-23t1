@@ -1,26 +1,57 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ProfileDropdown from "./ProfileDropdown";
 import { DarkMode } from "../interfaces";
 import NotificationCentre from "../Notifications/NotificationCentre";
+import { trpc } from "../../utils/trpc";
 
 
-const Navbar: React.FC<DarkMode> = (props) => {
+const Navbar: React.FC<{
+  handleToggleDark: any
+}> = (props) => {
   // initialising state for the dropdown menu that is toggled when clicked on profile image
   const [dropdown, setDropdown] = useState(false);
-  
   const [notificationSee, setNotificationSee] = useState(false);
+  const [userStatus, setUserStatus] = useState("");
+  const [userName, setUserName] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const [dataFetched, setDataFetched] = useState(false);
 
+  // event handlers
+  const handleStatusChange = (newStatus: string) => {
+    setUserStatus(newStatus);
+  }
   const handleProfClick = () => {
     setDropdown(prevState => !prevState)
   }
-
   const handleNotificationSee = () => {
     setNotificationSee(prevState => !prevState);
   }
 
+  // retrieve user data
+  const userToken = localStorage.getItem("token");
+  if (typeof userToken === 'undefined' || userToken === null) {
+
+  }
+  const retrieveEndpoint = trpc.user.getUserProfile.useQuery({
+    token: userToken as string
+  });
+
+  useEffect(() => {
+    if (retrieveEndpoint.isSuccess && dataFetched) {
+      setUserStatus(retrieveEndpoint.data.status);
+      setUserName(retrieveEndpoint.data.name);
+      setUserEmail(retrieveEndpoint.data.email);
+    }
+  }, [retrieveEndpoint.isSuccess, dataFetched])
+
+  if (retrieveEndpoint.isSuccess && !dataFetched) {
+    setDataFetched(true);
+    console.log("Hehe")
+  }
+
   return (
-    <div className={props.darkMode ? "dark" : "light"}>
+    <div>
       <div className="top-0 px-4 py-1 flex flex-wrap bg-navbar dark:bg-gray-800 text-white">
         
         {/* 1st group: cse waves logo, waves branding and search bar */}
@@ -98,10 +129,29 @@ const Navbar: React.FC<DarkMode> = (props) => {
         </div>
       </div>
       <div>
-        {notificationSee && <NotificationCentre notificationSee={notificationSee} setNotificationSee={(bool: boolean) => setNotificationSee(bool)} darkMode={props.darkMode}/>}
+        {
+          notificationSee 
+          && 
+          <NotificationCentre 
+            notificationSee={notificationSee} 
+            setNotificationSee={(bool: boolean) => setNotificationSee(bool)} 
+          />
+        }
       </div>
       <div>
-        {dropdown && <ProfileDropdown darkMode={props.darkMode} handleToggleDark={props.handleToggleDark} dropdown={dropdown} setDropdown={(bool: boolean) => setDropdown(bool)}/>}
+        {
+          dropdown 
+          && 
+          <ProfileDropdown 
+            userName={userName}
+            userEmail={userEmail}
+            userStatus={userStatus}
+            handleStatusChange={handleStatusChange}
+            handleToggleDark={props.handleToggleDark} 
+            dropdown={dropdown} 
+            setDropdown={(bool: boolean) => setDropdown(bool)}
+          />
+        }
       </div>
       {/* <div className="dark:bg-black w-screen h-screen"></div> */}
     </div>
