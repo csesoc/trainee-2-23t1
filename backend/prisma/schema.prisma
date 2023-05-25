@@ -18,6 +18,7 @@ model User {
   status     String    @default("👋 New to Waves!")
   aboutMe    String    @default("")
   profileImg Bytes?
+  friends    String[]
   calender   Calender?
 
   // Waves invited but not accepted

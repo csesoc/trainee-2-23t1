@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Notification from "./Notification";
 
-
 const NotificationCentre: React.FC<{
   notificationSee: boolean, 
   setNotificationSee: any, 

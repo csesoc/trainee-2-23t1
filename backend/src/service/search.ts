@@ -26,7 +26,11 @@ const searchWaves = trpc.procedure.input(
       message: "User does not exist - something went wrong.",
     })
   })
-  const usrFiltered = usr.filter(item => item.name.toLowerCase().includes(input.queryStr.toLowerCase()))
+  const usrFiltered = usr.filter(item => {
+    const itemName = item.name.toLowerCase()
+    const inputName = input.queryStr.toLowerCase();
+    return itemName.includes(inputName)
+  })
   const returnArr = usrFiltered.map(item => {
     return {
       name: (item.id === userId) ? item.name + " (You)" : item.name,

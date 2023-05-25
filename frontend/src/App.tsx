@@ -10,6 +10,7 @@ import RegisterPage from './pages/auth/RegisterPage'
 import ProtectedRoutes from './components/ProtectedRoutes'
 import CalendarTest from './pages/CalendarTest'
 import MainPage from './pages/MainPage'
+import SearchPage from './pages/SearchPage'
 
 function App() {
   const navigate = useNavigate()
@@ -84,6 +85,7 @@ function App() {
           <Route path="/" element={<ProtectedRoutes />}>
             <Route path="/home" element={<MainPage darkMode={darkMode} handleToggleDark={handleToggleDark}/>} />
             <Route path="/placeholder" element={<Placeholder />} />
+            <Route path="/search/:query" element={<SearchPage darkMode={darkMode} handleToggleDark={handleToggleDark} />} />
           </Route>
           
         </Routes>
