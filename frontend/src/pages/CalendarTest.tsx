@@ -8,38 +8,66 @@ import CalendarControl from "../components/Calendar/CalendarControl";
 
 const CalenderTest: React.FC = () => {
 
-  let data: CalendarData = {days: [], numUsers: 5}
-  for (let i = 0; i < 7; i++) {
-    const day: CalendarDay = {hours: []}
-    for (let j = 0; j < 24; j++) {
-      day.hours[j] = Math.floor(Math.random() * 5);
-    }
-    data.days[i] = day
-  }
-  data.highlight= {
-    day: 0,
-    hour: {
-      start: 2,
-      end: 5
-    }
-  }
   const [date, setDate] = useState(new Date())
-  const timeslotGenerator = trpc.calendar.addTimeslot.useMutation()
 
+  const r = trpc.calendar.getCalendar.useQuery({
+    id: "646cb1da47ac2c8b59c89bf1",
+    date: date
+  })
+
+  const mutation = trpc.calendar.addTimeslot.useMutation();
+  // let data: CalendarData = {days: []}
+  // for (let i = 0; i < 7; i++) {
+  //   const day: CalendarDay = {hours: []}
+  //   for (let j = 0; j < 24; j++) {
+  //     day.hours[j] = {
+  //       colour: "bg-orange-200",
+  //       details: "Hello this is a long string!"
+  //     }
+  //   }
+  //   data.days[i] = day
+  // }
+  // data.highlight= {
+  //   day: 0,
+  //   hour: {
+  //     start: 2,
+  //     end: 5
+  //   }
+  // }
+
+  if (r.isLoading || r.data === undefined) {
+    return <div>Loading!</div>
+  }
+
+  const data: CalendarData = {
+    days: r.data.days, highlight: {
+      details: "1/5",
+      day: 0,
+      hour: {
+        start: 2,
+        end: 5
+      }
+    }
+  }
+
+  const handleAdd = () => {
+    const x = mutation.mutate({
+      calendarId: "646cb1da47ac2c8b59c89bf1",
+      timeslot: {
+        startTime: new Date(2023, 4, 26, 20),
+        endTime: new Date(2023, 4, 26, 22),
+        details: "Fun Times!"
+      }
+    })
+    console.log(x)
+  }
+  console.log(r.data)
   return (
     <div className="w-6/6">
-      <CalendarControl date={date} setDate={setDate}/>
-      <Calendar data={data}/>
-      <button className="bg-blue-600" onClick={() => timeslotGenerator.mutate(
-        {
-          calendarId: "646cb1da47ac2c8b59c89bf1",
-          timeslot: {
-            startTime: new Date(2023, 5, 25, 14),
-            endTime: new Date(2023, 5, 25, 16),
-            details: "Hello World!"
-          }
-        })}>
-        Fun!
+      <CalendarControl date={date} setDate={setDate} />
+      <Calendar data={data} />
+      <button className="bg-navbar text-lg" onClick={handleAdd} disabled={mutation.isLoading}>
+        Login
       </button>
     </div>
   )
