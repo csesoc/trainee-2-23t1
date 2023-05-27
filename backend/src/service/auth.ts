@@ -93,6 +93,7 @@ const registerEndpoint = trpc.procedure.input(
       email: input.email,
       password: input.password,
       aboutMe: "Wave wave 🌊. Learning the ways of tides rn tbh.",
+      calendarId: calendar.id,
       friends: []
     }
   }).catch(() => {
@@ -101,8 +102,6 @@ const registerEndpoint = trpc.procedure.input(
       message: "Something went wrong in the server",
     })
   })
-
-
 
   return {token: signToken(usr.id)}
 })

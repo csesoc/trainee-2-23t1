@@ -41,7 +41,7 @@ const CalenderTest: React.FC = () => {
   const data: CalendarData = {
     days: r.data.days, highlight: {
       details: "1/5",
-      day: 0,
+      day: 4,
       hour: {
         start: 2,
         end: 5
@@ -66,7 +66,7 @@ const CalenderTest: React.FC = () => {
       <CalendarControl date={date} setDate={setDate} />
       <Calendar data={data} />
       <button className="bg-navbar text-lg" onClick={handleAdd} disabled={mutation.isLoading}>
-        Login
+        Add Timeslot
       </button>
     </div>
   )

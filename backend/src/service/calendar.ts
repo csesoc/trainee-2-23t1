@@ -98,11 +98,28 @@ const createDataStructure = () => {
   for (let i = 0; i < 7; i++) {
     const hours = new Array(24)
     for (let j = 0; j < 24; j++) {
-      hours[j] = {colour: CellColour.LIGHT_GREEN, details: ""}
+      hours[j] = {colour: CellColour.LIGHT_GREEN, details: "", numUsers: 0}
     }
     arr[i] = {hours: hours}
   }
   return arr
+}
+
+const computeColour = (unavaliable: number, total: number) => {
+  const avaliable = total - unavaliable
+  if (unavaliable === 0 && avaliable === 0) {
+    return CellColour.GREY
+  }
+  if (avaliable === total) {
+    return CellColour.GREEN
+  }
+  if (unavaliable === total) {
+    return CellColour.RED
+  }
+  if (avaliable > unavaliable) {
+    return CellColour.LIGHT_GREEN
+  }
+  return CellColour.ORANGE
 }
 
 const getCalendarEndpoint = trpc.procedure.input(
@@ -127,10 +144,8 @@ const getCalendarEndpoint = trpc.procedure.input(
 
     const days = createDataStructure()
 
-    const x = startOfWeek(input.date)
-    const y = endOfWeek(input.date)
     for (const timeslot of calendar.availabilities) {
-      if (timeslot.startTime >= x && y >= timeslot.endTime) {
+      if (timeslot.startTime >= startOfWeek(input.date) && endOfWeek(input.date) >= timeslot.endTime) {
         let currHour = getHours(timeslot.startTime)
         const endHour = getHours(timeslot.endTime)
         const day = getDay(timeslot.startTime)
@@ -148,25 +163,24 @@ const getCalendarEndpoint = trpc.procedure.input(
 const getWaveCalendar = trpc.procedure.input(
   z.object({
     id: z.string(),
-    date: z.date(),
+    date: z.coerce.date(),
   })
 ).output(
   z.object({
-    days: z.array(z.array(z.number().max(24))).max(7),
-    numUsers: z.number()
+    days: z.array(z.any()).max(7)
   })
 ).query(async ({ input }) => {
   const wave = await prisma.wave.findUniqueOrThrow({
     where: { id: input.id }
-  }).catch(() => {
+  }).catch((e) => {
+    console.log(e)
     throw new TRPCError({
       code: 'INTERNAL_SERVER_ERROR',
-      message: "Something went wrong in the server",
+      message: "No Wave corresponding to the ID was found",
     })
   })
 
-  const hours = Array(24).fill(0)
-  const days = Array(7).fill(hours)
+  const days = createDataStructure()
 
   for (const userId of wave.hasUsersId) {
     const user = await prisma.user.findUniqueOrThrow({
@@ -181,21 +195,28 @@ const getWaveCalendar = trpc.procedure.input(
       })
     })
 
-    //Assumes that no two timeslots can overlap
-    user.calendar.availabilities.forEach(timeslot => {
-      // We only worry about timeslots in the same week as the currently displayed
-      // week
-      if (isSameWeek(input.date, timeslot.startTime)) {
-        const currHour = getHours(timeslot.startTime)
+    for (const timeslot of user.calendar.availabilities) {
+      if (timeslot.startTime >= startOfWeek(input.date) && endOfWeek(input.date) >= timeslot.endTime) {
+        let currHour = getHours(timeslot.startTime)
         const endHour = getHours(timeslot.endTime)
         const day = getDay(timeslot.startTime)
-        while (currHour < endHour) {
-          days[day][currHour] += 1
+        while (currHour <= endHour) {
+          days[day].hours[currHour].numUsers += 1
+          currHour += 1
         }
       }
-    })
+    }
   }
-  return { days: days, numUsers: wave.hasUsersId.length }
+
+  const numUsers = wave.hasUsersId.length
+  console.log("Here")
+  for (const day of days) {
+    for (const hour of day.hours) {
+      hour.colour = computeColour(hour.numUsers, wave.hasUsersId.length)
+      hour.details = `${wave.hasUsersId.length - hour.numUsers}/${wave.hasUsersId.length}`
+    }
+  }
+  return {days: days}
 })
 
 const calendarRouter = trpc.router({
