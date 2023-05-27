@@ -15,11 +15,12 @@ model User {
   name       String
   email      String    @unique
   password   String // shouldnt be in plain text, we're using hashing
-  status     String    @default("")
-  aboutMe    String    @default("")
+  status     String    @default("👋 New to Waves!")
+  aboutMe    String    @default("Wave wave 🌊. Learning the ways of tides rn tbh.")
   profileImg Bytes?
   calendar Calendar @relation(fields: [calendarId], references: [id])
   calendarId String @unique @db.ObjectId
+  friends    String[]
 
   // Waves invited but not accepted
   invitedWaves   Wave[]   @relation("invited", fields: [invitedWavesId], references: [id])

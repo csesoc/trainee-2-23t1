@@ -1,34 +1,67 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ProfileDropdown from "./ProfileDropdown";
-import { DarkMode } from "../interfaces";
 import NotificationCentre from "../Notifications/NotificationCentre";
+import { trpc } from "../../utils/trpc";
+import SearchBar from "../Search/SearchBar";
 
 
-const Navbar: React.FC<DarkMode> = (props) => {
+const Navbar: React.FC<{
+  handleToggleDark: any
+}> = (props) => {
   // initialising state for the dropdown menu that is toggled when clicked on profile image
   const [dropdown, setDropdown] = useState(false);
-  
   const [notificationSee, setNotificationSee] = useState(false);
+  const [userStatus, setUserStatus] = useState("");
+  const [userName, setUserName] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const [dataFetched, setDataFetched] = useState(false);
 
+  // event handlers
+  const handleStatusChange = (newStatus: string) => {
+    setUserStatus(newStatus);
+  }
   const handleProfClick = () => {
     setDropdown(prevState => !prevState)
   }
-
   const handleNotificationSee = () => {
     setNotificationSee(prevState => !prevState);
   }
 
+  // retrieve user data
+  const userToken = localStorage.getItem("token");
+  if (typeof userToken === 'undefined' || userToken === null) {
+
+  }
+  const retrieveEndpoint = trpc.user.getUserProfile.useQuery({
+    token: userToken as string
+  });
+
+  useEffect(() => {
+    if (retrieveEndpoint.isSuccess && dataFetched) {
+      setUserStatus(retrieveEndpoint.data.status);
+      setUserName(retrieveEndpoint.data.name);
+      setUserEmail(retrieveEndpoint.data.email);
+    }
+  }, [retrieveEndpoint.isSuccess, dataFetched])
+
+  if (retrieveEndpoint.isSuccess && !dataFetched) {
+    setDataFetched(true);
+    console.log("Hehe")
+  }
+
   return (
-    <div className={props.darkMode ? "dark" : "light"}>
+    <div>
       <div className="top-0 px-4 py-1 flex flex-wrap bg-navbar dark:bg-gray-800 text-white">
         
         {/* 1st group: cse waves logo, waves branding and search bar */}
         <div className="flex flex-row flex-auto items-center p-2 justify-start">
-          <img
-            src="../../../public/cseWaves.png"
-            className="h-9 w-9 rounded-full mr-3"
-          ></img>
+          <Link to="/home">
+            <img
+              src="../../../public/cseWaves.png"
+              className="h-9 w-9 rounded-full mr-3"
+            ></img>
+          </Link>
           <h1
             className="text-xl antialiased font-semibold"
           >
@@ -36,15 +69,7 @@ const Navbar: React.FC<DarkMode> = (props) => {
               Waves
             </Link>
           </h1>
-          <form className="px-20 items-center">
-            <label>
-              <input 
-                placeholder="🔎 Search Waves" 
-                type="text" 
-                className="outline-none text-white py-2 px-4 rounded-xl bg-gray-900/50 focus:bg-gray-900 transition-all delay-200 transform ease-in-out"
-              ></input>
-            </label>
-          </form>
+          <SearchBar />
         </div>
 
         {/* 2nd group: navigation icons, new tide button and profile */}
@@ -98,10 +123,29 @@ const Navbar: React.FC<DarkMode> = (props) => {
         </div>
       </div>
       <div>
-        {notificationSee && <NotificationCentre notificationSee={notificationSee} setNotificationSee={(bool: boolean) => setNotificationSee(bool)} darkMode={props.darkMode}/>}
+        {
+          notificationSee 
+          && 
+          <NotificationCentre 
+            notificationSee={notificationSee} 
+            setNotificationSee={(bool: boolean) => setNotificationSee(bool)} 
+          />
+        }
       </div>
       <div>
-        {dropdown && <ProfileDropdown darkMode={props.darkMode} handleToggleDark={props.handleToggleDark} dropdown={dropdown} setDropdown={(bool: boolean) => setDropdown(bool)}/>}
+        {
+          dropdown 
+          && 
+          <ProfileDropdown 
+            userName={userName}
+            userEmail={userEmail}
+            userStatus={userStatus}
+            handleStatusChange={handleStatusChange}
+            handleToggleDark={props.handleToggleDark} 
+            dropdown={dropdown} 
+            setDropdown={(bool: boolean) => setDropdown(bool)}
+          />
+        }
       </div>
       {/* <div className="dark:bg-black w-screen h-screen"></div> */}
     </div>

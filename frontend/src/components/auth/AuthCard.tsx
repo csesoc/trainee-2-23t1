@@ -27,7 +27,7 @@ const AuthCard: React.FC<{isLogin: boolean, className?: string}> = ({ isLogin, c
     }, {
       onSuccess: (data: any) => {
         localStorage.setItem("token", data.token)
-        navigate('/')
+        navigate('/home')
       },
       onError: (error: any) => {
         setErrMsg(error.message)

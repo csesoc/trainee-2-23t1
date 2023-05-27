@@ -17,6 +17,7 @@ export interface CalendarDay {
 }
 
 export interface CalendarData {
+  //2D Array where each cell is the number of unavaliable users
   days: CalendarDay[]
   highlight?: {
     day: number,
