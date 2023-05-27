@@ -1,8 +1,6 @@
 import { TRPCError } from "@trpc/server";
 import { prisma, trpc } from "../utils/provider";
 import { z } from "zod";
-import { protectedProcedure } from "../utils/provider";
-
 
 const checkInput = (input: Object) => {
   if (Object.values(input).filter(s => s === '').length != 0) {

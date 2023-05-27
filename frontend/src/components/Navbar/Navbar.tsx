@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ProfileDropdown from "./ProfileDropdown";
-import { DarkMode } from "../interfaces";
 import NotificationCentre from "../Notifications/NotificationCentre";
 import { trpc } from "../../utils/trpc";
+import SearchBar from "../Search/SearchBar";
 
 
 const Navbar: React.FC<{
@@ -56,10 +56,12 @@ const Navbar: React.FC<{
         
         {/* 1st group: cse waves logo, waves branding and search bar */}
         <div className="flex flex-row flex-auto items-center p-2 justify-start">
-          <img
-            src="../../../public/cseWaves.png"
-            className="h-9 w-9 rounded-full mr-3"
-          ></img>
+          <Link to="/home">
+            <img
+              src="../../../public/cseWaves.png"
+              className="h-9 w-9 rounded-full mr-3"
+            ></img>
+          </Link>
           <h1
             className="text-xl antialiased font-semibold"
           >
@@ -67,15 +69,7 @@ const Navbar: React.FC<{
               Waves
             </Link>
           </h1>
-          <form className="px-20 items-center">
-            <label>
-              <input 
-                placeholder="🔎 Search Waves" 
-                type="text" 
-                className="outline-none text-white py-2 px-4 rounded-xl bg-gray-900/50 focus:bg-gray-900 transition-all delay-200 transform ease-in-out"
-              ></input>
-            </label>
-          </form>
+          <SearchBar />
         </div>
 
         {/* 2nd group: navigation icons, new tide button and profile */}
