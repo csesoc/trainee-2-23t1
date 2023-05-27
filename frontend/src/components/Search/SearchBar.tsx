@@ -24,7 +24,7 @@ const SearchBar: React.FC = () => {
             placeholder="🔎 Search Waves" 
             type="text" 
             autoComplete="off"
-            className="outline-none text-white py-2 px-4 rounded-xl bg-gray-900/50 focus:bg-gray-900 transition-all delay-200 transform ease-in-out"
+            className="w-56 outline-none text-white py-2 px-4 rounded-xl bg-gray-900/50 focus:bg-gray-900 focus:w-[650px] transition-all delay-200 transform ease-in-out"
           ></input>
         </label>
       </form>
