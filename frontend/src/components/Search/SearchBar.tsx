@@ -11,6 +11,7 @@ const SearchBar: React.FC = () => {
     
     const formInput: any = event.target
     navigate('/search/' + formInput.queryStr.value)
+    window.location.reload()
   }, [])
 
   

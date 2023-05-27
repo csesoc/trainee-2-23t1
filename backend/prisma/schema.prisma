@@ -16,7 +16,7 @@ model User {
   email      String    @unique
   password   String // shouldnt be in plain text, we're using hashing
   status     String    @default("👋 New to Waves!")
-  aboutMe    String    @default("")
+  aboutMe    String    @default("Wave wave 🌊. Learning the ways of tides rn tbh.")
   profileImg Bytes?
   friends    String[]
   calender   Calender?

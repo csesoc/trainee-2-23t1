@@ -14,10 +14,16 @@ import SearchPage from './pages/SearchPage'
 
 function App() {
   const navigate = useNavigate()
-
-  const [darkMode, setDarkmode] = useState(false);
+  
+  const userDarkPref = localStorage.getItem("dark");
+  let pref: boolean = false;
+  if (userDarkPref === "true") {
+    pref = true;
+  }
+  const [darkMode, setDarkmode] = useState(pref);
 
   const handleToggleDark = () => {
+    localStorage.setItem("dark", `${!darkMode}`)
     setDarkmode(prevState => !prevState);
   }
 

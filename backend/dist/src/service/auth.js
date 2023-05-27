@@ -79,6 +79,8 @@ const registerEndpoint = provider_1.trpc.procedure.input(zod_1.z.object({
             name: input.name,
             email: input.email,
             password: input.password,
+            aboutMe: "Wave wave 🌊. Learning the ways of tides rn tbh.",
+            friends: []
         }
     }).catch(() => {
         throw new server_1.TRPCError({

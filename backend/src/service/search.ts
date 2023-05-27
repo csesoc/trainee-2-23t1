@@ -35,8 +35,8 @@ const searchWaves = trpc.procedure.input(
     return {
       name: (item.id === userId) ? item.name + " (You)" : item.name,
       email: item.email,
-      status: item.status,
       aboutMe: item.aboutMe,
+      following: item.friends.includes(userId),
     }
   })
 

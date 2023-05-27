@@ -1,4 +1,5 @@
 import authRouter from "../service/auth"
+import followRouter from "../service/follow"
 import helloRouter from "../service/hello"
 import searchRouter from "../service/search"
 import userRouter from "../service/user"
@@ -9,6 +10,7 @@ const appRouter = trpc.router({
   auth: authRouter,
   user: userRouter,
   search: searchRouter,
+  follow: followRouter,
 })
 
 export default appRouter

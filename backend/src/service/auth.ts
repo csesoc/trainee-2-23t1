@@ -81,6 +81,8 @@ const registerEndpoint = trpc.procedure.input(
       name: input.name,
       email: input.email,
       password: input.password,
+      aboutMe: "Wave wave 🌊. Learning the ways of tides rn tbh.",
+      friends: []
     }
   }).catch(() => {
     throw new TRPCError({
