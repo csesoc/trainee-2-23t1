@@ -6,7 +6,7 @@ const DashBoardInfoLayout: React.FC = () => {
   return (
     <>
       <div className="bg-gray-300/20 flex items-center justify-center h-screen">
-        <div className="h-[930px] w-[1890px] flex flex-row">
+        <div className="h-screen w-screen flex flex-row items-center">
           <div className="flex flex-col">
             <DashBoardInfoCard />
             <DashBoardAbout />

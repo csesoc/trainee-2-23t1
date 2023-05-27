@@ -8,8 +8,8 @@ const DashBoardInfoCard: React.FC = () => {
     <>
       <div
         className="bg-white rounded-3xl shadow-lg flex flex-col items-center text-black
-                      lg:ml-[230px] lg:mt-[179px] lg:w-[354px] lg:h-[469px]
-                      md:ml-[97.5px] md:mt-[112.5px] md:w-[190.5px] md:h-[277.5px]"
+                      lg:ml-[230px]  lg:w-[354px] lg:h-[469px]
+                      md:ml-[97.5px] md:w-[190.5px] md:h-[277.5px]"
       >
         <img
           className="rounded-full 
