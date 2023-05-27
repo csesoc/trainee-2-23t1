@@ -12,6 +12,8 @@ import CalendarTest from './pages/CalendarTest'
 import MainPage from './pages/MainPage'
 import SearchPage from './pages/SearchPage'
 import CalendarWaveTest from './pages/CalendarWaveTest'
+import DashBoardPage from './pages/board/DashBoardPage'
+import UserProfilePage from './pages/user/UserProfilePage'
 
 function App() {
   const navigate = useNavigate()
@@ -95,6 +97,11 @@ function App() {
             <Route path="/search/:query" element={<SearchPage darkMode={darkMode} handleToggleDark={handleToggleDark} />} />
           </Route>
           
+          {/* DashBoard */}
+          <Route path="/dashboard" element={<DashBoardPage />} />
+          
+          {/* User Profile */}
+          <Route path="/profile" element={<UserProfilePage />} />
         </Routes>
         <ReactQueryDevtools />
       </QueryClientProvider>
