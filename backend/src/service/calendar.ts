@@ -65,12 +65,6 @@ const addTimeslotEndpoint = trpc.procedure.input(
   })
 
   if (calendar) {
-    if (!isSameDay(input.timeslot.startTime, input.timeslot.endTime)) {
-      throw new TRPCError({
-        code: "BAD_REQUEST",
-        message: "Timeslot must be on the same day"
-      })
-    }
     if (timeslotCollision(input.timeslot, calendar.availabilities)) {
       throw new TRPCError({
         code: "BAD_REQUEST",
@@ -98,9 +92,9 @@ const createDataStructure = () => {
   for (let i = 0; i < 7; i++) {
     const hours = new Array(24)
     for (let j = 0; j < 24; j++) {
-      hours[j] = {colour: CellColour.LIGHT_GREEN, details: "", numUsers: 0}
+      hours[j] = { colour: CellColour.LIGHT_GREEN, details: "", numUsers: 0 }
     }
-    arr[i] = {hours: hours}
+    arr[i] = { hours: hours }
   }
   return arr
 }
@@ -130,9 +124,9 @@ const getCalendarEndpoint = trpc.procedure.input(
     z.object({
       days: z.array(z.any()).max(7)
     })
-  ).query(async ({input}) => {
+  ).query(async ({ input }) => {
     const calendar = await prisma.calendar.findUniqueOrThrow({
-      where: { 
+      where: {
         id: input.id
       },
     }).catch(() => {
@@ -145,19 +139,27 @@ const getCalendarEndpoint = trpc.procedure.input(
     const days = createDataStructure()
 
     for (const timeslot of calendar.availabilities) {
+      // Check if the timeslot lies between the start and end date
       if (timeslot.startTime >= startOfWeek(input.date) && endOfWeek(input.date) >= timeslot.endTime) {
-        let currHour = getHours(timeslot.startTime)
-        const endHour = getHours(timeslot.endTime)
-        const day = getDay(timeslot.startTime)
-        while (currHour <= endHour) {
+
+        const start = { day: getDay(timeslot.startTime), hour: getHours(timeslot.startTime) }
+        const end = { day: getDay(timeslot.endTime), hour: getHours(timeslot.endTime) }
+
+        let currCellNum = (start.day * 24) + start.hour
+        const endCellNum = (end.day * 24) + end.hour
+
+        while (currCellNum <= endCellNum) {
+          const day = Math.floor(currCellNum / 24)
+          const currHour = currCellNum % 24
+
           days[day].hours[currHour].colour = CellColour.GREY
           days[day].hours[currHour].details = timeslot.details
-          currHour += 1
+          currCellNum += 1
         }
       }
     }
 
-    return {days: days}
+    return { days: days }
   })
 
 const getWaveCalendar = trpc.procedure.input(
@@ -196,27 +198,34 @@ const getWaveCalendar = trpc.procedure.input(
     })
 
     for (const timeslot of user.calendar.availabilities) {
+
+      // Check if the timeslot lies between the start and end date
       if (timeslot.startTime >= startOfWeek(input.date) && endOfWeek(input.date) >= timeslot.endTime) {
-        let currHour = getHours(timeslot.startTime)
-        const endHour = getHours(timeslot.endTime)
-        const day = getDay(timeslot.startTime)
-        while (currHour <= endHour) {
+
+        const start = { day: getDay(timeslot.startTime), hour: getHours(timeslot.startTime) }
+        const end = { day: getDay(timeslot.endTime), hour: getHours(timeslot.endTime) }
+
+        let currCellNum = (start.day * 24) + start.hour
+        const endCellNum = (end.day * 24) + end.hour
+
+        while (currCellNum <= endCellNum) {
+          const day = Math.floor(currCellNum / 24)
+          const currHour = currCellNum % 24
+
           days[day].hours[currHour].numUsers += 1
-          currHour += 1
+          currCellNum += 1
         }
       }
     }
-  }
 
-  const numUsers = wave.hasUsersId.length
-  console.log("Here")
-  for (const day of days) {
-    for (const hour of day.hours) {
-      hour.colour = computeColour(hour.numUsers, wave.hasUsersId.length)
-      hour.details = `${wave.hasUsersId.length - hour.numUsers}/${wave.hasUsersId.length}`
+    for (const day of days) {
+      for (const hour of day.hours) {
+        hour.colour = computeColour(hour.numUsers, wave.hasUsersId.length)
+        hour.details = `${wave.hasUsersId.length - hour.numUsers}/${wave.hasUsersId.length}`
+      }
     }
   }
-  return {days: days}
+  return { days: days }
 })
 
 const calendarRouter = trpc.router({
