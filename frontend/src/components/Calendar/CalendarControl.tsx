@@ -1,7 +1,7 @@
 import { format, endOfWeek, startOfWeek, isSameWeek } from "date-fns"
 import { useState } from "react"
 
-const CalendarControl = (props: {date: Date, setDate: any}) => {
+const CalendarControl: React.FC<{date: Date, setDate: any}> = (props) => {
     
     return(
         <div className="my-2 flex flex-row grow-0 justify-between items-center content-center flex-wrap">
