@@ -162,29 +162,11 @@ const getCalendarEndpoint = trpc.procedure.input(
     return { days: days }
   })
 
-const getWaveCalendar = trpc.procedure.input(
-  z.object({
-    id: z.string(),
-    date: z.coerce.date(),
-  })
-).output(
-  z.object({
-    days: z.array(z.any()).max(7)
-  })
-).query(async ({ input }) => {
-  const wave = await prisma.wave.findUniqueOrThrow({
-    where: { id: input.id }
-  }).catch((e) => {
-    console.log(e)
-    throw new TRPCError({
-      code: 'INTERNAL_SERVER_ERROR',
-      message: "No Wave corresponding to the ID was found",
-    })
-  })
 
+const getManyCalendar = async (userIds: string[], date: Date) => {
   const days = createDataStructure()
 
-  for (const userId of wave.hasUsersId) {
+  for (const userId of userIds) {
     const user = await prisma.user.findUniqueOrThrow({
       where: { id: userId },
       include: {
@@ -200,7 +182,7 @@ const getWaveCalendar = trpc.procedure.input(
     for (const timeslot of user.calendar.availabilities) {
 
       // Check if the timeslot lies between the start and end date
-      if (timeslot.startTime >= startOfWeek(input.date) && endOfWeek(input.date) >= timeslot.endTime) {
+      if (timeslot.startTime >= startOfWeek(date) && endOfWeek(date) >= timeslot.endTime) {
 
         const start = { day: getDay(timeslot.startTime), hour: getHours(timeslot.startTime) }
         const end = { day: getDay(timeslot.endTime), hour: getHours(timeslot.endTime) }
@@ -220,18 +202,57 @@ const getWaveCalendar = trpc.procedure.input(
 
     for (const day of days) {
       for (const hour of day.hours) {
-        hour.colour = computeColour(hour.numUsers, wave.hasUsersId.length)
-        hour.details = `${wave.hasUsersId.length - hour.numUsers}/${wave.hasUsersId.length}`
+        hour.colour = computeColour(hour.numUsers, userIds.length)
+        hour.details = `${userIds.length - hour.numUsers}/${userIds.length}`
       }
     }
   }
   return { days: days }
+}
+
+const getSharedCalendarEndpoint = trpc.procedure.input(
+  z.object({
+    userIds: z.array(z.string()),
+    date: z.coerce.date(),
+  })
+).output(
+  z.object({
+    days: z.array(z.any()).max(7)
+  })
+).query(async ({ input }) => {
+
+  return getManyCalendar(input.userIds, input.date)
+})
+
+const getWaveCalendarEndpoint = trpc.procedure.input(
+  z.object({
+    id: z.string(),
+    date: z.coerce.date(),
+  })
+).output(
+  z.object({
+    days: z.array(z.any()).max(7)
+  })
+).query(async ({ input }) => {
+  const wave = await prisma.wave.findUniqueOrThrow({
+    where: { id: input.id }
+  }).catch((e) => {
+    console.log(e)
+    throw new TRPCError({
+      code: 'INTERNAL_SERVER_ERROR',
+      message: "No Wave corresponding to the ID was found",
+    })
+  })
+
+  return getManyCalendar(wave.hasUsersId, input.date)
+  
 })
 
 const calendarRouter = trpc.router({
   addTimeslot: addTimeslotEndpoint,
   getCalendar: getCalendarEndpoint,
-  getWaveCalendar: getWaveCalendar
+  getSharedCalendar: getSharedCalendarEndpoint,
+  getWaveCalendar: getWaveCalendarEndpoint
 })
 
 export default calendarRouter
