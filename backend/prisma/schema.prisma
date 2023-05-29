@@ -50,6 +50,7 @@ type Timeslot {
 model Wave {
   id           String     @id @default(auto()) @map("_id") @db.ObjectId
   proposedTime DateTime
+  endTime      DateTime 
   location     String?
   repeatType   RepeatType @default(NONE)
   notifyUser   Boolean    @default(false)
