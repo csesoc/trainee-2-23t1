@@ -11,6 +11,7 @@ import ProtectedRoutes from './components/ProtectedRoutes'
 import CalendarTest from './pages/CalendarTest'
 import MainPage from './pages/MainPage'
 import SearchPage from './pages/SearchPage'
+import CalendarWaveTest from './pages/CalendarWaveTest'
 import DashBoardPage from './pages/board/DashBoardPage'
 import UserProfilePage from './pages/user/UserProfilePage'
 
@@ -83,7 +84,7 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <Routes>
 
-          <Route path="/calendar" element={<CalendarTest />} />
+          <Route path="/calendar" element={<CalendarWaveTest />} />
 
           {/* Auth */}
           <Route path="/login" element={<LoginPage />} />

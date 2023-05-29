@@ -19,7 +19,7 @@ const getUserProfile = trpc.procedure.input(
   checkInput(input);
   const userId = ctx.userId;
 
-  const usr = await prisma.user.findUnique({
+  const usr = await prisma.user.findUniqueOrThrow({
     where: {
       id: userId as string
     }
