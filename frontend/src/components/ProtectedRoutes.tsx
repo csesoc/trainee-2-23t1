@@ -10,7 +10,9 @@ const ProtectedRoutes: React.FC<{ isDark: boolean, handleDark: Function }> = ({ 
   return (
     <div className={isDark ? "dark" : ""}>
       <Navbar handleToggleDark={handleDark} />
-      <Outlet />
+      <div className="dark:bg-[#121212] dark:text-darkWhite h-screen">
+        <Outlet />
+      </div>
     </div>
   )
 }
