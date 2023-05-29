@@ -91,10 +91,11 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
 
           {/* Main content */}
-          <Route path="/" element={<ProtectedRoutes />}>
-            <Route path="/home" element={<MainPage darkMode={darkMode} handleToggleDark={handleToggleDark}/>} />
+          <Route path="/" element={<ProtectedRoutes isDark={darkMode} handleDark={handleToggleDark} />}>
+            <Route path="/" element={<MainPage />} />
+            <Route path="/home" element={<MainPage />} />
             <Route path="/placeholder" element={<Placeholder />} />
-            <Route path="/search/:query" element={<SearchPage darkMode={darkMode} handleToggleDark={handleToggleDark} />} />
+            <Route path="/search/:query" element={<SearchPage />} />
           </Route>
           
           {/* DashBoard */}
