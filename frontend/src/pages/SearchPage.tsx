@@ -36,7 +36,7 @@ const SearchPage: React.FC = () => {
   }
   
   return (
-    <div className="dark:bg-black dark:text-darkWhite h-screen text-black">
+    <div>
       <h1 className="text-xl font-semibold px-20 py-10">Search results for "{query}"</h1>
       <div className="flex flex-col items-center px-20 justify-center">
         {

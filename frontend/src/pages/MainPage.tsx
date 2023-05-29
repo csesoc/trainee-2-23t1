@@ -5,12 +5,10 @@ import CalendarTest from "./CalendarTest";
 
 const MainPage: React.FC = () => {
   return (
-    <div className="dark:bg-black h-screen">
-      <div className="flex justify-around items-center w-screen">
-        <div className="bg-gray-500 w-56 h-56"></div>
-        <div className="w-[45%] mt-5">
-          <CalendarTest/>
-        </div>
+    <div className="flex justify-around items-center w-screen">
+      <div className="bg-gray-500 w-56 h-56"></div>
+      <div className="w-[45%] mt-5">
+        <CalendarTest/>
       </div>
     </div>
   )
