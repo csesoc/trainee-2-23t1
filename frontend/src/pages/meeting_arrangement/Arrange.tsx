@@ -28,6 +28,8 @@ const HandlerContext: React.Context<TController> = createContext({} as TControll
 const Arrange: React.FC = () => {
   const [currStep, stepController] = useArrangeSteps()
 
+  const [invitedMember, setInvitedMembers] = useState()
+
   return (
     <HandlerContext.Provider value={stepController as TController}>
       {
