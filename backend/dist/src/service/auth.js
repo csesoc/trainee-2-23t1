@@ -74,12 +74,23 @@ const registerEndpoint = provider_1.trpc.procedure.input(zod_1.z.object({
             message: 'Email already used',
         });
     }
+    const calendar = yield provider_2.prisma.calendar.create({
+        data: {
+            availabilities: []
+        }
+    }).catch(() => {
+        throw new server_1.TRPCError({
+            code: 'INTERNAL_SERVER_ERROR',
+            message: "Something went wrong in the server",
+        });
+    });
     const usr = yield provider_2.prisma.user.create({
         data: {
             name: input.name,
             email: input.email,
             password: input.password,
             aboutMe: "Wave wave 🌊. Learning the ways of tides rn tbh.",
+            calendarId: calendar.id,
             friends: []
         }
     }).catch(() => {
