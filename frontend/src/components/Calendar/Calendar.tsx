@@ -1,7 +1,7 @@
 import React from "react";
 import MeetingIcon from "../../assets/Icons/Meeting";
 
-const colours = [
+export const colours = [
   "bg-stone-100",
   "bg-green-200",
   "bg-green-400",

@@ -34,7 +34,7 @@ const Arrange: React.FC = () => {
     <HandlerContext.Provider value={stepController as TController}>
       {
         currStep == 1 ? <InviteUsers /> :
-        currStep == 2 ? <CheckAvailability /> :
+        currStep == 2 ? <CheckAvailability date={new Date(2023,1,1)} userIds={["6471a0e72afcdd7f44dad4cb","6471a1f82afcdd7f44dad4cd"]} /> :
         currStep == 3 ? <ConfirmTide /> :
         undefined
       }
