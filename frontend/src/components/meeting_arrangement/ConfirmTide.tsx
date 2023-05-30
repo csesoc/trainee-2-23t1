@@ -3,6 +3,14 @@ import BackBtn from "./buttons/BackBtn";
 import Edit from "../../assets/Icons/Edit";
 import CheckMark from "../../assets/Icons/CheckMark";
 import { HandlerContext } from "../../pages/meeting_arrangement/Arrange";
+import PaperPlane from "../../assets/Icons/PaperPlane";
+
+enum ERepeat {
+  NONE = 'None',
+  DAILY = 'Daily',
+  WEEKLY = 'Weekly',
+  MONTHLY = 'Monthly'
+}
 
 const ConfirmTide: React.FC = () => {
   const controller = useContext(HandlerContext)
@@ -11,10 +19,17 @@ const ConfirmTide: React.FC = () => {
 
   const [title, setTitle] = useState("New Tide")
 
+  const submitForm: React.FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault()
+    console.log(title)
+    console.log(e.currentTarget.repeat.value)
+    console.log(e.currentTarget.location.value)
+  }
+
   return (
     <div className="py-10 px-10">
-      <div className="flex justify-between">
-        <form className="grid gap-5">
+      <form className="flex justify-between" onSubmit={submitForm}>
+        <div className="grid gap-5">
           <div className="flex">
             {
               titleEdit ? 
@@ -49,7 +64,10 @@ const ConfirmTide: React.FC = () => {
 
             <div>
               <h3 className="font-semibold text-lg">Repeat</h3>
-              <select className="py-1 
+              <select
+                name="repeat"
+                defaultValue={ERepeat.NONE}
+                className="py-1 
                 px-2 
                 rounded-md 
                 mt-2 
@@ -57,10 +75,10 @@ const ConfirmTide: React.FC = () => {
                 dark:bg-[#2c2c2c] 
                 w-[150px]
               ">
-                <option>None</option>
-                <option>Daily</option>
-                <option>Weekly</option>
-                <option>Monthly</option>
+                <option value={ERepeat.NONE}>{ERepeat.NONE}</option>
+                <option value={ERepeat.DAILY}>{ERepeat.DAILY}</option>
+                <option value={ERepeat.WEEKLY}>{ERepeat.WEEKLY}</option>
+                <option value={ERepeat.MONTHLY}>{ERepeat.MONTHLY}</option>
               </select>
             </div>
           </div>
@@ -69,6 +87,7 @@ const ConfirmTide: React.FC = () => {
             <h3 className="font-semibold mb-3 text-lg">Location</h3>
             <input 
               type="text" 
+              name="location"
               placeholder="Location"
               className="bg-slate-200
                 placeholder:text-black/80
@@ -83,12 +102,18 @@ const ConfirmTide: React.FC = () => {
                 transition-all
                 duration-150" />
           </div>
-        </form>
+        </div>
 
         <div>
-          <BackBtn />
+          <div className="flex gap-5">
+            <button type="submit" className="flex gap-3 place-items-center bg-blue-400 py-1 px-4 rounded-full text-white/90">
+              <span>Send Tide</span>
+              <PaperPlane />
+            </button>
+            <BackBtn />
+          </div>
         </div>
-      </div>
+      </form>
     </div>
   )
 }
