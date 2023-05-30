@@ -55,10 +55,11 @@ const ConfirmTide: React.FC = () => {
               <h3>&emsp;12-2pm (Placeholder)</h3>
               <button 
                 type="button" 
-                className="px-3 py-2 bg-blue-400 rounded-full my-2 text-white/90"
+                className="px-3 py-2 bg-blue-400 rounded-full my-2 text-white/90 flex gap-1"
                 onClick={controller.decrementStep}
               >
-                Change Date & Time
+                <Edit />
+                <span>Change Date & Time</span>
               </button>
             </div>
 
