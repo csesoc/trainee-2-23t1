@@ -35,6 +35,8 @@ const Navbar: React.FC<{
   }
   const retrieveEndpoint = trpc.user.getUserProfile.useQuery({
     token: userToken as string
+  },{
+    staleTime: Infinity
   });
 
   useEffect(() => {
