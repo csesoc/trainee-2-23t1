@@ -49,6 +49,7 @@ type Timeslot {
 
 model Wave {
   id           String     @id @default(auto()) @map("_id") @db.ObjectId
+  tideTitle    String
   proposedTime DateTime
   endTime      DateTime 
   location     String?
