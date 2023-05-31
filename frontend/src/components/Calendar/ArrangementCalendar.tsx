@@ -4,12 +4,14 @@ import { trpc } from "../../utils/trpc";
 import CalendarControl from "./CalendarControl";
 import Calendar, { CalendarData } from "./Calendar";
 
-const ArrangeCalendar: React.FC<{userIds: string[]}> = (props) => {
-  const [date, setDate] = useState(new Date())
+const ArrangeCalendar: React.FC<{userIds: string[], highlight?: {details: string, day: number, hour: {start: number, end:number}}, date: Date, setDate: any}> = (props) => {
+
+  console.log(props.date)
+  
 
   const r = trpc.calendar.getSharedCalendar.useQuery({
     userIds: props.userIds,
-    date: date
+    date: props.date
   })
 
   if (r.isLoading || r.data === undefined) {
@@ -17,20 +19,17 @@ const ArrangeCalendar: React.FC<{userIds: string[]}> = (props) => {
   }
 
   const data: CalendarData = {
-    days: r.data.days, highlight: {
-      details: "1/5",
-      day: 4,
-      hour: {
-        start: 2,
-        end: 5
-      }
-    }
+    days: r.data.days
   }
 
-  console.log(r.data)
+  if (props.highlight !== undefined) {
+    data.highlight = props.highlight
+  }
+
+  
   return (
     <div>
-      <CalendarControl date={date} setDate={setDate} />
+      <CalendarControl date={props.date} setDate={props.setDate} />
       <Calendar data={data} />
     </div>
   )

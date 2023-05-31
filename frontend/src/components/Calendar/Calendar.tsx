@@ -82,10 +82,7 @@ const Calendar: React.FC<{data: CalendarData}> = (props) => {
           <div key={`${x}-${y}`} style={{gridRow: `span ${diff} /span ${diff}`}} className="border border-neutral-500 text-neutral-700 group">
             <div className={`m-0 h-full bg-navbar text-center align-middle transition-all duration-500`}>
               <div className="opacity-0 group-hover:opacity-100 transition duration-500 text-white whitespace-nowrap overflow-hidden">
-                <div className="pt-2">
-                  <MeetingIcon/>
-                  <b>{props.data.highlight.details}</b>
-                </div>
+                <b>{props.data.highlight.details}</b>
               </div>
             </div>
           </div>
