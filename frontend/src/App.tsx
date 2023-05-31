@@ -97,8 +97,8 @@ function App() {
             <Route path="/" element={<MainPage />} />
             <Route path="/placeholder" element={<Placeholder />} />
             <Route path="/search/:query" element={<SearchPage />} />
-            <Route path="/tide-create" element={<Arrange />} />
             <Route path="/tide-create" element={<TideCreatePage darkMode={darkMode} handleToggleDark={handleToggleDark} />} />
+            <Route path="/tide-create-2" element={<Arrange />} />
           </Route>
           
           {/* DashBoard */}
