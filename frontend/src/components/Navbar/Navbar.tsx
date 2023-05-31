@@ -56,7 +56,7 @@ const Navbar: React.FC<{
         
         {/* 1st group: cse waves logo, waves branding and search bar */}
         <div className="flex flex-row flex-auto items-center p-2 justify-start">
-          <Link to="/home">
+          <Link to="/">
             <img
               src="../../../public/cseWaves.png"
               className="h-9 w-9 rounded-full mr-3"
@@ -65,7 +65,7 @@ const Navbar: React.FC<{
           <h1
             className="text-xl antialiased font-semibold"
           >
-            <Link to="/home">
+            <Link to="/">
               Waves
             </Link>
           </h1>

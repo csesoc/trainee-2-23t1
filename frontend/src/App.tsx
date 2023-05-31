@@ -13,6 +13,7 @@ import MainPage from './pages/MainPage'
 import SearchPage from './pages/SearchPage'
 import DashBoardPage from './pages/board/DashBoardPage'
 import UserProfilePage from './pages/user/UserProfilePage'
+import TideCreatePage from './pages/Tide/TideCreatePage'
 
 function App() {
   const navigate = useNavigate()
@@ -91,9 +92,10 @@ function App() {
 
           {/* Main content */}
           <Route path="/" element={<ProtectedRoutes />}>
-            <Route path="/home" element={<MainPage darkMode={darkMode} handleToggleDark={handleToggleDark}/>} />
+            <Route path="/" element={<MainPage darkMode={darkMode} handleToggleDark={handleToggleDark}/>} />
             <Route path="/placeholder" element={<Placeholder />} />
             <Route path="/search/:query" element={<SearchPage darkMode={darkMode} handleToggleDark={handleToggleDark} />} />
+            <Route path="/tide-create" element={<TideCreatePage darkMode={darkMode} handleToggleDark={handleToggleDark} />} />
           </Route>
           
           {/* DashBoard */}

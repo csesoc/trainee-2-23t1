@@ -1,17 +1,19 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { trpc } from "../../utils/trpc";
 
 const SearchResult: React.FC<{
   name: string,
   email: string,
   aboutMe: string,
-  following: boolean
+  following: boolean,
+  yourself: boolean
 }> = (props) => {
 
   const [following, setFollowing] = useState(props.following)
 
   const clickEndpoint = trpc.follow.follow.useMutation()
-  const handleFollowButtonClick = () => {
+  const handleFollowButtonClick = useCallback(() => {
+    console.log("FOLLOW CLICK")
     const userToken = localStorage.getItem("token");
     
     if (typeof userToken === 'undefined' || userToken === null) {
@@ -29,7 +31,7 @@ const SearchResult: React.FC<{
         window.alert(error.message)
       },
     })
-  }
+  }, [])
 
   return (
     <div className="my-3 flex flex-row items-center justify-center border-gray-400/20 rounded-lg w-10/12 transition duration-150 cursor-pointer">
@@ -47,9 +49,16 @@ const SearchResult: React.FC<{
       </div>
     </div>
     <div className="flex m-auto">
+      {
+        !props.yourself ?
         <button onClick={handleFollowButtonClick} className={following ? "rounded-full py-2 px-8 bg-gray-500 hover:border-0 text-white dark:text-darkWhite transition duration-150 ease-linear" : "rounded-full py-2 border-[1px] border-gray-300 px-10 hover:bg-blue-500 hover:border-0 hover:text-white transition duration-150 ease-linear"}>
           {following ? "- Unfollow" : "+ Follow"}
         </button>
+        :
+        <button className="rounded-full py-2 px-10 text-white dark:text-black transition duration-150 ease-linear">
+          + Follow
+        </button>
+      }
     </div>
     </div>
   )

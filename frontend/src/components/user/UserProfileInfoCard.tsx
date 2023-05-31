@@ -1,7 +1,7 @@
 import React from "react";
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import LockResetIcon from '@mui/icons-material/LockReset';
-import { IconButton } from "@mui/material";
+// import LockResetIcon from '@mui/icons-material/LockReset';
+// import { IconButton } from "@mui/material";
 
 const UserProfileInfoCard: React.FC = () => {
   return (
@@ -39,9 +39,9 @@ const UserProfileInfoCard: React.FC = () => {
           >
             Edit Profile
           </p>
-          <IconButton aria-label="delete" size="small">
+          {/* <IconButton aria-label="delete" size="small">
             <EditOutlinedIcon />
-          </IconButton>
+          </IconButton> */}
         </div>
         <hr
           className="border-1 border-black w-[80%] opacity-30
@@ -55,9 +55,9 @@ const UserProfileInfoCard: React.FC = () => {
           >
             Edit Password
           </p>
-          <IconButton aria-label="delete" size="small">
+          {/* <IconButton aria-label="delete" size="small">
             <LockResetIcon />
-          </IconButton>
+          </IconButton> */}
         </div>
     </>
   );
