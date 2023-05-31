@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import { trpc } from "../utils/trpc";
 import ChainIcon from "../assets/Icons/ChainIcon";
 
-const SearchPage: React.FC<{darkMode: boolean, handleToggleDark: any}> = (props) => {
+const SearchPage: React.FC = () => {
 
   const { query } = useParams();
   const [dataFetched, setDataFetched] = useState(false);
@@ -36,23 +36,20 @@ const SearchPage: React.FC<{darkMode: boolean, handleToggleDark: any}> = (props)
   }
   
   return (
-    <div className={props.darkMode ? "dark" : "light"}>
-      <div className="dark:bg-black dark:text-darkWhite h-screen text-black">
-        <Navbar handleToggleDark={props.handleToggleDark}/>
-        <h1 className="text-xl font-semibold px-20 py-10">Search results for "{query}"</h1>
-        <div className="flex flex-col items-center px-20 justify-center">
-          {
-            res.length > 0 
-              ? 
-            res
-              : 
-            <div>
-              <ChainIcon />
-              <h2 className="text-xl font-medium py-3">Your search did not match any results</h2>
-              <p className="text-md opacity-60">Make sure that everything is spelt correctly or try different keywords</p>
-            </div>
-          }
-        </div>
+    <div>
+      <h1 className="text-xl font-semibold px-20 py-10">Search results for "{query}"</h1>
+      <div className="flex flex-col items-center px-20 justify-center">
+        {
+          res.length > 0 
+            ? 
+          res
+            : 
+          <div>
+            <ChainIcon />
+            <h2 className="text-xl font-medium py-3">Your search did not match any results</h2>
+            <p className="text-md opacity-60">Make sure that everything is spelt correctly or try different keywords</p>
+          </div>
+        }
       </div>
     </div>
   )

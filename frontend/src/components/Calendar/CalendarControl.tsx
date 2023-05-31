@@ -1,7 +1,7 @@
-import { format, endOfWeek, startOfWeek } from "date-fns"
+import { format, endOfWeek, startOfWeek, isSameWeek } from "date-fns"
 import { useState } from "react"
 
-const CalendarControl = (props: {date: Date, setDate: any}) => {
+const CalendarControl: React.FC<{date: Date, setDate: any}> = (props) => {
     
     return(
         <div className="my-2 flex flex-row grow-0 justify-between items-center content-center flex-wrap">
@@ -18,7 +18,7 @@ const CalendarControl = (props: {date: Date, setDate: any}) => {
           </a>
         </div>
         <div className="text-gray-600 font-semibold w-50 grow-0 text-center select-none">
-          <div className="rounded-full bg-navbar grow-0 text-white text-sm px-8 py-[6px]">
+          <div className={`rounded-full bg-navbar grow-0 text-white text-sm px-8 py-[6px] ${isSameWeek(props.date, new Date()) ? "": "opacity-90"}`}>
             <time>
               {format(props.date, 'do MMM yyy')}
             </time>

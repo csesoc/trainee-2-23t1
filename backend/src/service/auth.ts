@@ -76,12 +76,24 @@ const registerEndpoint = trpc.procedure.input(
     })
   } 
 
+  const calendar = await prisma.calendar.create({
+    data: {
+      availabilities: []
+    }
+  }).catch(() => {
+    throw new TRPCError({
+      code: 'INTERNAL_SERVER_ERROR',
+      message: "Something went wrong in the server",
+    })
+  })
+
   const usr = await prisma.user.create({
     data: {
       name: input.name,
       email: input.email,
       password: input.password,
       aboutMe: "Wave wave 🌊. Learning the ways of tides rn tbh.",
+      calendarId: calendar.id,
       friends: []
     }
   }).catch(() => {

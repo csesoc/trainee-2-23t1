@@ -11,9 +11,11 @@ import ProtectedRoutes from './components/ProtectedRoutes'
 import CalendarTest from './pages/CalendarTest'
 import MainPage from './pages/MainPage'
 import SearchPage from './pages/SearchPage'
+import CalendarWaveTest from './pages/CalendarWaveTest'
 import DashBoardPage from './pages/board/DashBoardPage'
 import UserProfilePage from './pages/user/UserProfilePage'
 import TideCreatePage from './pages/Tide/TideCreatePage'
+import Arrange from './pages/meeting_arrangement/Arrange'
 
 function App() {
   const navigate = useNavigate()
@@ -84,17 +86,18 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <Routes>
 
-          <Route path="/calendar" element={<CalendarTest />} />
+          <Route path="/calendar" element={<CalendarWaveTest />} />
 
           {/* Auth */}
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
 
           {/* Main content */}
-          <Route path="/" element={<ProtectedRoutes />}>
-            <Route path="/" element={<MainPage darkMode={darkMode} handleToggleDark={handleToggleDark}/>} />
+          <Route path="/" element={<ProtectedRoutes isDark={darkMode} handleDark={handleToggleDark} />}>
+            <Route path="/" element={<MainPage />} />
             <Route path="/placeholder" element={<Placeholder />} />
-            <Route path="/search/:query" element={<SearchPage darkMode={darkMode} handleToggleDark={handleToggleDark} />} />
+            <Route path="/search/:query" element={<SearchPage />} />
+            <Route path="/tide-create" element={<Arrange />} />
             <Route path="/tide-create" element={<TideCreatePage darkMode={darkMode} handleToggleDark={handleToggleDark} />} />
           </Route>
           
