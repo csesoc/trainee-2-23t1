@@ -4,6 +4,7 @@ import Edit from "../../assets/Icons/Edit";
 import CheckMark from "../../assets/Icons/CheckMark";
 import { HandlerContext } from "../../pages/meeting_arrangement/Arrange";
 import PaperPlane from "../../assets/Icons/PaperPlane";
+import { trpc } from "../../utils/trpc";
 
 enum ERepeat {
   NONE = 'None',
@@ -19,11 +20,23 @@ const ConfirmTide: React.FC = () => {
 
   const [title, setTitle] = useState("New Tide")
 
+  const submit = trpc.tide.submit.useMutation()
   const submitForm: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault()
     console.log(title)
     console.log(e.currentTarget.repeat.value)
     console.log(e.currentTarget.location.value)
+    submit.mutate({
+      tideTitle: title,
+      proposedTime: '2023-03-23T00:00:00Z',
+      endTime: '2023-03-23T00:00:00Z',
+      containUsers: ['6476fdf61827876c4aab26f6'],
+      location: e.currentTarget.location.value,
+      repeatType: (e.currentTarget.repeat.value as ERepeat).toUpperCase() as any // wack
+    }, {
+      onError: () => console.log('error'),
+      onSuccess: () => console.log('success'),
+    })
   }
 
   return (
