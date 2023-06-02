@@ -13,6 +13,14 @@ const submitEndpoint = protectedProcedure.input(
   })
 ).mutation(async ({ input }) => {
   console.log(input)
+
+  const zodDate = z.string().datetime()
+  if (zodDate.parse(input.proposedTime) > zodDate.parse(input.endTime)) {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "End time cannot be earlier than start time",
+    })
+  }
   await prisma.wave.create({
     data: {
       tideTitle: input.tideTitle,
