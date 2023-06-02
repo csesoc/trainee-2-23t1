@@ -27,8 +27,8 @@ const submitEndpoint = protectedProcedure.input(
     console.log(e)
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
-      message: e.meta.message,
-      cause: "Something went wrong in the DB"
+      message: "Something went wrong in the DB",
+      cause: e.meta.message,
     })
   })
 })
