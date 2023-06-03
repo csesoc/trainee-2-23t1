@@ -14,7 +14,7 @@ import SearchPage from './pages/SearchPage'
 import CalendarWaveTest from './pages/CalendarWaveTest'
 import DashBoardPage from './pages/board/DashBoardPage'
 import UserProfilePage from './pages/user/UserProfilePage'
-import TideCreatePage from './pages/Tide/TideCreatePage'
+import TideCreatePage from './components/meeting_arrangement/TideCreatePage'
 import Arrange from './pages/meeting_arrangement/Arrange'
 
 function App() {
@@ -97,8 +97,7 @@ function App() {
             <Route path="/" element={<MainPage />} />
             <Route path="/placeholder" element={<Placeholder />} />
             <Route path="/search/:query" element={<SearchPage />} />
-            <Route path="/tide-create" element={<TideCreatePage darkMode={darkMode} handleToggleDark={handleToggleDark} />} />
-            <Route path="/tide-create-2" element={<Arrange />} />
+            <Route path="/tide-create" element={<Arrange />} />
           </Route>
           
           {/* DashBoard */}

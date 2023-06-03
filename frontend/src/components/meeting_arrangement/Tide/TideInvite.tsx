@@ -20,14 +20,14 @@ const TideInvite: React.FC<{
     setSearchQuery(inputVal)
   }, [])
 
-  const handleInputChange: EventHandler<FormEvent> = useCallback((event) => {
+  const handleInputChange: EventHandler<FormEvent> = useCallback((event: any) => {
     if (event.target.value.length === 0) {
       setSearchQuery("")
     }
   }, [])
 
   return (
-    <div className="text-black dark:text-darkWhite w-[50%] my-10">
+    <div className="text-black dark:text-darkWhite">
       <h1 className="text-2xl font-medium py-5">
         Get others to ride the wave 🌊
       </h1>
@@ -40,7 +40,7 @@ const TideInvite: React.FC<{
           placeholder="🔎 Search"
           type="text"
           autoComplete="off"
-          className="w-80 border-2 border-black py-2 px-5 rounded-full"
+          className="w-80 border-2 border-black py-2 px-5 rounded-full text-black/80"
           onChange={handleInputChange}
         ></input>
       </form>
