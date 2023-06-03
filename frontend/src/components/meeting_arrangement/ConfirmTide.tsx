@@ -6,6 +6,7 @@ import { HandlerContext } from "../../pages/meeting_arrangement/Arrange";
 import PaperPlane from "../../assets/Icons/PaperPlane";
 import { trpc } from "../../utils/trpc";
 import { useNavigate } from "react-router-dom";
+import InvitedList from "./Tide/InvitedList";
 
 enum ERepeat {
   NONE = 'None',
@@ -43,9 +44,9 @@ const ConfirmTide: React.FC = () => {
   }
 
   return (
-    <div className="py-10 px-10">
-      <form className="flex justify-between" onSubmit={submitForm}>
-        <div className="grid gap-5">
+    <div className="py-10 px-10 h-[80%]">
+      <form className="flex justify-between h-full" onSubmit={submitForm}>
+        <div className="flex flex-col gap-5">
           <div className="flex">
             {
               titleEdit ? 
@@ -128,8 +129,9 @@ const ConfirmTide: React.FC = () => {
           
         </div>
 
-        <div>
-          <div className="flex gap-5">
+        <div className="w-[45%] flex flex-col gap-5">
+          <InvitedList invited={[]} handleRemoveInvited={() => {}} />
+          <div className="flex gap-5 place-self-end">
             <button type="submit" className="flex gap-3 place-items-center bg-blue-400 py-1 px-4 rounded-full text-white/90">
               <span>Send Tide</span>
               <PaperPlane />
