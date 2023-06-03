@@ -46,11 +46,7 @@ const searchWaves = trpc.procedure.input(
   }
 })
 
-const searchFriends = protectedProcedure.input(
-  z.object({
-    queryStr: z.string()
-  })
-).query(async ({ input, ctx }) => {
+const searchFriends = protectedProcedure.query(async ({ ctx }) => {
   const userId = ctx.userId
 
   const usr = await prisma.user.findUniqueOrThrow({

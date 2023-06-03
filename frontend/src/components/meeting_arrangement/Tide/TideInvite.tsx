@@ -1,17 +1,9 @@
-import React, { EventHandler, FormEvent, useCallback, useEffect, useState } from "react";
+import React, { EventHandler, FormEvent, useCallback, useState } from "react";
 import TideSearch from "./TideSearch";
 
 
-const TideInvite: React.FC<{
-  handleAddInvited: any
-}> = (props) => {
-
+const TideInvite: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
-
-  const userToken = localStorage.getItem("token");
-  if (typeof userToken === 'undefined' || userToken === null) {
-
-  }
   
   const submitFnc: EventHandler<FormEvent> = useCallback((event) => {
     event.preventDefault()
@@ -44,7 +36,7 @@ const TideInvite: React.FC<{
           onChange={handleInputChange}
         ></input>
       </form>
-      <TideSearch searchQuery={searchQuery} handleAddInvited={props.handleAddInvited} />
+      <TideSearch searchQuery={searchQuery} />
     </div>
   )
 }

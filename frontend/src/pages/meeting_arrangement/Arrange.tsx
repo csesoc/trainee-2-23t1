@@ -31,9 +31,14 @@ type TInvited = {
 }
 
 type TInviteController = {
-  handleAddInvited: () => void,
-  handleRemoveInvited: () => void
+  handleAddInvited: (person: TInvited) => void,
+  handleRemoveInvited: (person: TInvited) => void
 }
+
+type TUseInvite = [
+  TInvited[],
+  TInviteController
+]
 
 const useInviteMembers = () => {
   const [invited, setInvited] = useState<TInvited[]>([])
@@ -51,16 +56,18 @@ const useInviteMembers = () => {
     }
   }
 
-  return [invited, {handleAddInvited, handleRemoveInvited} as TInviteController]
+  return [invited, {handleAddInvited, handleRemoveInvited}] as TUseInvite
 }
 
 // Bending the rules a bit
 const HandlerContext: React.Context<TController> = createContext({} as TController)
+const InvitationContext: React.Context<TUseInvite> = createContext([[{}], {}] as TUseInvite) // very wack
 
 const Arrange: React.FC = () => {
   const [currStep, stepController] = useArrangeSteps()
 
-  const [invite, setInvite] = useInviteMembers()
+  const invitation = useInviteMembers()
+  const invite = invitation[0]
 
   const [meetingDate, setMeetingDate] = useState({ 
     startDate: new Date(setHours(Date.now(),12)),
@@ -74,16 +81,18 @@ const Arrange: React.FC = () => {
 
   return (
     <HandlerContext.Provider value={stepController as TController}>
-      {
-        currStep == 1 ? <TideCreatePage invited={invite as TInvited[]} inviteHandler={setInvite as TInviteController} /> :
-        currStep == 2 ? <CheckAvailability date={meetingDate} setDate={setMeetingDate} userIds={[...invitedUsers, selfId]} /> :
-        currStep == 3 ? <ConfirmTide date={meetingDate} invited={invite as TInvited[]} handleRemove={(setInvite as TInviteController).handleRemoveInvited} /> :
-        undefined
-      }
+      <InvitationContext.Provider value={invitation}>
+        {
+          currStep == 1 ? <TideCreatePage /> :
+          currStep == 2 ? <CheckAvailability date={meetingDate} setDate={setMeetingDate} userIds={[...invitedUsers, selfId]} /> :
+          currStep == 3 ? <ConfirmTide date={meetingDate} /> :
+          undefined
+        }
+      </InvitationContext.Provider>
     </HandlerContext.Provider>
   )
 }
 
 export default Arrange
-export { HandlerContext }
+export { HandlerContext, InvitationContext }
 export type { TInvited, TInviteController }

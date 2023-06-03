@@ -6,7 +6,6 @@ import ColourKey from "./ColourKey";
 import Datepicker from "react-tailwindcss-datepicker"; 
 import HourSelect from "./HourSelect";
 import { getHours, isSameWeek, parseISO, setHours } from "date-fns";
-import { start } from "repl";
 import { trpc } from "../../utils/trpc";
 import getDay from "date-fns/getDay";
 import CalendarIcon from "../../assets/Icons/CalendarIcon";
