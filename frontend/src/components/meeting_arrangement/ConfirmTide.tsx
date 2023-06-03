@@ -35,9 +35,7 @@ const ConfirmTide: React.FC<TConfirmTide> = ({ date }) => {
   const submit = trpc.tide.submit.useMutation()
   const submitForm: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault()
-    console.log(title)
-    console.log(e.currentTarget.repeat.value)
-    console.log(e.currentTarget.location.value)
+    console.log(date)
     submit.mutate({
       tideTitle: title,
       proposedTime: date.startDate.toISOString(),

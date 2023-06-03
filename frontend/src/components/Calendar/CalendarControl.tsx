@@ -1,5 +1,4 @@
-import { format, endOfWeek, startOfWeek, isSameWeek, parseISO } from "date-fns"
-import { useState } from "react"
+import { format, endOfWeek, startOfWeek, isSameWeek } from "date-fns"
 
 const CalendarControl: React.FC<{date: Date, setDate: any}> = (props) => {
     return(

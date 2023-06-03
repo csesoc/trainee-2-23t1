@@ -5,8 +5,8 @@ import { TRPCError } from "@trpc/server";
 const submitEndpoint = protectedProcedure.input(
   z.object({
     tideTitle: z.string(),
-    proposedTime: z.string().datetime(),
-    endTime: z.string().datetime(),
+    proposedTime: z.string(),
+    endTime: z.string(),
     location: z.string(),
     repeatType: z.enum(["NONE", "DAILY", "WEEKLY", "MONTHLY"]),
     containUsers: z.string().array(),
@@ -38,6 +38,30 @@ const submitEndpoint = protectedProcedure.input(
       code: "INTERNAL_SERVER_ERROR",
       message: "Something went wrong in the DB",
       cause: e.meta.message,
+    })
+  })
+
+  console.log(input.proposedTime)
+  console.log(input.endTime)
+
+  await prisma.calendar.updateMany({
+    where: {
+      user: {
+        id: ctx.userId
+      }
+    },
+    data: {
+      availabilities: {
+        push: {
+          startTime: input.proposedTime,
+          endTime: input.endTime,
+        }
+      }
+    }
+  }).catch((e) => {
+    throw new TRPCError({
+      code: 'INTERNAL_SERVER_ERROR',
+      message: 'Unable to update calander',
     })
   })
 })
