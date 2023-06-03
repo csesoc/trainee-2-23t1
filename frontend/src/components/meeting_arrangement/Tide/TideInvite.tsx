@@ -1,21 +1,12 @@
-import React, { EventHandler, FormEvent, useCallback, useState } from "react";
+import React, { useCallback, useState } from "react";
 import TideSearch from "./TideSearch";
 
 
 const TideInvite: React.FC = () => {
-  const [searchQuery, setSearchQuery] = useState<string>("");
-  
-  const submitFnc: EventHandler<FormEvent> = useCallback((event) => {
-    event.preventDefault()
-    const formInput: any = event.target
-    const inputVal = formInput.queryStr.value
-    setSearchQuery(inputVal)
-  }, [])
+  const [searchQuery, setSearchQuery] = useState("")
 
-  const handleInputChange: EventHandler<FormEvent> = useCallback((event: any) => {
-    if (event.target.value.length === 0) {
-      setSearchQuery("")
-    }
+  const handleInputChange = useCallback((event: any) => {
+    setSearchQuery(event.currentTarget.value)
   }, [])
 
   return (
@@ -26,16 +17,14 @@ const TideInvite: React.FC = () => {
       <p className="font-light">
         Add members to the new event
       </p>
-      <form onSubmit={submitFnc} className="py-6">
-        <input
-          name="queryStr"
-          placeholder="🔎 Search"
-          type="text"
-          autoComplete="off"
-          className="w-80 border-2 border-black py-2 px-5 rounded-full text-black/80"
-          onChange={handleInputChange}
-        ></input>
-      </form>
+      <input
+        name="queryStr"
+        placeholder="🔎 Search"
+        type="text"
+        autoComplete="off"
+        className="w-80 border-2 border-black py-2 my-6 px-5 rounded-full text-black/80"
+        onChange={handleInputChange}
+      />
       <TideSearch searchQuery={searchQuery} />
     </div>
   )
