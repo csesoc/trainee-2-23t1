@@ -17,7 +17,7 @@ model User {
   password   String // shouldnt be in plain text, we're using hashing
   status     String   @default("👋 New to Waves!")
   aboutMe    String   @default("Wave wave 🌊. Learning the ways of tides rn tbh.")
-  profileImg Bytes?
+  profileImg String   @default("https://staticg.sportskeeda.com/editor/2022/07/0675f-16578185306906-1920.jpg")
   calendar   Calendar @relation(fields: [calendarId], references: [id])
   calendarId String   @unique @db.ObjectId
   friends    String[]
