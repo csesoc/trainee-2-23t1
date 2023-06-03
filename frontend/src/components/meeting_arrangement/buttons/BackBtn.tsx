@@ -5,7 +5,7 @@ const BackBtn: React.FC = () => {
   const stepController = useContext(HandlerContext)
 
   return (
-    <button className="bg-slate-500 text-darkWhite px-5 py-2 rounded-full" onClick={stepController.decrementStep}>
+    <button type="button" className="bg-slate-500 text-darkWhite px-5 py-2 rounded-full" onClick={stepController.decrementStep}>
       Back
     </button>
   )

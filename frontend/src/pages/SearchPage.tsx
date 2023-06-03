@@ -25,7 +25,7 @@ const SearchPage: React.FC = () => {
       console.log(retrieveEndpoint.data.users)
       const searchResults = retrieveEndpoint.data.users.map(item => {
         // the friends method of seeing who you already follow can be better on backend
-        return <SearchResult name={item.name} email={item.email} aboutMe={item.aboutMe} following={item.following}/>
+        return <SearchResult name={item.name} email={item.email} aboutMe={item.aboutMe} following={item.following} yourself={item.yourself}/>
       })
       setRes(searchResults)
     }

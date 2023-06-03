@@ -37,6 +37,7 @@ const searchWaves = trpc.procedure.input(
       email: item.email,
       aboutMe: item.aboutMe,
       following: item.friends.includes(userId),
+      yourself: (item.id === userId)
     }
   })
 
@@ -45,8 +46,69 @@ const searchWaves = trpc.procedure.input(
   }
 })
 
+const searchFriends = trpc.procedure.input(
+  z.object({
+    token: z.string(),
+    queryStr: z.string()
+  })
+).query(async ({ input, ctx }) => {
+  const userId = ctx.userId;
+
+  const usr = await prisma.user.findUnique({
+    where: {
+      id: userId as string
+    }
+  }).catch(() => {
+    throw new TRPCError({
+      code: 'INTERNAL_SERVER_ERROR',
+      message: "User does not exist - something went wrong.",
+    })
+  })
+  
+  if (usr === null || typeof usr === undefined) {
+    return {
+      users: []
+    }
+  }
+
+  const allUsers = await prisma.user.findMany().catch(() => {
+    throw new TRPCError({
+      code: 'INTERNAL_SERVER_ERROR',
+      message: "User does not exist - something went wrong.",
+    })
+  })
+
+  const returnArr: {name: string, email: string}[] = [];
+  for (const friend of usr?.friends) {
+    if (input.queryStr.length === 0) {
+      const index = allUsers.findIndex(item => {
+        return item.id === friend
+      })
+      returnArr.push({
+        name: allUsers[index].name,
+        email: allUsers[index].email,
+      })
+    } else {
+      const index = allUsers.findIndex(item => {
+        return item.id === friend && item.name.toLowerCase().includes(input.queryStr.toLowerCase())
+      })
+      if (index !== -1) {
+        returnArr.push({
+          name: allUsers[index].name,
+          email: allUsers[index].email,
+        })
+      }
+    }
+  }
+
+  return {
+    users: returnArr
+  }
+})
+
 const searchRouter = trpc.router({
   search: searchWaves,
+  searchFriends: searchFriends,
 })
 
 export default searchRouter
