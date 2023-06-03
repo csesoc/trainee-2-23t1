@@ -1,5 +1,6 @@
 import React from "react";
 import MeetingIcon from "../../assets/Icons/Meeting";
+import CalendarIcon from "../../assets/Icons/CalendarIcon";
 
 export const colours = [
   "bg-stone-100",
@@ -80,8 +81,8 @@ const Calendar: React.FC<{data: CalendarData}> = (props) => {
         const diff = endHour-startHour
         return(       
           <div key={`${x}-${y}`} style={{gridRow: `span ${diff} /span ${diff}`}} className="border border-neutral-500 text-neutral-700 group">
-            <div className={`m-0 h-full bg-navbar text-center align-middle transition-all duration-500`}>
-              <div className="opacity-0 group-hover:opacity-100 transition duration-500 text-white whitespace-nowrap overflow-hidden">
+            <div className="flex h-full bg-navbar transition-all duration-500 items-center justify-center">
+              <div className="transition duration-500 text-white text-lg whitespace-nowrap overflow-hidden">
                 <b>{props.data.highlight.details}</b>
               </div>
             </div>

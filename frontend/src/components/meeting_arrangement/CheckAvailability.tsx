@@ -20,7 +20,7 @@ const CheckAvailability: React.FC<{date: {
   const [endHour, setEndHour] = useState(getHours(props.date.endDate));
 
 
-  const [calendarDate, setCalendarDate] = useState(props.date.startDate)
+  const [calendarDate, setCalendarDate] = useState(new Date())
 
 
   const time = {
@@ -52,7 +52,7 @@ const CheckAvailability: React.FC<{date: {
       res.endDate = new Date()
     }
     props.setDate(() => res);
-    setCalendarDate(() => res.startDate)
+    setCalendarDate(() => parseISO(newValue.startDate));
     } 
   
   let error;
@@ -67,14 +67,15 @@ const CheckAvailability: React.FC<{date: {
       }
       avaliableStr += name;
     })
-    avaliableStr += " can't make it"
+    avaliableStr += " can't make it!"
     error = (
-      <div className="flex flex-row items-center align-middle gap-1"> 
+      <div className="flex flex-row items-center align-middle gap-1 fill-red-600"> 
         <CalendarIcon/> 
         {avaliableStr}
       </div>
     )
   }
+  console.log(time)
     return (
     <div>
       <div className="flex justify-around">

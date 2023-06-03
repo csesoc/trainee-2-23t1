@@ -284,7 +284,7 @@ const checkAvaliableEndpoint = trpc.procedure.input(
     })
 
     for (const timeslot of user.calendar.availabilities) {
-      if (timeslot.startTime >= input.startDate && timeslot.startTime <= input.endDate) {
+      if (timeslot.startTime >= input.startDate && timeslot.startTime < input.endDate) {
         unavaliableUserIds.push(user.id)
         unavaliableNames.push(user.name)
         numUnavaliable +=1
