@@ -1,5 +1,4 @@
 import React, { EventHandler, FormEvent, useCallback, useEffect, useState } from "react";
-import { trpc } from "../../utils/trpc";
 import { useNavigate } from "react-router-dom";
 
 const SearchBar: React.FC = () => {
@@ -24,7 +23,7 @@ const SearchBar: React.FC = () => {
             placeholder="🔎 Search Waves" 
             type="text" 
             autoComplete="off"
-            className="w-56 outline-none text-white py-2 px-4 rounded-xl bg-gray-900/50 focus:bg-gray-900 focus:w-[650px] transition-all delay-200 transform ease-in-out"
+            className="w-56 outline-none text-white py-2 px-4 rounded-xl bg-gray-900/50 focus:bg-gray-900 focus:w-[650px] transition-all transform ease-in-out"
           ></input>
         </label>
       </form>
