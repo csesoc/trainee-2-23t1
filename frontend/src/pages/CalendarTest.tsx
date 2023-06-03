@@ -63,7 +63,6 @@ const CalenderTest: React.FC = () => {
   console.log(r.data)
   return (
     <div className="w-6/6">
-      <CalendarControl date={date} setDate={setDate} />
       <Calendar data={data} />
       <button className="bg-navbar text-lg" onClick={handleAdd} disabled={mutation.isLoading}>
         Add Timeslot

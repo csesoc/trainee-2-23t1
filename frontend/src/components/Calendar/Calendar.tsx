@@ -1,7 +1,8 @@
 import React from "react";
 import MeetingIcon from "../../assets/Icons/Meeting";
+import CalendarIcon from "../../assets/Icons/CalendarIcon";
 
-const colours = [
+export const colours = [
   "bg-stone-100",
   "bg-green-200",
   "bg-green-400",
@@ -30,7 +31,7 @@ export interface CalendarData {
 }
 
 const Calendar: React.FC<{data: CalendarData}> = (props) => {
-  const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
   const hours = ["12am","1am","2am","3am","4am","5am","6am","7am","8am","9am","10am","11am","12pm","1pm","2pm","3pm","4pm","5pm","6pm","7pm","8pm","9pm","10pm","11pm"]
 
   const renderCalendar = () => {
@@ -80,12 +81,9 @@ const Calendar: React.FC<{data: CalendarData}> = (props) => {
         const diff = endHour-startHour
         return(       
           <div key={`${x}-${y}`} style={{gridRow: `span ${diff} /span ${diff}`}} className="border border-neutral-500 text-neutral-700 group">
-            <div className={`m-0 h-full bg-navbar text-center align-middle transition-all duration-500`}>
-              <div className="opacity-0 group-hover:opacity-100 transition duration-500 text-white whitespace-nowrap overflow-hidden">
-                <div className="pt-2">
-                  <MeetingIcon/>
-                  <b>{props.data.highlight.details}</b>
-                </div>
+            <div className="flex h-full bg-navbar transition-all duration-500 items-center justify-center">
+              <div className="transition duration-500 text-white text-lg whitespace-nowrap overflow-hidden">
+                <b>{props.data.highlight.details}</b>
               </div>
             </div>
           </div>
