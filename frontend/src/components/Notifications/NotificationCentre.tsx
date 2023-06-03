@@ -52,7 +52,7 @@ const NotificationCentre: React.FC<{
         notifs.length === 0 ? <div>&nbsp;You don't have any notifications.&nbsp;</div> : (
           notifs.map(notif => {
             return (
-              <Notification key={notif.id} notifMeta={notif} />
+              <Notification key={notif.id} notifMeta={notif} setNotif={setNotifs} />
             )
           })
         )

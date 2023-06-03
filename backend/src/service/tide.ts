@@ -27,6 +27,7 @@ const submitEndpoint = protectedProcedure.input(
       proposedTime: input.proposedTime,
       endTime: input.endTime,
       createdById: ctx.userId,
+      hasUsersId: [ctx.userId],
       invitedUsersId: input.containUsers,
       location: input.location,
       repeatType: input.repeatType,
