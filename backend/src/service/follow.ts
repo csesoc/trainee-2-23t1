@@ -17,6 +17,7 @@ const makeFollows = trpc.procedure.input(
     usrEmail: z.string()
   })
 ).mutation(async ({ input, ctx }) => {
+  console.log("called!")
   checkInput(input);
   const userId = ctx.userId;
 
@@ -35,7 +36,7 @@ const makeFollows = trpc.procedure.input(
   })
   const curUser = await prisma.user.findUnique({
     where: {
-      email: input.usrEmail
+      id: userId
     }
   })
 
@@ -52,10 +53,11 @@ const makeFollows = trpc.procedure.input(
       code: "INTERNAL_SERVER_ERROR",
       message: 'Current user does not exist',
     })
-  } else if (targetUser.friends.includes(userId as string)) {
+  } else if (targetUser.friends.includes(userId as string) || curUser.friends.includes(targetUser.id)) {
     // this means we are unfollowing
     const curUsrIndex = targetUser.friends.indexOf(userId)
     if (curUsrIndex !== -1) {
+      console.log("SPLICED!")
       targetUser.friends.splice(curUsrIndex, 1)
     }
     
@@ -66,7 +68,7 @@ const makeFollows = trpc.procedure.input(
 
     usrSrc = await prisma.user.update({
       where: {
-        id: targetUser.id as string
+        id: curUser.id as string
       },
       data: {
         friends: curUser.friends
@@ -126,6 +128,9 @@ const makeFollows = trpc.procedure.input(
       })
     })
   }
+
+  console.log(usrSrc.friends)
+  console.log(targetUser.id)
 
   return {
     following: usrSrc.friends.includes(targetUser.id)
