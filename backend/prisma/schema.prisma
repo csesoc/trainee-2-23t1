@@ -21,7 +21,7 @@ model User {
   calendar   Calendar @relation(fields: [calendarId], references: [id])
   calendarId String   @unique @db.ObjectId
   friends    String[]
-  dob        DateTime @default(now())
+  dob        String   @default("2000-01-01")
   degree     String   @default("Computer Science")
   phone      String   @default("+61 123 456 789")
 

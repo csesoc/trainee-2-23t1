@@ -11,7 +11,7 @@ const MainPage: React.FC = () => {
   const selfId = useContext(UserIdProvider)
   
   const r = trpc.user.getUserProfile.useQuery({token: selfId});
-  const userInfo = r.data
+  const userInfo: any = r.data
   if (r.isLoading) {
     return(<div></div>)
   }

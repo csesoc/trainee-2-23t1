@@ -39,7 +39,6 @@ const UserProfileLayout: React.FC = () => {
 
   if (retrieveEndpoint.isSuccess && !dataFetched) {
     setDataFetched(true);
-    console.log("Hehe")
   }
 
   return (

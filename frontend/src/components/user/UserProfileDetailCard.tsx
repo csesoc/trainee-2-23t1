@@ -10,7 +10,6 @@ const UserProfileDetailCard: React.FC<{
 }> = ({ userName, userStatus, userDOB, userDegree, userPhone, userAbout }) => {
   const windowHeight = window.innerHeight;
   const windowWidth = window.innerWidth;
-  console.log(windowHeight + " " + windowWidth);
   return (
     <>
       <div
