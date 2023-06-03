@@ -90,7 +90,7 @@ const acceptTide = protectedProcedure.input(
     })
   })
 
-  await prisma.wave.update({
+  const wave = await prisma.wave.update({
     where: {
       id: input.tideId,
     },
@@ -98,6 +98,22 @@ const acceptTide = protectedProcedure.input(
       invitedUsersId: invitedUsers.invitedUsersId.filter(i => i !== ctx.userId),
       hasUsersId: {
         push: ctx.userId,
+      }
+    }
+  })
+
+  await prisma.calendar.updateMany({
+    where: {
+      user: {
+        id: ctx.userId
+      }
+    },
+    data: {
+      availabilities: {
+        push: {
+          startTime: wave.proposedTime,
+          endTime: wave.endTime,
+        }
       }
     }
   })
