@@ -3,7 +3,10 @@ import React from "react";
 // import LockResetIcon from '@mui/icons-material/LockReset';
 // import { IconButton } from "@mui/material";
 
-const UserProfileInfoCard: React.FC = () => {
+const UserProfileInfoCard: React.FC<{
+  userName: string;
+  userEmail: string;
+}> = ({ userName, userEmail }) => {
   return (
     <>
         <img
@@ -18,14 +21,14 @@ const UserProfileInfoCard: React.FC = () => {
                      lg:mt-[22px] lg:text-[40px]
                      md:mt-[13.5px] md:text-[22.5px]"
         >
-          Mark Tran
+          {userName}
         </p>
         <p
           className="not-italic font-normal leading-[22px] opacity-70 pb-2
                       lg:mt-[22px] lg:text-[20px]
                       md:mt-[13.5px] md:text-[11.25px]"
         >
-          marktran873@gmail.com
+          {userEmail}
         </p>
         <hr
           className="border-1 border-black w-[80%] opacity-30
