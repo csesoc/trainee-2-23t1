@@ -65,9 +65,11 @@ const searchFriends = trpc.procedure.input(
     })
   })
   
-  if (usr === null || typeof usr === undefined) [
-
-  ]
+  if (usr === null || typeof usr === undefined) {
+    return {
+      users: []
+    }
+  }
 
   const allUsers = await prisma.user.findMany().catch(() => {
     throw new TRPCError({
