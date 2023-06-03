@@ -1,12 +1,30 @@
 import React, { useEffect, useRef, useState } from "react";
 import Notification from "./Notification";
+import { trpc } from "../../utils/trpc";
+
+type TNotif = {
+  id: string,
+  createdBy: string,
+  tideTitle: string,
+}
 
 const NotificationCentre: React.FC<{
   notificationSee: boolean, 
   setNotificationSee: any, 
 }> = (props) => {
 
-  const [notifs, setNotifs] = useState([1, 2, 3, 4, 5, 6, 7, 8]);
+  const [notifs, setNotifs] = useState<TNotif[]>([]);
+
+  const getNotif = trpc.notification.getNotif.useQuery(undefined, {
+    staleTime: Infinity,
+  })
+
+  useEffect(() => {
+    if (getNotif.isSuccess) {
+      setNotifs(getNotif.data)
+    }
+
+  }, [getNotif.isSuccess])
 
   const notifMenu = useRef<HTMLInputElement>(null);
   useEffect(() => {
@@ -34,7 +52,7 @@ const NotificationCentre: React.FC<{
         notifs.length === 0 ? <div>&nbsp;You don't have any notifications.&nbsp;</div> : (
           notifs.map(notif => {
             return (
-              <Notification />
+              <Notification key={notif.id} notifMeta={notif} />
             )
           })
         )
@@ -45,4 +63,5 @@ const NotificationCentre: React.FC<{
 }
 
 
-export default NotificationCentre;
+export default NotificationCentre
+export type { TNotif }

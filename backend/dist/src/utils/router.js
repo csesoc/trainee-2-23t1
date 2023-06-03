@@ -7,6 +7,7 @@ const auth_1 = __importDefault(require("../service/auth"));
 const calendar_1 = __importDefault(require("../service/calendar"));
 const follow_1 = __importDefault(require("../service/follow"));
 const hello_1 = __importDefault(require("../service/hello"));
+const notifications_1 = __importDefault(require("../service/notifications"));
 const search_1 = __importDefault(require("../service/search"));
 const tide_1 = __importDefault(require("../service/tide"));
 const user_1 = __importDefault(require("../service/user"));
@@ -19,5 +20,6 @@ const appRouter = provider_1.trpc.router({
     search: search_1.default,
     follow: follow_1.default,
     tide: tide_1.default,
+    notification: notifications_1.default,
 });
 exports.default = appRouter;

@@ -2,6 +2,7 @@ import authRouter from "../service/auth"
 import calendarRouter from "../service/calendar"
 import followRouter from "../service/follow"
 import helloRouter from "../service/hello"
+import notifRouter from "../service/notifications"
 import searchRouter from "../service/search"
 import tideRouter from "../service/tide"
 import userRouter from "../service/user"
@@ -15,6 +16,7 @@ const appRouter = trpc.router({
   search: searchRouter,
   follow: followRouter,
   tide: tideRouter,
+  notification: notifRouter,
 })
 
 export default appRouter

@@ -1,6 +1,8 @@
 import React from "react";
+import { TNotif } from "./NotificationCentre";
 
-const Notification: React.FC = (props) => {
+const Notification: React.FC<{notifMeta: TNotif}> = ({ notifMeta }) => {
+  const { createdBy, tideTitle } = notifMeta
 
   return (
     <div className="flex flex-row pr-10 pl-5 py-2 cursor-pointer hover:bg-gray-100/50 dark:hover:bg-gray-800/50">
@@ -10,8 +12,8 @@ const Notification: React.FC = (props) => {
       ></img>
 
       <div className="flex flex-col justify-around">
-        <p>Dylan invited you to a new tide</p>
-        <p className="pt-2"><i>☕️ Coffee run</i></p>
+        <p>{createdBy} invited you to a new tide</p>
+        <p className="pt-2"><i>{tideTitle}</i></p>
 
         <div className="flex flex-row items-center justify-end">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 mx-3 transition hover:scale-125 hover:fill-green-600/90 dark:hover:fill-green-900">
