@@ -2,6 +2,7 @@ import React, { createContext, useState } from "react";
 import CheckAvailability from "../../components/meeting_arrangement/CheckAvailability";
 import ConfirmTide from "../../components/meeting_arrangement/ConfirmTide";
 import TideCreatePage from "../../components/meeting_arrangement/TideCreatePage";
+import { setHours } from "date-fns";
 
 const useArrangeSteps = () => {
   const [step, setStep] = useState(1)
@@ -31,8 +32,8 @@ const Arrange: React.FC = () => {
   const [invitedMember, setInvitedMembers] = useState<string[]>([])
 
   const [meetingDate, setMeetingDate] = useState({ 
-    startDate: new Date(),
-    endDate: new Date()
+    startDate: new Date(setHours(Date.now(),12)),
+    endDate: new Date(setHours(Date.now(),13))
     }); 
 
   return (
