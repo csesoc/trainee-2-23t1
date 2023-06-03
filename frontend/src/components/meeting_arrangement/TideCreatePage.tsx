@@ -1,36 +1,21 @@
-import React, { useState } from "react";
+import React from "react";
 import TideInvite from "./Tide/TideInvite";
 import InvitedList from "./Tide/InvitedList";
 import ContinueBtn from "./buttons/ContinueBtn";
 import { Link } from "react-router-dom";
+import { TInviteController, TInvited } from "../../pages/meeting_arrangement/Arrange";
 
-const TideCreatePage: React.FC = () => {
+type TTideCreate = {
+  invited: TInvited[],
+  inviteHandler: TInviteController
+}
 
-  const [invited, setInvited] = useState<{name: string, email: string}[]>([])
-
-  const handleAddInvited = (name: string, email: string) => {
-    const newElem = {
-      name: name,
-      email: email
-    }
-    setInvited(old => [...old, newElem])
-  }
-
-  const handleRemoveInvited = (name: string, email: string) => {
-    const index = invited.findIndex(item => item.name === name && item.email === email)
-    console.log(index)
-    if (index > -1) {
-      const currInvited = invited.slice()
-      currInvited.splice(index, 1)
-      setInvited(currInvited)
-    }
-  }
-
+const TideCreatePage: React.FC<TTideCreate> = ({ invited, inviteHandler }) => {
   return (
       <div className="flex justify-between p-10 h-[80%]">
-        <TideInvite handleAddInvited={handleAddInvited} />
+        <TideInvite handleAddInvited={inviteHandler.handleAddInvited} />
         <div className="w-[45%] flex flex-col">
-          <InvitedList invited={invited} handleRemoveInvited={handleRemoveInvited} />
+          <InvitedList invited={invited} handleRemoveInvited={inviteHandler.handleRemoveInvited} />
           <div className="flex gap-5 mt-10 place-self-end">
             <Link to={'/'} className="text-white bg-gray-500/70 transition transform ease-in-out duration-200 hover:scale-110 px-5 py-2 rounded-full">
               Cancel
