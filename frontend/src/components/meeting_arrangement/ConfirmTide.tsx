@@ -1,8 +1,8 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useMemo, useState } from "react";
 import BackBtn from "./buttons/BackBtn";
 import Edit from "../../assets/Icons/Edit";
 import CheckMark from "../../assets/Icons/CheckMark";
-import { HandlerContext, TInvited } from "../../pages/meeting_arrangement/Arrange";
+import { HandlerContext, InvitationContext, TInvited } from "../../pages/meeting_arrangement/Arrange";
 import PaperPlane from "../../assets/Icons/PaperPlane";
 import { trpc } from "../../utils/trpc";
 import { useNavigate } from "react-router-dom";
@@ -19,13 +19,12 @@ type TConfirmTide = {
   date: {
     startDate: Date,
     endDate: Date,
-  },
-  invited: TInvited[],
-  handleRemove: (p: TInvited) => void
+  }
 }
 
-const ConfirmTide: React.FC<TConfirmTide> = ({ date, invited, handleRemove }) => {
+const ConfirmTide: React.FC<TConfirmTide> = ({ date }) => {
   const controller = useContext(HandlerContext)
+  const [invited, inviteHandler] = useContext(InvitationContext)
 
   const [titleEdit, setTitleEdit] = useState(false)
 
@@ -52,6 +51,40 @@ const ConfirmTide: React.FC<TConfirmTide> = ({ date, invited, handleRemove }) =>
     })
   }
 
+  const getConvertedDate = useMemo(() => {
+    const dayConvert = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+    const dayStr = (d: number) => {
+      const converter = ['st', 'nd', 'rd']
+      if (d % 10 <= 3 && d % 10 != 0) {
+        return `${d}${converter[(d % 10) - 1]}`
+      }
+      return `${d}th`
+    }
+    const monthConvert = ["January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"]
+
+    const currDate = date.startDate
+    const day = dayConvert[currDate.getDay()]
+    const dayStrr = dayStr(currDate.getDate())
+    const month = monthConvert[currDate.getMonth()]
+
+    return `${day} ${dayStrr} ${month} ${currDate.getFullYear()}`
+  }, [date.startDate, date.endDate])
+
+  const getConvertedTimeRange = useMemo(() => {
+    const start = date.startDate.toLocaleTimeString(undefined, {
+      hour: "numeric",
+      hour12: true
+    })
+
+    const end = date.endDate.toLocaleTimeString(undefined, {
+      hour: "numeric",
+      hour12: true
+    })
+
+    return `${start}-${end}`
+  }, [date.startDate, date.endDate])
+
   return (
     <div className="py-10 px-10 h-[80%]">
       <form className="flex justify-between h-full" onSubmit={submitForm}>
@@ -77,8 +110,8 @@ const ConfirmTide: React.FC<TConfirmTide> = ({ date, invited, handleRemove }) =>
           <div className="flex gap-8">
             <div>
               <h3 className="font-semibold mb-3 text-lg">Time & Date</h3>
-              <h3>&emsp;Thu 23rd March 2023 (Placeholder)</h3>
-              <h3>&emsp;12-2pm (Placeholder)</h3>
+              <h3>&emsp;{getConvertedDate}</h3>
+              <h3>&emsp;{getConvertedTimeRange}</h3>
               <button 
                 type="button" 
                 className="px-3 py-2 bg-blue-400 rounded-full my-2 text-white/90 flex gap-1"
@@ -139,7 +172,7 @@ const ConfirmTide: React.FC<TConfirmTide> = ({ date, invited, handleRemove }) =>
         </div>
 
         <div className="w-[45%] flex flex-col gap-5">
-          <InvitedList invited={invited} handleRemoveInvited={handleRemove} />
+          <InvitedList invited={invited} handleRemoveInvited={inviteHandler.handleRemoveInvited} />
           <div className="flex gap-5 place-self-end">
             <button type="submit" className="flex gap-3 place-items-center bg-blue-400 py-1 px-4 rounded-full text-white/90">
               <span>Send Tide</span>

@@ -10,8 +10,8 @@ const InvitedList: React.FC<{
 
   const list = props.invited.map(item => {
     return (
-      <div className="py-2">
-        <TideProfile person={item} handleClick={props.handleRemoveInvited} added={true} />
+      <div key={item.uId} className="py-2">
+        <TideProfile key={item.uId} person={item} added={true} />
       </div>
     )
   })
