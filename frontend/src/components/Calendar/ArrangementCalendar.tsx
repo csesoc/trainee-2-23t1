@@ -6,9 +6,6 @@ import Calendar, { CalendarData } from "./Calendar";
 
 const ArrangeCalendar: React.FC<{userIds: string[], highlight?: {details: string, day: number, hour: {start: number, end:number}}, date: Date, setDate: any}> = (props) => {
 
-  console.log(props.date)
-  
-
   const r = trpc.calendar.getSharedCalendar.useQuery({
     userIds: props.userIds,
     date: props.date
