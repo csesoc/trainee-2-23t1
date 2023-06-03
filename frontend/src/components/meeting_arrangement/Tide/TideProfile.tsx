@@ -1,6 +1,6 @@
 import React from "react";
-import PlusIcon from "../../assets/Icons/PlusIcon";
-import MinusIcon from "../../assets/Icons/MinusIcon";
+import PlusIcon from "../../../assets/Icons/PlusIcon";
+import MinusIcon from "../../../assets/Icons/MinusIcon";
 
 
 const TideProfile: React.FC<{

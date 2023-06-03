@@ -1,7 +1,7 @@
 import React, { createContext, useState } from "react";
-import InviteUsers from "../../components/meeting_arrangement/InviteUsers";
 import CheckAvailability from "../../components/meeting_arrangement/CheckAvailability";
 import ConfirmTide from "../../components/meeting_arrangement/ConfirmTide";
+import TideCreatePage from "../../components/meeting_arrangement/TideCreatePage";
 
 const useArrangeSteps = () => {
   const [step, setStep] = useState(1)
@@ -28,12 +28,12 @@ const HandlerContext: React.Context<TController> = createContext({} as TControll
 const Arrange: React.FC = () => {
   const [currStep, stepController] = useArrangeSteps()
 
-  const [invitedMember, setInvitedMembers] = useState()
+  const [invitedMember, setInvitedMembers] = useState<string[]>([])
 
   return (
     <HandlerContext.Provider value={stepController as TController}>
       {
-        currStep == 1 ? <InviteUsers /> :
+        currStep == 1 ? <TideCreatePage /> :
         currStep == 2 ? <CheckAvailability /> :
         currStep == 3 ? <ConfirmTide /> :
         undefined

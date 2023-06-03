@@ -4,6 +4,9 @@ import Edit from "../../assets/Icons/Edit";
 import CheckMark from "../../assets/Icons/CheckMark";
 import { HandlerContext } from "../../pages/meeting_arrangement/Arrange";
 import PaperPlane from "../../assets/Icons/PaperPlane";
+import { trpc } from "../../utils/trpc";
+import { useNavigate } from "react-router-dom";
+import InvitedList from "./Tide/InvitedList";
 
 enum ERepeat {
   NONE = 'None',
@@ -19,17 +22,31 @@ const ConfirmTide: React.FC = () => {
 
   const [title, setTitle] = useState("New Tide")
 
+  const navigate = useNavigate()
+  const [error, setError] = useState('')
+  const submit = trpc.tide.submit.useMutation()
   const submitForm: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault()
     console.log(title)
     console.log(e.currentTarget.repeat.value)
     console.log(e.currentTarget.location.value)
+    submit.mutate({
+      tideTitle: title,
+      proposedTime: '2023-03-23T00:00:00Z',
+      endTime: '2023-03-23T00:00:00Z',
+      containUsers: ['6476fdf61827876c4aab26f6'],
+      location: e.currentTarget.location.value,
+      repeatType: (e.currentTarget.repeat.value as ERepeat).toUpperCase() as any // wack
+    }, {
+      onError: (e) => setError(e.message),
+      onSuccess: () => navigate('/')
+    })
   }
 
   return (
-    <div className="py-10 px-10">
-      <form className="flex justify-between" onSubmit={submitForm}>
-        <div className="grid gap-5">
+    <div className="py-10 px-10 h-[80%]">
+      <form className="flex justify-between h-full" onSubmit={submitForm}>
+        <div className="flex flex-col gap-5">
           <div className="flex">
             {
               titleEdit ? 
@@ -89,24 +106,32 @@ const ConfirmTide: React.FC = () => {
             <input 
               type="text" 
               name="location"
-              placeholder="Location"
+              placeholder="Anywhere"
               className="bg-slate-200
-                placeholder:text-black/80
+                placeholder:text-black/30
                 rounded-lg 
                 p-2
                 w-[300px]
                 dark:bg-[#2c2c2c]
                 dark:border-gray-600 
-                dark:placeholder:text-darkWhite
+                dark:placeholder:text-darkWhite/30
                 focus:outline-none
                 focus:w-[450px]
                 transition-all
                 duration-150" />
           </div>
+
+          {error != '' && 
+            <div className="text-red-500">
+              {error}
+            </div>
+          }
+          
         </div>
 
-        <div>
-          <div className="flex gap-5">
+        <div className="w-[45%] flex flex-col gap-5">
+          <InvitedList invited={[]} handleRemoveInvited={() => {}} />
+          <div className="flex gap-5 place-self-end">
             <button type="submit" className="flex gap-3 place-items-center bg-blue-400 py-1 px-4 rounded-full text-white/90">
               <span>Send Tide</span>
               <PaperPlane />
