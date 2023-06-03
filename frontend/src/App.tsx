@@ -8,13 +8,11 @@ import Placeholder from './pages/Placeholder'
 import LoginPage from './pages/auth/LoginPage'
 import RegisterPage from './pages/auth/RegisterPage'
 import ProtectedRoutes from './components/ProtectedRoutes'
-import CalendarTest from './pages/CalendarTest'
 import MainPage from './pages/MainPage'
 import SearchPage from './pages/SearchPage'
 import CalendarWaveTest from './pages/CalendarWaveTest'
 import DashBoardPage from './pages/board/DashBoardPage'
 import UserProfilePage from './pages/user/UserProfilePage'
-import TideCreatePage from './components/meeting_arrangement/TideCreatePage'
 import Arrange from './pages/meeting_arrangement/Arrange'
 
 function App() {

@@ -11,7 +11,7 @@ const submitEndpoint = protectedProcedure.input(
     repeatType: z.enum(["NONE", "DAILY", "WEEKLY", "MONTHLY"]),
     containUsers: z.string().array(),
   })
-).mutation(async ({ input }) => {
+).mutation(async ({ input, ctx }) => {
   console.log(input)
 
   const zodDate = z.string().datetime()
@@ -26,7 +26,7 @@ const submitEndpoint = protectedProcedure.input(
       tideTitle: input.tideTitle,
       proposedTime: input.proposedTime,
       endTime: input.endTime,
-      createdById: input.containUsers[0],
+      createdById: ctx.userId,
       invitedUsersId: input.containUsers,
       location: input.location,
       repeatType: input.repeatType,
