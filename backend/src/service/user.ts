@@ -164,7 +164,8 @@ const getUserProfile = trpc.procedure.input(
     degree: usr.degree,
     phone: usr.phone,
     aboutMe: usr.aboutMe,
-    calendarId: usr.calendarId
+    calendarId: usr.calendarId,
+    profileImg: usr.profileImg
   }
 })
 

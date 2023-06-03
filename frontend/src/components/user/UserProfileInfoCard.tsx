@@ -104,13 +104,9 @@ const UserProfileInfoCard: React.FC<{
       
   return (
     <>
-      <img
-        className="rounded-full 
-                     lg:mt-[40px] lg:h-[140px]
-                     md:mt-[22.5px] md:h-[90px]"
-        src="../../../public/profile.jpeg"
-        alt="profile"
-      />
+        <img className="mt-[40px] w-40 h-40 rounded-full"
+        src={getUserProfileAPI.data?.profileImg}
+        alt="Rounded avatar" />
       <p
         className="not-italic font-semibold leading-9
                      lg:mt-[22px] lg:text-[40px]

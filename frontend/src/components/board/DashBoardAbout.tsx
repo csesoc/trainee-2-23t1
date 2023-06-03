@@ -1,17 +1,23 @@
 import React from "react";
+import { trpc } from "../../utils/trpc";
 
 const DashBoardAbout: React.FC = () => {
+  const selfId = localStorage.getItem("token");
+  if (typeof selfId === 'undefined' || selfId === null) {}
+  const getUserProfileAPI = trpc.user.getUserProfile.useQuery({
+    token: selfId as string
+  },{
+    staleTime: Infinity
+  });
+  
   return (
     <>
-      <div className="text-black
-                      lg:ml-[230px]
-                      md:ml-[97.5px]"
+      <div className="text-black"
                       >
         <p
           className="not-italic font-semibold leading-[24px]
-                      lg:mt-[60px] lg:text-[25px]
-                      md:mt-[39px] md:text-[15px]"
-        >
+                     mt-[30px] text-[25px]"
+          >
           About me
         </p>
         <div
@@ -21,10 +27,10 @@ const DashBoardAbout: React.FC = () => {
         >
           <p
             className="not-italic leading-[24px]
-                       lg:py-[17px] lg:px-[19px] lg:text-[20px]
-                       md:py-[12.75px] md:px-[14.25px] md:text-[15px]"
+                       lg:py-[17px] lg:px-[19px]
+                       md:py-[12.75px] md:px-[14.25px] text-[15px]"
           >
-            stop stalking me 🙈
+            {getUserProfileAPI.data?.aboutMe}
           </p>
         </div>
       </div>

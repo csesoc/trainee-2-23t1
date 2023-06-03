@@ -4,6 +4,8 @@ import CalendarTest from "./CalendarTest";
 import TimeslotAdder from "../components/Calendar/TimeslotAdder";
 import { UserIdProvider } from "../components/ProtectedRoutes";
 import { trpc } from "../utils/trpc";
+import DashBoardInfoCard from "../components/board/DashBoardInfoCard";
+import DashBoardAbout from "../components/board/DashBoardAbout";
 
 
 const MainPage: React.FC = () => {
@@ -16,10 +18,16 @@ const MainPage: React.FC = () => {
     return(<div></div>)
   }
   return (
-    <div className="flex justify-around items-center">
-      <div className="bg-gray-500 w-56 h-56"></div>
-      <div>
-        <TimeslotAdder calendarId={userInfo.calendarId} trigger={trigger} setTrigger={setTrigger}/>
+    <div className="flex felx-row justify-evenly items-center">
+      <div className="flex flex-col justify-evenly items-center w-[45%]">
+        {/* <div className="bg-gray-500 w-56 h-56"></div> */}
+        <div>
+          <TimeslotAdder calendarId={userInfo.calendarId} trigger={trigger} setTrigger={setTrigger}/>
+        </div>
+        <div className="flex flex-col mt-5">
+              <DashBoardInfoCard />
+              <DashBoardAbout />
+        </div>
       </div>
       <div className="w-[45%] mt-5">
         <CalendarTest calendarId={userInfo.calendarId} trigger={trigger} setTrigger={setTrigger}/>
