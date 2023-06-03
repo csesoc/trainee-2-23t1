@@ -66,7 +66,7 @@ const TimeslotAdder: React.FC<{calendarId: string, trigger: boolean, setTrigger:
             <div className="text-red-600 ml-7">
                 <i>{error}</i>
             </div>
-            <div className="p-5 bg-slate-300 rounded-xl flex flex-col gap-4">
+            <div className="p-5 bg-slate-300 dark:bg-[#090e14] rounded-xl flex flex-col gap-4">
                 <div className="flex flex-row items-center  justify-start gap-3">
                     <Datepicker
                         primaryColor={"teal"} 
@@ -74,9 +74,11 @@ const TimeslotAdder: React.FC<{calendarId: string, trigger: boolean, setTrigger:
                         asSingle={true} 
                         value={date} 
                         onChange={handleValueChange} 
-                    /> 
-                    <HourSelect value={startHour} onChange={setStartHour} hasError={valid}></HourSelect>
-                    <HourSelect value={endHour} onChange={setEndHour} hasError={valid}></HourSelect>
+                    />
+                    <div className="flex gap-3 text-black/80">
+                      <HourSelect value={startHour} onChange={setStartHour} hasError={valid}></HourSelect>
+                      <HourSelect value={endHour} onChange={setEndHour} hasError={valid}></HourSelect>
+                    </div> 
                 </div>
                 <div className="flex flex-row items-center gap-4">
                     <input value={details} onChange={(e) => setDetails(e.target.value)} className="bg-white w-full border border-slate-300 rounded-md py-2 px-2 shadow-sm focus:outline-none focus:border-black focus:ring-black focus:ring-1 sm:text-sm placeholder:italic" placeholder="Event Name"></input>
