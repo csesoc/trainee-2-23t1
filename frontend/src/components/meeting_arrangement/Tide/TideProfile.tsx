@@ -1,24 +1,33 @@
-import React from "react";
+import React, { useContext } from "react";
 import PlusIcon from "../../../assets/Icons/PlusIcon";
 import MinusIcon from "../../../assets/Icons/MinusIcon";
-import { TInvited } from "../../../pages/meeting_arrangement/Arrange";
+import { InvitationContext, TInvited } from "../../../pages/meeting_arrangement/Arrange";
 
 type TTideProfile = {
-  person: TInvited
-  handleClick: (person: TInvited) => void,
+  person: TInvited,
   added: boolean,
 }
 
 const TideProfile: React.FC<TTideProfile> = (props) => {
-  const {person, handleClick, added} = props
+  const {person, added} = props
+
+  const invitationController = useContext(InvitationContext)[1]
+  const divClicked = (person: TInvited) => {
+    if (added) {
+      invitationController.handleRemoveInvited(person)
+    } else {
+      invitationController.handleAddInvited(person)
+    }
+  }
 
   return (
-    <div onClick={() => handleClick(person)} className={added ? "cursor-pointer bg-slate-700 flex flex-row text-white rounded-xl p-5 m-5" : "cursor-pointer bg-navbar flex flex-row text-white rounded-xl p-5 m-5"}>
-       <img 
+    <div onClick={() => divClicked(person)} 
+      className={added ? "cursor-pointer bg-slate-700 flex flex-row text-white rounded-xl p-5 m-5" : "cursor-pointer bg-navbar flex flex-row text-white rounded-xl p-5 m-5"}>
+      <img 
         src="../../../public/anya.jpeg"
         alt="user profile picture"
         className="h-10 w-10 rounded-full cursor-pointer object-cover mx-3"
-      ></img>
+      />
       <div className="flex flex-col">
         <p className="font-semibold">{person.name}</p>
         <p>{person.email}</p>

@@ -1,19 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import TideInvite from "./Tide/TideInvite";
 import InvitedList from "./Tide/InvitedList";
 import ContinueBtn from "./buttons/ContinueBtn";
 import { Link } from "react-router-dom";
-import { TInviteController, TInvited } from "../../pages/meeting_arrangement/Arrange";
+import { InvitationContext } from "../../pages/meeting_arrangement/Arrange";
 
-type TTideCreate = {
-  invited: TInvited[],
-  inviteHandler: TInviteController
-}
+const TideCreatePage: React.FC = () => {
+  const [invited, inviteHandler] = useContext(InvitationContext)
 
-const TideCreatePage: React.FC<TTideCreate> = ({ invited, inviteHandler }) => {
   return (
       <div className="flex justify-between p-10 h-[80%]">
-        <TideInvite handleAddInvited={inviteHandler.handleAddInvited} />
+        <TideInvite />
         <div className="w-[45%] flex flex-col">
           <InvitedList invited={invited} handleRemoveInvited={inviteHandler.handleRemoveInvited} />
           <div className="flex gap-5 mt-10 place-self-end">
