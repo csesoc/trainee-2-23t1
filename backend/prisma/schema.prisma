@@ -21,6 +21,9 @@ model User {
   calendar Calendar @relation(fields: [calendarId], references: [id])
   calendarId String @unique @db.ObjectId
   friends    String[]
+  dob        DateTime?
+  degree     String?
+  phone      String?
 
   // Waves invited but not accepted
   invitedWaves   Wave[]   @relation("invited", fields: [invitedWavesId], references: [id])
