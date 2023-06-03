@@ -1,8 +1,7 @@
-import React, { EventHandler, FormEvent, useCallback, useEffect, useState } from "react";
+import React, { EventHandler, FormEvent, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 
-const SearchBar: React.FC = () => {
-
+const SearchBar: React.FC<{focused: boolean, setFocus: any}> = ({ focused, setFocus }) => {
   const navigate = useNavigate();
 
   const submitFnc: EventHandler<FormEvent> = useCallback((event) => {
@@ -23,7 +22,21 @@ const SearchBar: React.FC = () => {
             placeholder="🔎 Search Waves" 
             type="text" 
             autoComplete="off"
-            className="w-56 outline-none text-white py-2 px-4 rounded-xl bg-gray-900/50 focus:bg-gray-900 focus:w-[650px] transition-all transform ease-in-out"
+            onFocus={() => setFocus(true)}
+            onBlur={() => setFocus(false)}
+            className={`${focused ? "w-[650px]" : "w-56"}
+              outline-none 
+              text-white 
+              py-2 
+              px-4 
+              rounded-xl 
+              bg-gray-900/50 
+              focus:bg-gray-900 
+              transition-all 
+              transform 
+              ease-in-out
+              duration-300
+            `}
           ></input>
         </label>
       </form>
