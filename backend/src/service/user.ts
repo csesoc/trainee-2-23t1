@@ -26,9 +26,16 @@ const getUserProfile = trpc.procedure.input(
   }).catch(() => {
     throw new TRPCError({
       code: 'INTERNAL_SERVER_ERROR',
-      message: "User does not exist - something went wrong.",
+      message: "Server error - something went wrong please try again.",
     })
   })
+
+  if (usr === null || typeof usr === undefined) {
+    throw new TRPCError({
+      code: 'INTERNAL_SERVER_ERROR',
+      message: "User does not exist",
+    })
+  }
 
   return {
     name: usr.name,
