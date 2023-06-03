@@ -1,6 +1,6 @@
 import { TRPCError } from "@trpc/server";
-import { prisma, trpc } from "../utils/provider";
-import { z } from "zod";
+import { prisma, protectedProcedure, trpc } from "../utils/provider";
+import { string, z } from "zod";
 
 const checkInput = (input: Object) => {
   if (Object.values(input).filter(s => s === '').length != 0) {
@@ -194,12 +194,44 @@ const updateStatusEndpoint = trpc.procedure.input(
   return {status: usr.status}
 })
 
+const acceptTide = protectedProcedure.input(
+  z.object({
+    tideId: z.string(),
+  })
+).mutation(async ({ input, ctx }) => {
+  const invitedUsers = await prisma.wave.findUniqueOrThrow({
+    where: {
+      id: input.tideId,
+    },
+    select: {
+      invitedUsersId: true
+    }
+  }).catch((e) => {
+    throw new TRPCError({
+      code: 'BAD_REQUEST',
+      message: 'Unable to find tide'
+    })
+  })
+
+  await prisma.wave.update({
+    where: {
+      id: input.tideId,
+    },
+    data: {
+      invitedUsersId: invitedUsers.invitedUsersId.filter(i => i !== ctx.userId),
+      hasUsersId: {
+        push: ctx.userId,
+      }
+    }
+  })
+})
 
 const userRouter = trpc.router({
   updateUserProfile: updateUserProfile,
   updateUserPassword: updateUserPassword,
   getUserProfile: getUserProfile,
   statusChange: updateStatusEndpoint,
+  acceptTide: acceptTide,
 })
 
 export default userRouter
