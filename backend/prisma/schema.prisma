@@ -11,19 +11,19 @@ datasource db {
 }
 
 model User {
-  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
   name       String
-  email      String    @unique
+  email      String   @unique
   password   String // shouldnt be in plain text, we're using hashing
-  status     String    @default("👋 New to Waves!")
-  aboutMe    String    @default("Wave wave 🌊. Learning the ways of tides rn tbh.")
+  status     String   @default("👋 New to Waves!")
+  aboutMe    String   @default("Wave wave 🌊. Learning the ways of tides rn tbh.")
   profileImg Bytes?
-  calendar Calendar @relation(fields: [calendarId], references: [id])
-  calendarId String @unique @db.ObjectId
+  calendar   Calendar @relation(fields: [calendarId], references: [id])
+  calendarId String   @unique @db.ObjectId
   friends    String[]
-  dob        DateTime?
-  degree     String?
-  phone      String?
+  dob        DateTime @default(now())
+  degree     String   @default("Computer Science")
+  phone      String   @default("+61 123 456 789")
 
   // Waves invited but not accepted
   invitedWaves   Wave[]   @relation("invited", fields: [invitedWavesId], references: [id])
@@ -40,7 +40,7 @@ model User {
 model Calendar {
   id             String     @id @default(auto()) @map("_id") @db.ObjectId
   availabilities Timeslot[]
-  user User?
+  user           User?
 }
 
 // Having timeslot entries means the timeslot is unavailable
@@ -54,7 +54,7 @@ model Wave {
   id           String     @id @default(auto()) @map("_id") @db.ObjectId
   tideTitle    String
   proposedTime DateTime
-  endTime      DateTime 
+  endTime      DateTime
   location     String?
   repeatType   RepeatType @default(NONE)
   notifyUser   Boolean    @default(false)
