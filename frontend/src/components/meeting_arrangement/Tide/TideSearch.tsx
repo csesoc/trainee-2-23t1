@@ -9,7 +9,9 @@ const TideSearch: React.FC<{searchQuery: string}> = ({ searchQuery }) => {
 
   const [res, setRes] = useState<TInvited[]>([]);
 
-  const retrieveEndpoint = trpc.search.searchFriends.useQuery()
+  const retrieveEndpoint = trpc.search.searchFriends.useQuery(undefined, {
+    staleTime: Infinity
+  })
   
   useEffect(() => {
     if (retrieveEndpoint.isSuccess) {
@@ -25,7 +27,7 @@ const TideSearch: React.FC<{searchQuery: string}> = ({ searchQuery }) => {
       {
         res.length === 0 ? 
           <div>No matches exist.</div> :
-          res.filter(r => !invited.map(i => i.uId).includes(r.uId)).map(r => {
+          res.filter(r => !invited.map(i => i.uId).includes(r.uId) && (searchQuery === '' || r.name.includes(searchQuery))).map(r => {
             return (
               <TideProfile key={r.uId} person={r} added={false} />
             )
