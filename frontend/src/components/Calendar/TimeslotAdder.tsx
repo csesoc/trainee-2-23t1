@@ -78,7 +78,7 @@ const TimeslotAdder: React.FC<{calendarId: string, trigger: boolean, setTrigger:
                     <HourSelect value={startHour} onChange={setStartHour} hasError={valid}></HourSelect>
                     <HourSelect value={endHour} onChange={setEndHour} hasError={valid}></HourSelect>
                 </div>
-                <div className="flex flex-row items-center gap-4">
+                <div className="flex flex-row items-center gap-4 text-black/80">
                     <input value={details} onChange={(e) => setDetails(e.target.value)} className="bg-white w-full border border-slate-300 rounded-md py-2 px-2 shadow-sm focus:outline-none focus:border-black focus:ring-black focus:ring-1 sm:text-sm placeholder:italic" placeholder="Event Name"></input>
                     <button className="w-10 h-9 bg-blue-400 rounded-md hover:bg-blue-500 transition-colors " onClick={handleAdd} disabled={addTimeslot.isLoading}>
                         +
