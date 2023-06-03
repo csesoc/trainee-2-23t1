@@ -248,9 +248,64 @@ const getWaveCalendarEndpoint = trpc.procedure.input(
   
 })
 
+const checkAvaliableEndpoint = trpc.procedure.input(
+  z.object({
+    userIds: z.array(z.string()),
+    startDate: z.coerce.date(),
+    endDate: z.coerce.date(),
+  })
+).output(
+  z.object({
+    numUnavaliable: z.number(),
+    unavaliableUsrIds: z.array(z.string()),
+    unavaliableNames: z.array(z.string())
+  })
+).query(async ({ input }) => {
+  if (input.startDate >= input.endDate) {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "Start Date must be smaller or equal to the end date"
+    })
+  }
+  const unavaliableUserIds = []
+  const unavaliableNames = []
+  let numUnavaliable = 0
+  for (const userId of input.userIds) {
+    const user = await prisma.user.findUniqueOrThrow({
+      where: { id: userId },
+      include: {
+        calendar: true,
+      }
+    }).catch(() => {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: "Something went wrong in the server",
+      })
+    })
+
+    for (const timeslot of user.calendar.availabilities) {
+      if (timeslot.startTime >= input.startDate && timeslot.startTime < input.endDate) {
+        unavaliableUserIds.push(user.id)
+        unavaliableNames.push(user.name)
+        numUnavaliable +=1
+        break;
+      }
+      if (timeslot.endTime >= input.startDate && timeslot.endTime <= input.endDate) {
+        unavaliableUserIds.push(user.id)
+        unavaliableNames.push(user.name)
+        numUnavaliable +=1
+        break;
+      }
+    }
+  }
+  return {numUnavaliable: numUnavaliable, unavaliableUsrIds: unavaliableUserIds, unavaliableNames: unavaliableNames}
+  
+})
+
 const calendarRouter = trpc.router({
   addTimeslot: addTimeslotEndpoint,
   getCalendar: getCalendarEndpoint,
+  checkAvaliable: checkAvaliableEndpoint,
   getSharedCalendar: getSharedCalendarEndpoint,
   getWaveCalendar: getWaveCalendarEndpoint
 })
