@@ -1,16 +1,17 @@
 import React from "react";
 import TideProfile from "./TideProfile";
+import { TInvited } from "../../../pages/meeting_arrangement/Arrange";
 
 
 const InvitedList: React.FC<{
-  invited: {name: string, email: string}[],
-  handleRemoveInvited: any
+  invited: TInvited[],
+  handleRemoveInvited: (invited: TInvited) => void,
 }> = (props) => {
 
   const list = props.invited.map(item => {
     return (
       <div className="py-2">
-        <TideProfile name={item.name} email={item.email} handleClick={props.handleRemoveInvited} added={true} />
+        <TideProfile person={item} handleClick={props.handleRemoveInvited} added={true} />
       </div>
     )
   })

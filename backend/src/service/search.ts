@@ -1,5 +1,5 @@
 import { TRPCError } from "@trpc/server";
-import { prisma, trpc } from "../utils/provider";
+import { prisma, protectedProcedure, trpc } from "../utils/provider";
 import { z } from "zod";
 
 const checkInput = (input: Object) => {
@@ -46,15 +46,14 @@ const searchWaves = trpc.procedure.input(
   }
 })
 
-const searchFriends = trpc.procedure.input(
+const searchFriends = protectedProcedure.input(
   z.object({
-    token: z.string(),
     queryStr: z.string()
   })
 ).query(async ({ input, ctx }) => {
-  const userId = ctx.userId;
+  const userId = ctx.userId
 
-  const usr = await prisma.user.findUnique({
+  const usr = await prisma.user.findUniqueOrThrow({
     where: {
       id: userId as string
     }
@@ -64,46 +63,26 @@ const searchFriends = trpc.procedure.input(
       message: "User does not exist - something went wrong.",
     })
   })
-  
-  if (usr === null || typeof usr === undefined) {
-    return {
-      users: []
-    }
-  }
 
-  const allUsers = await prisma.user.findMany().catch(() => {
+  const allUsers = await prisma.user.findMany({
+    where: {
+      id: {
+        in: usr.friends
+      }
+    },
+    select: {
+      id: true,
+      name: true,
+      email: true
+    }
+  }).catch(() => {
     throw new TRPCError({
       code: 'INTERNAL_SERVER_ERROR',
       message: "User does not exist - something went wrong.",
     })
   })
 
-  const returnArr: {name: string, email: string}[] = [];
-  for (const friend of usr?.friends) {
-    if (input.queryStr.length === 0) {
-      const index = allUsers.findIndex(item => {
-        return item.id === friend
-      })
-      returnArr.push({
-        name: allUsers[index].name,
-        email: allUsers[index].email,
-      })
-    } else {
-      const index = allUsers.findIndex(item => {
-        return item.id === friend && item.name.toLowerCase().includes(input.queryStr.toLowerCase())
-      })
-      if (index !== -1) {
-        returnArr.push({
-          name: allUsers[index].name,
-          email: allUsers[index].email,
-        })
-      }
-    }
-  }
-
-  return {
-    users: returnArr
-  }
+  return allUsers
 })
 
 const searchRouter = trpc.router({

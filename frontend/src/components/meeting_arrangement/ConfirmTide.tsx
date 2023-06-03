@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import BackBtn from "./buttons/BackBtn";
 import Edit from "../../assets/Icons/Edit";
 import CheckMark from "../../assets/Icons/CheckMark";
-import { HandlerContext } from "../../pages/meeting_arrangement/Arrange";
+import { HandlerContext, TInvited } from "../../pages/meeting_arrangement/Arrange";
 import PaperPlane from "../../assets/Icons/PaperPlane";
 import { trpc } from "../../utils/trpc";
 import { useNavigate } from "react-router-dom";
@@ -15,7 +15,16 @@ enum ERepeat {
   MONTHLY = 'Monthly'
 }
 
-const ConfirmTide: React.FC = () => {
+type TConfirmTide = {
+  date: {
+    startDate: Date,
+    endDate: Date,
+  },
+  invited: TInvited[],
+  handleRemove: (p: TInvited) => void
+}
+
+const ConfirmTide: React.FC<TConfirmTide> = ({ date, invited, handleRemove }) => {
   const controller = useContext(HandlerContext)
 
   const [titleEdit, setTitleEdit] = useState(false)
@@ -32,9 +41,9 @@ const ConfirmTide: React.FC = () => {
     console.log(e.currentTarget.location.value)
     submit.mutate({
       tideTitle: title,
-      proposedTime: '2023-03-23T00:00:00Z',
-      endTime: '2023-03-23T00:00:00Z',
-      containUsers: ['6476fdf61827876c4aab26f6'],
+      proposedTime: date.startDate.toISOString(),
+      endTime: date.endDate.toISOString(),
+      containUsers: invited.map(i => i.uId),
       location: e.currentTarget.location.value,
       repeatType: (e.currentTarget.repeat.value as ERepeat).toUpperCase() as any // wack
     }, {
@@ -130,7 +139,7 @@ const ConfirmTide: React.FC = () => {
         </div>
 
         <div className="w-[45%] flex flex-col gap-5">
-          <InvitedList invited={[]} handleRemoveInvited={() => {}} />
+          <InvitedList invited={invited} handleRemoveInvited={handleRemove} />
           <div className="flex gap-5 place-self-end">
             <button type="submit" className="flex gap-3 place-items-center bg-blue-400 py-1 px-4 rounded-full text-white/90">
               <span>Send Tide</span>
