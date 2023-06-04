@@ -1,6 +1,4 @@
 import React from "react";
-import MeetingIcon from "../../assets/Icons/Meeting";
-import CalendarIcon from "../../assets/Icons/CalendarIcon";
 
 export const colours = [
   "bg-stone-100",

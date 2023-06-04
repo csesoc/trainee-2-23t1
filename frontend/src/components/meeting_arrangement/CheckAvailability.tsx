@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ContinueBtn from "./buttons/ContinueBtn";
 import BackBtn from "./buttons/BackBtn";
 import ArrangeCalendar from "../Calendar/ArrangementCalendar";
@@ -38,11 +38,23 @@ const CheckAvailability: React.FC<{date: {
     startDate: time.startTime,
     endDate: time.endTime
   })
-    
+  
+  useEffect(() => {
+    console.log(props.date)
+  }, [props.date])
+
+  useEffect(() => {
+    const res = {
+      startDate: setHours(props.date.startDate, startHour),
+      endDate: setHours(props.date.endDate, endHour)
+    }
+    props.setDate(() => res);
+  }, [startHour, endHour])
+
   const handleValueChange = (newValue:any) => {
     const res = {
-      startDate: parseISO(newValue.startDate),
-      endDate: parseISO(newValue.endDate)
+      startDate: setHours(parseISO(newValue.startDate), startHour),
+      endDate: setHours(parseISO(newValue.endDate), endHour)
     }
 
     // Dirty fix if the calendar field is cleared
@@ -52,7 +64,7 @@ const CheckAvailability: React.FC<{date: {
     }
     props.setDate(() => res);
     setCalendarDate(() => parseISO(newValue.startDate));
-    } 
+  } 
   
   let error;
   if (valid === false) {
@@ -74,7 +86,6 @@ const CheckAvailability: React.FC<{date: {
       </div>
     )
   }
-  console.log(time)
     return (
     <div>
       <div className="flex justify-around">

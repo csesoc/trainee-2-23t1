@@ -11,7 +11,7 @@ const HourSelect: React.FC<{value:any, onChange:any, hasError: boolean}> = (prop
     rows.push(<option value="{i}" key={i}>{hours[i]}</option>)
   }
   return (
-    <select className={`p-2 focus:ring ${props.hasError? "border-gray-300":"border-red-300 ring-red-500"} rounded-md  uppercase`}
+    <select className={`p-2 focus:ring ${props.hasError? "border-gray-300":"border-red-300 ring-red-500"} rounded-md  uppercase text-black/80`}
       value={props.value} // ...force the select's value to match the state variable...
       onChange={handleChange} // ... and update the state variable on any change!
     >
