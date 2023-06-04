@@ -18,7 +18,7 @@ const MainPage: React.FC = () => {
     return(<div></div>)
   }
   return (
-    <div className="flex felx-row justify-evenly items-center">
+    <div className="flex flex-row justify-evenly items-center">
       <div className="flex flex-col justify-evenly items-center w-[45%]">
         {/* <div className="bg-gray-500 w-56 h-56"></div> */}
         <div>
