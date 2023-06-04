@@ -21,12 +21,13 @@ const MainPage: React.FC = () => {
     <div className="flex flex-row justify-evenly items-center">
       <div className="flex flex-col justify-evenly items-center w-[45%]">
         {/* <div className="bg-gray-500 w-56 h-56"></div> */}
-        <div>
-          <TimeslotAdder calendarId={userInfo.calendarId} trigger={trigger} setTrigger={setTrigger}/>
-        </div>
-        <div className="flex flex-col mt-5">
+
+        <div className="flex flex-col mt-5 items-center">
               <DashBoardInfoCard />
               <DashBoardAbout />
+              <div className="mt-5">
+                <TimeslotAdder calendarId={userInfo.calendarId} trigger={trigger} setTrigger={setTrigger}/>
+              </div>
         </div>
       </div>
       <div className="w-[45%] mt-5">
