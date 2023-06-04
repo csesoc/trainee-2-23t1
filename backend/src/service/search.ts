@@ -64,6 +64,11 @@ const searchFriends = protectedProcedure.query(async ({ ctx }) => {
     where: {
       id: {
         in: usr.friends
+      },
+      AND: {
+        NOT: {
+          id: ctx.userId
+        }
       }
     },
     select: {
