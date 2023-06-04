@@ -1,14 +1,18 @@
 import React from "react";
 
-const UserProfileDetailCard: React.FC = () => {
-  const windowHeight = window.innerHeight;
-  const windowWidth = window.innerWidth;
-  console.log(windowHeight + " " + windowWidth);
+const UserProfileDetailCard: React.FC<{
+  userName: string;
+  userStatus: string;
+  userDOB: string;
+  userDegree: string;
+  userPhone: string;
+  userAbout: string;
+}> = ({ userName, userStatus, userDOB, userDegree, userPhone, userAbout }) => {
   return (
     <>
       <div
         className="bg-white rounded-3xl shadow-lg flex flex-col text-black
-                      lg:ml-[140px] lg:mt-[130px] min-w-[500px] min-h-[400px]"
+                   min-w-[500px] min-h-[400px]"
       >
         <h1
           className="not-italic font-extrabold leading-[36px]
@@ -25,7 +29,7 @@ const UserProfileDetailCard: React.FC = () => {
               Username
             </h1>
             <span className="flex items-center px-4 w-[200px] h-[30px] bg-profile-grid text-gray-700 border border-gray-200 rounded focus:outline-none focus:bg-white focus:border-gray-500 text-xs lg:mb-[20px]">
-              marktran
+              {userName}
             </span>
           </div>
           <div className="flex flex-col">
@@ -36,7 +40,7 @@ const UserProfileDetailCard: React.FC = () => {
               DOB
             </h1>
             <span className="flex items-center px-4 w-[200px] h-[30px] bg-profile-grid text-gray-700 border border-gray-200 rounded focus:outline-none focus:bg-white focus:border-gray-500 text-xs lg:mb-[20px]">
-              dd/mm/yy
+              {userDOB}
             </span>
           </div>
         </div>
@@ -49,7 +53,7 @@ const UserProfileDetailCard: React.FC = () => {
               Degree
             </h1>
             <span className="flex items-center px-4 w-[200px] h-[30px] bg-profile-grid text-gray-700 border border-gray-200 rounded focus:outline-none focus:bg-white focus:border-gray-500 text-xs lg:mb-[20px]">
-              Computer Science
+              {userDegree}
             </span>
           </div>
           <div className="flex flex-col">
@@ -60,7 +64,7 @@ const UserProfileDetailCard: React.FC = () => {
               Phone
             </h1>
             <span className="flex items-center px-4 w-[200px] h-[30px] bg-profile-grid text-gray-700 border border-gray-200 rounded focus:outline-none focus:bg-white focus:border-gray-500 text-xs lg:mb-[20px]">
-              +61 410 000 000
+              {userPhone}
             </span>
           </div>
         </div>
@@ -73,7 +77,7 @@ const UserProfileDetailCard: React.FC = () => {
               Bio
             </h1>
             <span className="flex p-4 w-[200px] h-[180px] bg-profile-grid text-gray-700 border border-gray-200 rounded focus:outline-none focus:bg-white focus:border-gray-500 text-xs lg:mb-[20px]">
-              stop stalking me 🙈
+              {userAbout}
             </span>
           </div>
           <div className="flex flex-col">
@@ -84,7 +88,7 @@ const UserProfileDetailCard: React.FC = () => {
               Status
             </h1>
             <span className="flex p-4 w-[200px] h-[180px] bg-profile-grid text-gray-700 border border-gray-200 rounded focus:outline-none focus:bg-white focus:border-gray-500 text-xs lg:mb-[20px]">
-              training with the rizzly-bear 😮‍💨
+              {userStatus}
             </span>
           </div>
         </div>

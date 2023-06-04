@@ -1,5 +1,5 @@
 import React from "react";
-import UserProfileLayout from "../../components/user/UserProfileLayout";
+import UserProfileLayout from "../../components/User/UserProfileLayout";
 const UserProfilePage: React.FC = () => {
   return <UserProfileLayout />;
 };
